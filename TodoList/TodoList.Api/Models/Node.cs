@@ -7,17 +7,17 @@ namespace TodoList.Api.Models
 {
     public class Node
     {
-        public Node() : this("default id", "default text")
+        public Node() : this(0, "default text")
         {      
         }
 
-        public Node(string id, string text)
+        public Node(int id, string text)
         {
             Id = id;
             Text = text;
         }
 
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Text { get; set; }
     }
 }

@@ -22,16 +22,11 @@ namespace TodoList.Api.Controllers
             return NodesList;
         }
 
-        public Node Get(string id)
+        public IEnumerable<Node> Get(int id)
         {
-            var returnNode = new Node();
-            foreach (var node in NodesList)
-            {
-                if (node.Id.Equals(id))
-                {
-                    returnNode = node;
-                }
-            }
+            var returnNode = from n in NodesList
+                where n.Id == id
+                select n;
 
             return returnNode;
         }
@@ -40,11 +35,11 @@ namespace TodoList.Api.Controllers
         {
         }
 
-        public void Put(string id, string text)
+        public void Put(int id, string text)
         {
         }
 
-        public void Delete(string id)
+        public void Delete(int id)
         {
         }
 
@@ -52,10 +47,10 @@ namespace TodoList.Api.Controllers
         {
             var nodes = new List<Node>
             {
-                new Node("1", "poopy"),
-                new Node("2", "GEARS"),
-                new Node("3", "Planet Music"),
-                new Node("4", "Time to get shwifty")
+                new Node(1, "poopy"),
+                new Node(2, "GEARS"),
+                new Node(3, "Planet Music"),
+                new Node(4, "Time to get shwifty")
             };
 
             return nodes;
