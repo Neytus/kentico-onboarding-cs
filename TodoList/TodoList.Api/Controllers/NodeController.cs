@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using TodoList.Api.Models;
 
@@ -10,29 +11,37 @@ namespace TodoList.Api.Controllers
 {
     public class NodeController : ApiController
     {
-        public IEnumerable<NodeModel> NodesList { get; set; }
+        public List<NodeModel> NodesList { get; set; }
 
         public NodeController()
         {
             NodesList = InitializeData();
         }
 
-        public IEnumerable<NodeModel> Get()
+        public List<NodeModel> Get()
         {
             return NodesList;
         }
 
-        public IEnumerable<NodeModel> Get(int id)
+        public NodeModel Get(int id)
         {
-            var returnNode = from n in NodesList
-                where n.Id == id
-                select n;
+            var nodes = from n in NodesList
+                        where n.Id == id
+                        select n;
 
-            return returnNode;
+            var nodeModels = nodes as IList<NodeModel> ?? nodes.ToList();
+            return !nodeModels.Any()
+                ? new NodeModel()
+                : nodeModels.First();
         }
 
-        public void Post(string text)
+        public async Task<NodeModel> Post(string text)
         {
+            var id = NodesList.Count();
+            var node = new NodeModel(id + 1, text);
+            NodesList.Add(node);
+
+            return node;
         }
 
         public void Put(int id, string text)
@@ -43,7 +52,7 @@ namespace TodoList.Api.Controllers
         {
         }
 
-        private static IEnumerable<NodeModel> InitializeData()
+        private static List<NodeModel> InitializeData()
         {
             var nodes = new List<NodeModel>
             {
