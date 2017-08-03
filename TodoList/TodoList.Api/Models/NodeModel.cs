@@ -5,13 +5,13 @@ using System.Web;
 
 namespace TodoList.Api.Models
 {
-    public class Node
+    public class NodeModel
     {
-        public Node() : this(0, "default text")
+        public NodeModel() : this(0, "default text")
         {      
         }
 
-        public Node(int id, string text)
+        public NodeModel(int id, string text)
         {
             Id = id;
             Text = text;

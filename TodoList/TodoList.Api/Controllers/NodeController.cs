@@ -10,19 +10,19 @@ namespace TodoList.Api.Controllers
 {
     public class NodeController : ApiController
     {
-        public IEnumerable<Node> NodesList { get; set; }
+        public IEnumerable<NodeModel> NodesList { get; set; }
 
         public NodeController()
         {
             NodesList = InitializeData();
         }
 
-        public IEnumerable<Node> Get()
+        public IEnumerable<NodeModel> Get()
         {
             return NodesList;
         }
 
-        public IEnumerable<Node> Get(int id)
+        public IEnumerable<NodeModel> Get(int id)
         {
             var returnNode = from n in NodesList
                 where n.Id == id
@@ -43,14 +43,14 @@ namespace TodoList.Api.Controllers
         {
         }
 
-        private static IEnumerable<Node> InitializeData()
+        private static IEnumerable<NodeModel> InitializeData()
         {
-            var nodes = new List<Node>
+            var nodes = new List<NodeModel>
             {
-                new Node(1, "poopy"),
-                new Node(2, "GEARS"),
-                new Node(3, "Planet Music"),
-                new Node(4, "Time to get shwifty")
+                new NodeModel(1, "poopy"),
+                new NodeModel(2, "GEARS"),
+                new NodeModel(3, "Planet Music"),
+                new NodeModel(4, "Time to get shwifty")
             };
 
             return nodes;
