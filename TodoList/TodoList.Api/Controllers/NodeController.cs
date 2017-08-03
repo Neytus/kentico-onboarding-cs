@@ -35,7 +35,7 @@ namespace TodoList.Api.Controllers
                 : nodeModels.First();
         }
 
-        public async Task<NodeModel> Post(string text)
+        public NodeModel Post(string text)
         {
             var id = NodesList.Count();
             var node = new NodeModel(id + 1, text);
@@ -46,6 +46,10 @@ namespace TodoList.Api.Controllers
 
         public void Put(int id, string text)
         {
+            var node = NodesList.SingleOrDefault(s => s.Id == id);
+    //        if (node == null) node = new NodeModel(id, text);
+
+            if (node != null) node.Text = text;
         }
 
         public void Delete(int id)
