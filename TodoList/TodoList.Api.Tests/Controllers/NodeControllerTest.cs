@@ -43,9 +43,20 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public void GetWithId_ReturnsCorrectNode()
         {
-
             var expectedResult = new NodeModel(1, "poopy");
             var actualResult = Controller.Get(1);
+
+            Console.WriteLine(expectedResult);
+            Console.WriteLine(actualResult);
+
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
+        }
+
+        [Test]
+        public void GetWithId_ReturnsDefaultNode()
+        {
+            var expectedResult = new NodeModel();
+            var actualResult = Controller.Get(10);
 
             Console.WriteLine(expectedResult);
             Console.WriteLine(actualResult);
@@ -88,6 +99,23 @@ namespace TodoList.Api.Tests.Controllers
         }
 
         [Test]
+        public void Put_ActsLikeItUpdatedSomeNode()
+        {
+            var expectedResult = new List<NodeModel>
+            {
+                new NodeModel(1, "poopy"),
+                new NodeModel(2, "GEARS"),
+                new NodeModel(3, "Planet Music"),
+                new NodeModel(4, "Time to get shwifty")
+            };
+
+            Controller.Put(6, "poopy butthole");
+            var actualResult = Controller.NodesList;
+
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(ListComparer));
+        }
+
+        [Test]
         public void Delete_DeletesCorrectNode()
         {
             var expectedResult = new List<NodeModel>
@@ -98,6 +126,23 @@ namespace TodoList.Api.Tests.Controllers
             };
 
             Controller.Delete(3);
+            var actualResult = Controller.NodesList;
+
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(ListComparer));
+        }
+
+        [Test]
+        public void Delete_ActsLikeItDeletedSomeNode()
+        {
+            var expectedResult = new List<NodeModel>
+            {
+                new NodeModel(1, "poopy"),
+                new NodeModel(2, "GEARS"),
+                new NodeModel(3, "Planet Music"),
+                new NodeModel(4, "Time to get shwifty")
+            };
+
+            Controller.Delete(5);
             var actualResult = Controller.NodesList;
 
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(ListComparer));

@@ -44,7 +44,7 @@ namespace TodoList.Api.Controllers
             return node;
         }
 
-        public void Put(int id, string text)
+        public async void Put(int id, string text)
         {
             var node = NodesList.SingleOrDefault(s => s.Id == id);
 
