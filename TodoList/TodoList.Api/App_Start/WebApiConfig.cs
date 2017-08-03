@@ -16,7 +16,7 @@ namespace TodoList.Api
 
             config.Routes.MapHttpRoute(
                 name: "Nodes",
-                routeTemplate: "api/nodes/{id}",
+                routeTemplate: "api/v1/nodes/{id}",
                 defaults: new { controller = "node", id = RouteParameter.Optional }
             );
         }

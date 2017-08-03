@@ -23,18 +23,18 @@ namespace TodoList.Api.Controllers
             return NodesList;
         }
 
+        [Route("api/v1/nodes/{id}")]
         public NodeModel Get(int id)
         {
-            var nodes = from n in NodesList
-                        where n.Id == id
-                        select n;
-
+            var nodes = NodesList.Where(s => s.Id == id);
             var nodeModels = nodes as IList<NodeModel> ?? nodes.ToList();
+
             return !nodeModels.Any()
                 ? new NodeModel()
                 : nodeModels.First();
         }
 
+        [Route("api/v1/nodes/{text}")]
         public NodeModel Post(string text)
         {
             var id = NodesList.Count();
@@ -44,10 +44,9 @@ namespace TodoList.Api.Controllers
             return node;
         }
 
-        public async void Put(int id, string text)
+        public void Put(int id, string text)
         {
             var node = NodesList.SingleOrDefault(s => s.Id == id);
-
             if (node != null) node.Text = text;
         }
 
