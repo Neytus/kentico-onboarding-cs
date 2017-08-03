@@ -47,13 +47,14 @@ namespace TodoList.Api.Controllers
         public void Put(int id, string text)
         {
             var node = NodesList.SingleOrDefault(s => s.Id == id);
-    //        if (node == null) node = new NodeModel(id, text);
 
             if (node != null) node.Text = text;
         }
 
         public void Delete(int id)
         {
+            var node = NodesList.SingleOrDefault(s => s.Id == id);
+            NodesList.Remove(node);
         }
 
         private static List<NodeModel> InitializeData()

@@ -10,13 +10,14 @@ namespace TodoList.Api.Tests.Controllers
     
     public class NodeControllerTest
     {
-        public readonly NodeController Controller = new NodeController();
+        public NodeController Controller;
         public readonly NodeModelEqualityComparer Comparer = new NodeModelEqualityComparer();
         public readonly NodeListEqualityComparer ListComparer = new NodeListEqualityComparer();
 
         [SetUp]
         public void SetUp()
         {
+            Controller = new NodeController();
         }
 
         [TearDown]
@@ -81,6 +82,22 @@ namespace TodoList.Api.Tests.Controllers
             };
 
             Controller.Put(1, "poopy butthole");
+            var actualResult = Controller.NodesList;
+
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(ListComparer));
+        }
+
+        [Test]
+        public void Delete_DeletesCorrectNode()
+        {
+            var expectedResult = new List<NodeModel>
+            {
+                new NodeModel(1, "poopy"),
+                new NodeModel(2, "GEARS"),
+                new NodeModel(4, "Time to get shwifty")
+            };
+
+            Controller.Delete(3);
             var actualResult = Controller.NodesList;
 
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(ListComparer));
