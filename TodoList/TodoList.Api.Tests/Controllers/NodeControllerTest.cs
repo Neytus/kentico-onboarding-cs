@@ -17,7 +17,13 @@ namespace TodoList.Api.Tests.Controllers
         [SetUp]
         public void SetUp()
         {
-            Controller = new NodeController();
+            Controller = new NodeController(new List<NodeModel>
+            {
+                new NodeModel(1, "poopy"),
+                new NodeModel(2, "GEARS"),
+                new NodeModel(3, "Planet Music"),
+                new NodeModel(4, "Time to get shwifty")
+            });
         }
 
         [TearDown]

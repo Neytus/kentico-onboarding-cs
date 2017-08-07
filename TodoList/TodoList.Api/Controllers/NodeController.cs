@@ -13,9 +13,13 @@ namespace TodoList.Api.Controllers
     {
         public List<NodeModel> NodesList { get; set; }
 
-        public NodeController()
+        public NodeController(IEnumerable<NodeModel> list)
         {
-            NodesList = InitializeData();
+            NodesList = (List<NodeModel>) list;
+        }
+
+        public NodeController() : this(InitializeData())
+        {
         }
 
         public List<NodeModel> Get()
@@ -58,7 +62,7 @@ namespace TodoList.Api.Controllers
             NodesList.Remove(node);
         }
 
-        private static List<NodeModel> InitializeData()
+        private static IEnumerable<NodeModel> InitializeData()
         {
             var nodes = new List<NodeModel>
             {
