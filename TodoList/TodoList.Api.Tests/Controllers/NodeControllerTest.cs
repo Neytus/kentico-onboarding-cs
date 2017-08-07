@@ -46,9 +46,6 @@ namespace TodoList.Api.Tests.Controllers
             var expectedResult = new NodeModel(1, "poopy");
             var actualResult = Controller.Get(1);
 
-            Console.WriteLine(expectedResult);
-            Console.WriteLine(actualResult);
-
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
 
@@ -57,9 +54,6 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel();
             var actualResult = Controller.Get(10);
-
-            Console.WriteLine(expectedResult);
-            Console.WriteLine(actualResult);
 
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
@@ -75,6 +69,7 @@ namespace TodoList.Api.Tests.Controllers
                 new NodeModel(4, "Time to get shwifty"),
                 new NodeModel(5, "birdman")
             };
+
             Controller.Post("birdman");
             var actualResult = Controller.NodesList;
 
@@ -171,7 +166,7 @@ namespace TodoList.Api.Tests.Controllers
         public bool Equals(List<NodeModel> x, List<NodeModel> y)
         {
             var q = x.Where(item => y.Select(item2 => item2).Contains(item));
-            var z = x.Except(y); // y will have 2, since 2 are not included in list2
+            var z = x.Except(y);
 
             if (x.Count != y.Count) return false;
 

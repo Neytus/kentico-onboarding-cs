@@ -27,7 +27,7 @@ namespace TodoList.Api.Controllers
         public NodeModel Get(int id)
         {
             var nodes = NodesList.Where(s => s.Id == id);
-            var nodeModels = nodes as IList<NodeModel> ?? nodes.ToList();
+            var nodeModels = nodes.ToList();
 
             return !nodeModels.Any()
                 ? new NodeModel()
@@ -44,12 +44,14 @@ namespace TodoList.Api.Controllers
             return node;
         }
 
+        [Route("api/v1/nodes/{id}/{text}")]
         public void Put(int id, string text)
         {
             var node = NodesList.SingleOrDefault(s => s.Id == id);
             if (node != null) node.Text = text;
         }
 
+        [Route("api/v1/nodes/{id}")]
         public void Delete(int id)
         {
             var node = NodesList.SingleOrDefault(s => s.Id == id);
