@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web.Http;
+﻿using System.Net;
 using System.Web.Http.Results;
 using NUnit.Framework;
 using TodoList.Api.Controllers;
@@ -14,7 +11,6 @@ namespace TodoList.Api.Tests.Controllers
     public class NodeControllerTest
     {
         public NodeController Controller;
-        public readonly NodeModelEqualityComparer Comparer = new NodeModelEqualityComparer();
 
         [SetUp]
         public void SetUp()
@@ -39,7 +35,7 @@ namespace TodoList.Api.Tests.Controllers
             };
             var actualResult = Controller.Get();
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
 
         [Test]
@@ -52,7 +48,7 @@ namespace TodoList.Api.Tests.Controllers
             if (statusCodeResult == null) return;
             var actualResult = statusCodeResult.StatusCode;            
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
 
         [Test]
@@ -65,7 +61,7 @@ namespace TodoList.Api.Tests.Controllers
             if (statusCodeResult == null) return;
             var actualResult = statusCodeResult.StatusCode;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
 
         [Test]
@@ -78,7 +74,7 @@ namespace TodoList.Api.Tests.Controllers
             if (statusCodeResult == null) return;
             var actualResult = statusCodeResult.StatusCode;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
 
         [Test]
@@ -91,7 +87,7 @@ namespace TodoList.Api.Tests.Controllers
             if (statusCodeResult == null) return;
             var actualResult = statusCodeResult.StatusCode;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
 
         [Test]
@@ -104,7 +100,7 @@ namespace TodoList.Api.Tests.Controllers
             if (statusCodeResult == null) return;
             var actualResult = statusCodeResult.StatusCode;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
 
         [Test]
@@ -117,7 +113,7 @@ namespace TodoList.Api.Tests.Controllers
             if (statusCodeResult == null) return;
             var actualResult = statusCodeResult.StatusCode;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
 
         [Test]
@@ -130,7 +126,7 @@ namespace TodoList.Api.Tests.Controllers
             if (statusCodeResult == null) return;
             var actualResult = statusCodeResult.StatusCode;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
     }
 }

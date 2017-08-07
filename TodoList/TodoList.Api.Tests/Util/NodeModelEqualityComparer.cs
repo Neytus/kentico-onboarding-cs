@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TodoList.Api.Models;
 
 namespace TodoList.Api.Tests.Util
 {
-    public class NodeModelEqualityComparer : IEqualityComparer<NodeModel>
+    public sealed class NodeModelEqualityComparer : IEqualityComparer<NodeModel>
     {
+        private static readonly Lazy<NodeModelEqualityComparer> Lazy = new Lazy<NodeModelEqualityComparer>(
+            () => new NodeModelEqualityComparer()
+        );
+
+        public static NodeModelEqualityComparer Instance => Lazy.Value;
+
+        private NodeModelEqualityComparer()
+        {
+        }
+
         public bool Equals(NodeModel x, NodeModel y)
         {
             if ((x == null) || (y == null) || x.GetType() != y.GetType()) return false;

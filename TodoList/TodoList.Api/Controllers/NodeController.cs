@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web.Http;
+﻿using System.Web.Http;
 using TodoList.Api.Models;
 
 namespace TodoList.Api.Controllers
