@@ -8,60 +8,45 @@ namespace TodoList.Api.Controllers
 {
     public class NodeController : ApiController
     {
-        public List<NodeModel> NodesList { get; set; }
+        public NodeModel[] Nodes { get; set; }
 
-        public NodeController(IEnumerable<NodeModel> list)
+        public NodeController()
         {
-            NodesList = (List<NodeModel>) list;
+            Nodes = InitializeData();
         }
 
-        public NodeController() : this(InitializeData())
+        public NodeModel[] Get()
         {
-        }
-
-        public List<NodeModel> Get()
-        {
-            return NodesList;
+            return Nodes;
         }
 
         [Route("api/v1/nodes/{id}")]
-        public NodeModel Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            var nodes = NodesList.Where(s => s.Id == id);
-            var nodeModels = nodes.ToList();
-
-            return !nodeModels.Any()
-                ? new NodeModel(0, "default text")
-                : nodeModels.First();
+            return Ok(Nodes[0]);
         }
 
         [Route("api/v1/nodes/{text}")]
-        public NodeModel Post(string text)
+        public IHttpActionResult Post(string text)
         {
-            var id = NodesList.Count();
-            var node = new NodeModel(id + 1, text);
-            NodesList.Add(node);
-
-            return node;
+            return Ok(Nodes[2]);
         }
 
         [Route("api/v1/nodes/{id}/{text}")]
-        public void Put(int id, string text)
+        public IHttpActionResult Put(int id, string text)
         {
-            var node = NodesList.SingleOrDefault(s => s.Id == id);
-            if (node != null) node.Text = text;
+            return Ok(Nodes[1]);
         }
 
         [Route("api/v1/nodes/{id}")]
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
-            var node = NodesList.SingleOrDefault(s => s.Id == id);
-            NodesList.Remove(node);
+            return Ok(Nodes[3]);
         }
 
-        private static IEnumerable<NodeModel> InitializeData()
+        private static NodeModel[] InitializeData()
         {
-            var nodes = new List<NodeModel>
+            var nodes = new NodeModel[]
             {
                 new NodeModel(1, "poopy"),
                 new NodeModel(2, "GEARS"),
