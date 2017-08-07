@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using TodoList.Api.Controllers;
@@ -12,7 +11,6 @@ namespace TodoList.Api.Tests.Controllers
     {
         public NodeController Controller;
         public readonly NodeModelEqualityComparer Comparer = new NodeModelEqualityComparer();
-        public readonly NodeListEqualityComparer ListComparer = new NodeListEqualityComparer();
 
         [SetUp]
         public void SetUp()
@@ -43,7 +41,7 @@ namespace TodoList.Api.Tests.Controllers
             };
             var actualResult = Controller.Get();
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(ListComparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
 
         [Test]
@@ -58,7 +56,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public void GetWithId_ReturnsDefaultNode()
         {
-            var expectedResult = new NodeModel();
+            var expectedResult = new NodeModel(0, "default text");
             var actualResult = Controller.Get(10);
 
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
@@ -79,7 +77,7 @@ namespace TodoList.Api.Tests.Controllers
             Controller.Post("birdman");
             var actualResult = Controller.NodesList;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(ListComparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
 
         [Test]
@@ -96,7 +94,7 @@ namespace TodoList.Api.Tests.Controllers
             Controller.Put(1, "poopy butthole");
             var actualResult = Controller.NodesList;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(ListComparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
 
         [Test]
@@ -113,7 +111,7 @@ namespace TodoList.Api.Tests.Controllers
             Controller.Put(6, "poopy butthole");
             var actualResult = Controller.NodesList;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(ListComparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
 
         [Test]
@@ -129,7 +127,7 @@ namespace TodoList.Api.Tests.Controllers
             Controller.Delete(3);
             var actualResult = Controller.NodesList;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(ListComparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
 
         [Test]
@@ -146,7 +144,7 @@ namespace TodoList.Api.Tests.Controllers
             Controller.Delete(5);
             var actualResult = Controller.NodesList;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(ListComparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
     }
 
@@ -160,26 +158,6 @@ namespace TodoList.Api.Tests.Controllers
         }
 
         public int GetHashCode(NodeModel obj)
-        {
-            return obj.GetHashCode();
-        }
-    }
-
-    public class NodeListEqualityComparer : IEqualityComparer<List<NodeModel>>
-    {
-        public readonly NodeModelEqualityComparer Comparer = new NodeModelEqualityComparer();
-
-        public bool Equals(List<NodeModel> x, List<NodeModel> y)
-        {
-            var q = x.Where(item => y.Select(item2 => item2).Contains(item));
-            var z = x.Except(y);
-
-            if (x.Count != y.Count) return false;
-
-            return !(from node in x let comparedNode = x.Single(s => Comparer.Equals(node, s)) where !Comparer.Equals(node, comparedNode) select node).Any();
-        }
-
-        public int GetHashCode(List<NodeModel> obj)
         {
             return obj.GetHashCode();
         }

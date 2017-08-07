@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using TodoList.Api.Models;
@@ -34,7 +31,7 @@ namespace TodoList.Api.Controllers
             var nodeModels = nodes.ToList();
 
             return !nodeModels.Any()
-                ? new NodeModel()
+                ? new NodeModel(0, "default text")
                 : nodeModels.First();
         }
 
