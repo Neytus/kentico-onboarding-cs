@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Web.Http;
+using System.Web.Http.Results;
 using NUnit.Framework;
 using TodoList.Api.Controllers;
 using TodoList.Api.Models;
@@ -15,13 +18,7 @@ namespace TodoList.Api.Tests.Controllers
         [SetUp]
         public void SetUp()
         {
-            Controller = new NodeController(new List<NodeModel>
-            {
-                new NodeModel(1, "poopy"),
-                new NodeModel(2, "GEARS"),
-                new NodeModel(3, "Planet Music"),
-                new NodeModel(4, "Time to get shwifty")
-            });
+            Controller = new NodeController();
         }
 
         [TearDown]
@@ -32,7 +29,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public void Get_ReturnsAllNodes()
         {
-            var expectedResult = new List<NodeModel>
+            var expectedResult = new NodeModel[]
             {
                 new NodeModel(1, "poopy"),
                 new NodeModel(2, "GEARS"),
@@ -47,8 +44,12 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public void GetWithId_ReturnsCorrectNode()
         {
-            var expectedResult = new NodeModel(1, "poopy");
-            var actualResult = Controller.Get(1);
+            var expectedResult = HttpStatusCode.Accepted;
+
+            var response = Controller.Get(1);
+            var statusCodeResult = response as StatusCodeResult;
+            if (statusCodeResult == null) return;
+            var actualResult = statusCodeResult.StatusCode;            
 
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
@@ -56,8 +57,12 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public void GetWithId_ReturnsDefaultNode()
         {
-            var expectedResult = new NodeModel(0, "default text");
-            var actualResult = Controller.Get(10);
+            var expectedResult = HttpStatusCode.Accepted;
+
+            var response = Controller.Get(1);
+            var statusCodeResult = response as StatusCodeResult;
+            if (statusCodeResult == null) return;
+            var actualResult = statusCodeResult.StatusCode;
 
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
@@ -65,17 +70,12 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public void Post_InsertsNewNodeCorrectly()
         {
-            var expectedResult = new List<NodeModel>
-            {
-                new NodeModel(1, "poopy"),
-                new NodeModel(2, "GEARS"),
-                new NodeModel(3, "Planet Music"),
-                new NodeModel(4, "Time to get shwifty"),
-                new NodeModel(5, "birdman")
-            };
+            var expectedResult = HttpStatusCode.Accepted;
 
-            Controller.Post("birdman");
-            var actualResult = Controller.NodesList;
+            var response = Controller.Post("bird person");
+            var statusCodeResult = response as StatusCodeResult;
+            if (statusCodeResult == null) return;
+            var actualResult = statusCodeResult.StatusCode;
 
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
@@ -83,16 +83,12 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public void Put_UpdatesACorrectNode()
         {
-            var expectedResult = new List<NodeModel>
-            {
-                new NodeModel(1, "poopy butthole"),
-                new NodeModel(2, "GEARS"),
-                new NodeModel(3, "Planet Music"),
-                new NodeModel(4, "Time to get shwifty")
-            };
+            var expectedResult = HttpStatusCode.Accepted;
 
-            Controller.Put(1, "poopy butthole");
-            var actualResult = Controller.NodesList;
+            var response = Controller.Put(1, "poopy butthole");
+            var statusCodeResult = response as StatusCodeResult;
+            if (statusCodeResult == null) return;
+            var actualResult = statusCodeResult.StatusCode;
 
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
@@ -100,16 +96,12 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public void Put_ActsLikeItUpdatedSomeNode()
         {
-            var expectedResult = new List<NodeModel>
-            {
-                new NodeModel(1, "poopy"),
-                new NodeModel(2, "GEARS"),
-                new NodeModel(3, "Planet Music"),
-                new NodeModel(4, "Time to get shwifty")
-            };
+            var expectedResult = HttpStatusCode.Accepted;
 
-            Controller.Put(6, "poopy butthole");
-            var actualResult = Controller.NodesList;
+            var response = Controller.Put(1, "poopy butthole");
+            var statusCodeResult = response as StatusCodeResult;
+            if (statusCodeResult == null) return;
+            var actualResult = statusCodeResult.StatusCode;
 
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
@@ -117,15 +109,12 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public void Delete_DeletesCorrectNode()
         {
-            var expectedResult = new List<NodeModel>
-            {
-                new NodeModel(1, "poopy"),
-                new NodeModel(2, "GEARS"),
-                new NodeModel(4, "Time to get shwifty")
-            };
+            var expectedResult = HttpStatusCode.Accepted;
 
-            Controller.Delete(3);
-            var actualResult = Controller.NodesList;
+            var response = Controller.Delete(1);
+            var statusCodeResult = response as StatusCodeResult;
+            if (statusCodeResult == null) return;
+            var actualResult = statusCodeResult.StatusCode;
 
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }
@@ -133,16 +122,12 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public void Delete_ActsLikeItDeletedSomeNode()
         {
-            var expectedResult = new List<NodeModel>
-            {
-                new NodeModel(1, "poopy"),
-                new NodeModel(2, "GEARS"),
-                new NodeModel(3, "Planet Music"),
-                new NodeModel(4, "Time to get shwifty")
-            };
+            var expectedResult = HttpStatusCode.Accepted;
 
-            Controller.Delete(5);
-            var actualResult = Controller.NodesList;
+            var response = Controller.Delete(2);
+            var statusCodeResult = response as StatusCodeResult;
+            if (statusCodeResult == null) return;
+            var actualResult = statusCodeResult.StatusCode;
 
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
         }

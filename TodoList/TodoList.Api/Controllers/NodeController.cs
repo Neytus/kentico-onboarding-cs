@@ -15,6 +15,7 @@ namespace TodoList.Api.Controllers
             Nodes = InitializeData();
         }
 
+        [Route("api/v1/nodes")]
         public NodeModel[] Get()
         {
             return Nodes;

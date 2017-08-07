@@ -10,12 +10,6 @@ namespace TodoList.Api
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-
-            config.Routes.MapHttpRoute(
-                name: "Nodes",
-                routeTemplate: "api/v1/nodes/{id}",
-                defaults: new { controller = "node", id = RouteParameter.Optional }
-            );
         }
     }
 }
