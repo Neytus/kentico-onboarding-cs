@@ -1,8 +1,10 @@
-﻿namespace TodoList.Api.Models
+﻿using System;
+
+namespace TodoList.Api.Models
 {
     public class NodeModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         
         public string Text { get; set; }
     }
