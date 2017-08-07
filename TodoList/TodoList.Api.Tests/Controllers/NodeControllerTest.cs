@@ -6,6 +6,7 @@ using System.Web.Http.Results;
 using NUnit.Framework;
 using TodoList.Api.Controllers;
 using TodoList.Api.Models;
+using TodoList.Api.Tests.Util;
 
 namespace TodoList.Api.Tests.Controllers
 {
@@ -130,21 +131,6 @@ namespace TodoList.Api.Tests.Controllers
             var actualResult = statusCodeResult.StatusCode;
 
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(Comparer));
-        }
-    }
-
-    public class NodeModelEqualityComparer : IEqualityComparer<NodeModel>
-    { 
-        public bool Equals(NodeModel x, NodeModel y)
-        {
-            if ((x == null) || (y == null) || x.GetType() != y.GetType()) return false;
-
-            return (x.Id == y.Id) && (x.Text == y.Text);
-        }
-
-        public int GetHashCode(NodeModel obj)
-        {
-            return obj.GetHashCode();
         }
     }
 }
