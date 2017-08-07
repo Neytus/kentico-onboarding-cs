@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System.Threading.Tasks;
+using System.Web.Http;
 using TodoList.Api.Models;
 
 namespace TodoList.Api.Controllers
@@ -13,43 +14,49 @@ namespace TodoList.Api.Controllers
         }
 
         [Route("api/v1/nodes")]
-        public NodeModel[] Get()
+        public async Task<IHttpActionResult> GetAsync()
         {
-            return Nodes;
+            var nodes = await Task.FromResult<IHttpActionResult>(Ok(Nodes));
+
+            return nodes;
         }
 
         [Route("api/v1/nodes/{id}")]
-        public IHttpActionResult Get(int id)
+        public async Task<IHttpActionResult> GetAsync(int id)
         {
-            return Ok(Nodes[0]);
+            var node = await Task.FromResult<IHttpActionResult>(Ok(Nodes[0]));
+
+            return node;
         }
 
         [Route("api/v1/nodes/{text}")]
-        public IHttpActionResult Post(string text)
-        {
-            return Ok(Nodes[2]);
-        }
+        public async Task<IHttpActionResult> PostAsync(string text)
+            => await Task.FromResult<IHttpActionResult>(Ok(Nodes[1]));
 
         [Route("api/v1/nodes/{id}/{text}")]
-        public IHttpActionResult Put(int id, string text)
+        public async Task<IHttpActionResult> PutAsync(int id, string text)
         {
-            return Ok(Nodes[1]);
+            var node = await Task.FromResult<IHttpActionResult>(Ok(Nodes[2]));
+
+            return node;
         }
 
         [Route("api/v1/nodes/{id}")]
-        public IHttpActionResult Delete(int id)
+        public async Task<IHttpActionResult> DeleteAsync(int id)
         {
-            return Ok(Nodes[3]);
+            var node = await Task.FromResult<IHttpActionResult>(Ok(Nodes[3]));
+
+            return node;
         }
 
         private static NodeModel[] InitializeData()
         {
             var nodes = new NodeModel[]
             {
-                new NodeModel(1, "poopy"),
-                new NodeModel(2, "GEARS"),
-                new NodeModel(3, "Planet Music"),
-                new NodeModel(4, "Time to get shwifty")
+                new NodeModel {Id = 1, Text = "poopy"},
+                new NodeModel {Id = 2, Text = "GEARS"},
+                new NodeModel {Id = 3, Text = "Planet Music"},
+                new NodeModel {Id = 4, Text = "Time to get shwifty"}
             };
 
             return nodes;

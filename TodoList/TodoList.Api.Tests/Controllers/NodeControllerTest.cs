@@ -1,4 +1,4 @@
-﻿using System.Net;
+﻿using System.Threading;
 using System.Web.Http.Results;
 using NUnit.Framework;
 using TodoList.Api.Controllers;
@@ -28,12 +28,12 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel[]
             {
-                new NodeModel(1, "poopy"),
-                new NodeModel(2, "GEARS"),
-                new NodeModel(3, "Planet Music"),
-                new NodeModel(4, "Time to get shwifty")
+                new NodeModel{Id = 1, Text = "poopy"},
+                new NodeModel{Id = 2, Text = "GEARS"},
+                new NodeModel{Id = 3, Text = "Planet Music"},
+                new NodeModel{Id = 4, Text = "Time to get shwifty"}
             };
-            var actualResult = Controller.Get();
+            var actualResult = Controller.GetAsync();
 
             Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
@@ -41,92 +41,77 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public void GetWithId_ReturnsCorrectNode()
         {
-            var expectedResult = HttpStatusCode.Accepted;
+            var expectedResult = new NodeModel{Id = 1,Text = "poopy"};
 
-            var response = Controller.Get(1);
-            var statusCodeResult = response as StatusCodeResult;
-            if (statusCodeResult == null) return;
-            var actualResult = statusCodeResult.StatusCode;            
+            var actualResult = Controller.GetAsync(0).Result.ExecuteAsync(new CancellationToken()).Result.Content;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
         }
 
         [Test]
         public void GetWithId_ReturnsDefaultNode()
         {
-            var expectedResult = HttpStatusCode.Accepted;
+            var expectedResult = new NodeModel{ Id = 1, Text = "poopy" };
 
-            var response = Controller.Get(1);
-            var statusCodeResult = response as StatusCodeResult;
-            if (statusCodeResult == null) return;
-            var actualResult = statusCodeResult.StatusCode;
+            var response = Controller.GetAsync(0).Result;
+            var actualResult = ((OkNegotiatedContentResult<NodeModel>) response).Content;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
         }
 
         [Test]
         public void Post_InsertsNewNodeCorrectly()
         {
-            var expectedResult = HttpStatusCode.Accepted;
+            var expectedResult = new NodeModel { Id = 2, Text = "GEARS" };
 
-            var response = Controller.Post("bird person");
-            var statusCodeResult = response as StatusCodeResult;
-            if (statusCodeResult == null) return;
-            var actualResult = statusCodeResult.StatusCode;
+            var response = Controller.PostAsync("TEST TEXT").Result;
+            var actualResult = ((OkNegotiatedContentResult<NodeModel>)response).Content;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
         }
 
         [Test]
         public void Put_UpdatesACorrectNode()
         {
-            var expectedResult = HttpStatusCode.Accepted;
-
-            var response = Controller.Put(1, "poopy butthole");
-            var statusCodeResult = response as StatusCodeResult;
-            if (statusCodeResult == null) return;
-            var actualResult = statusCodeResult.StatusCode;
-
-            Assert.That(expectedResult, Is.EqualTo(actualResult));
-        }
-
-        [Test]
+            var expectedResult = new NodeModel { Id = 3, Text = "Planet Music" };
+                                               
+            var response = Controller.GetAsync(0).Result;
+            var actualResult = ((OkNegotiatedContentResult<NodeModel>)response).Content;
+                                               
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
+        }                                      
+                                               
+        [Test]                                 
         public void Put_ActsLikeItUpdatedSomeNode()
-        {
-            var expectedResult = HttpStatusCode.Accepted;
+        {                                      
+            var expectedResult = new NodeModel { Id = 3, Text = "Planet Music" };
 
-            var response = Controller.Put(1, "poopy butthole");
-            var statusCodeResult = response as StatusCodeResult;
-            if (statusCodeResult == null) return;
-            var actualResult = statusCodeResult.StatusCode;
+            var response = Controller.GetAsync(0).Result;
+            var actualResult = ((OkNegotiatedContentResult<NodeModel>)response).Content;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
         }
 
         [Test]
         public void Delete_DeletesCorrectNode()
         {
-            var expectedResult = HttpStatusCode.Accepted;
+            var expectedResult = new NodeModel { Id = 4, Text = "Time to get shwifty" };
 
-            var response = Controller.Delete(1);
-            var statusCodeResult = response as StatusCodeResult;
-            if (statusCodeResult == null) return;
-            var actualResult = statusCodeResult.StatusCode;
+            var response = Controller.GetAsync(0).Result;
+            var actualResult = ((OkNegotiatedContentResult<NodeModel>)response).Content;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
         }
 
         [Test]
         public void Delete_ActsLikeItDeletedSomeNode()
         {
-            var expectedResult = HttpStatusCode.Accepted;
+            var expectedResult = new NodeModel { Id = 4, Text = "Time to get shwifty" };
 
-            var response = Controller.Delete(2);
-            var statusCodeResult = response as StatusCodeResult;
-            if (statusCodeResult == null) return;
-            var actualResult = statusCodeResult.StatusCode;
+            var response = Controller.GetAsync(0).Result;
+            var actualResult = ((OkNegotiatedContentResult<NodeModel>)response).Content;
 
-            Assert.That(expectedResult, Is.EqualTo(actualResult));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
         }
     }
 }
