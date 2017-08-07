@@ -15,19 +15,11 @@ namespace TodoList.Api.Controllers
 
         [Route("api/v1/nodes")]
         public async Task<IHttpActionResult> GetAsync()
-        {
-            var nodes = await Task.FromResult<IHttpActionResult>(Ok(Nodes));
-
-            return nodes;
-        }
+            => await Task.FromResult<IHttpActionResult>(Ok(Nodes));
 
         [Route("api/v1/nodes/{id}")]
         public async Task<IHttpActionResult> GetAsync(int id)
-        {
-            var node = await Task.FromResult<IHttpActionResult>(Ok(Nodes[0]));
-
-            return node;
-        }
+            => await Task.FromResult<IHttpActionResult>(Ok(Nodes[0]));
 
         [Route("api/v1/nodes/{text}")]
         public async Task<IHttpActionResult> PostAsync(string text)
@@ -35,19 +27,11 @@ namespace TodoList.Api.Controllers
 
         [Route("api/v1/nodes/{id}/{text}")]
         public async Task<IHttpActionResult> PutAsync(int id, string text)
-        {
-            var node = await Task.FromResult<IHttpActionResult>(Ok(Nodes[2]));
-
-            return node;
-        }
+            => await Task.FromResult<IHttpActionResult>(Ok(Nodes[2]));
 
         [Route("api/v1/nodes/{id}")]
         public async Task<IHttpActionResult> DeleteAsync(int id)
-        {
-            var node = await Task.FromResult<IHttpActionResult>(Ok(Nodes[3]));
-
-            return node;
-        }
+            => await Task.FromResult<IHttpActionResult>(Ok(Nodes[3]));
 
         private static NodeModel[] InitializeData()
         {
