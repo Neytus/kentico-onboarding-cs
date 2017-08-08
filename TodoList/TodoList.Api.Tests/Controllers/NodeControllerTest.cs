@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -125,6 +126,10 @@ namespace TodoList.Api.Tests.Controllers
                 Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"),
                 Text = "Planet Music"
             };
+            var expectedResponse = new HttpResponseMessage(HttpStatusCode.Accepted)
+            {
+                Content = new ObjectContent<NodeModel>(expectedResult, new JsonMediaTypeFormatter())
+            };
 
             var createdResponse = await Controller.PutAsync("00018889-e3b5-458e-ab43-bc0e8ec761e2", "Planet Music").Result
                 .ExecuteAsync(CancellationToken.None);
@@ -133,28 +138,34 @@ namespace TodoList.Api.Tests.Controllers
             Assert.IsNotNull(createdResponse.Content);
             Assert.That(createdResponse.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
+
+            // TODO ToString() not the best for comparing HttpResponseMessages
+            Assert.That(expectedResponse, Is.EqualTo(createdResponse).Using(HttpResponseMessageEqualityComparer.Instance));
         }
 
         [Test]
         public async Task Delete_DeletesCorrectNode()
         {
-            var actualResult = await Controller.DeleteAsync("b61670fd-33ce-400e-a351-f960230e3aae").Result
+            var actualResponse = await Controller.DeleteAsync("b61670fd-33ce-400e-a351-f960230e3aae").Result
                 .ExecuteAsync(CancellationToken.None);
 
-            Assert.IsNotNull(actualResult);
-            Assert.That(actualResult.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.IsNull(actualResult.Content);
+            Assert.IsNotNull(actualResponse);
+            Assert.IsNull(actualResponse.Content);
+            Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
         [Test]
         public async Task Delete_ActsLikeItDeletedSomeNode()
         {
-            var actualResult = await Controller.DeleteAsync("00000012-33ce-400e-a351-f960230e3aae").Result
+            var expectedResponse = new HttpResponseMessage(HttpStatusCode.OK);
+
+            var actualResponse = await Controller.DeleteAsync("00000012-33ce-400e-a351-f960230e3aae").Result
                 .ExecuteAsync(CancellationToken.None);
 
-            Assert.IsNotNull(actualResult);
-            Assert.That(actualResult.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.IsNull(actualResult.Content);
+            Assert.IsNotNull(actualResponse);
+            Assert.IsNull(actualResponse.Content);
+            Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.That(expectedResponse.ToString(), Is.EqualTo(actualResponse.ToString()));
         }
     }
 }
