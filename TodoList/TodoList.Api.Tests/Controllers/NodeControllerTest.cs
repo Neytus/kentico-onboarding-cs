@@ -27,12 +27,11 @@ namespace TodoList.Api.Tests.Controllers
         private static void SetupControllerForTests(ApiController controller)
         {
             var config = new HttpConfiguration();
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost/api/v1/nodes");
+            var request = new HttpRequestMessage();
             var route = config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{text}");
-            var routeData = new HttpRouteData(route, new HttpRouteValueDictionary {{"controller", "nodes"}});
+            var routeData = new HttpRouteData(route);
 
             controller.ControllerContext = new HttpControllerContext(config, routeData, request);
-            controller.Request = request;
         }
 
         [TearDown]
@@ -51,11 +50,11 @@ namespace TodoList.Api.Tests.Controllers
                 new NodeModel {Id = new Guid("b61670fd-33ce-400e-a351-f960230e3aae"), Text = "Time to get shwifty"}
             };
 
-            var createdResult = await Controller.GetAsync().Result.ExecuteAsync(CancellationToken.None);
-            var actualResult = createdResult.Content.ReadAsAsync<NodeModel[]>().Result;
+            var createdResponse = await Controller.GetAsync().Result.ExecuteAsync(CancellationToken.None);
+            createdResponse.TryGetContentValue(out object actualResult);
 
-            Assert.IsNotNull(createdResult.Content);
-            Assert.That(createdResult.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.IsNotNull(createdResponse.Content);
+            Assert.That(createdResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
         }
 
@@ -64,12 +63,12 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel {Id = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72"), Text = "poopy"};
 
-            var createdResult = await Controller.GetAsync("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72").Result
+            var createdResponse = await Controller.GetAsync("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72").Result
                 .ExecuteAsync(CancellationToken.None);
-            var actualResult = createdResult.Content.ReadAsAsync<NodeModel>().Result;
+            createdResponse.TryGetContentValue(out object actualResult);
 
-            Assert.IsNotNull(createdResult.Content);
-            Assert.That(createdResult.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.IsNotNull(createdResponse.Content);
+            Assert.That(createdResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
         }
 
@@ -78,12 +77,12 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel {Id = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72"), Text = "poopy"};
 
-            var createdResult = await Controller.GetAsync("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72").Result
+            var createdResponse = await Controller.GetAsync("aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72").Result
                 .ExecuteAsync(CancellationToken.None);
-            var actualResult = createdResult.Content.ReadAsAsync<NodeModel>().Result;
+            createdResponse.TryGetContentValue(out object actualResult);
 
-            Assert.IsNotNull(createdResult.Content);
-            Assert.That(createdResult.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.IsNotNull(createdResponse.Content);
+            Assert.That(createdResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
         }
 
@@ -92,11 +91,11 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel {Id = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2"), Text = "GEARS"};
 
-            var createdResult = await Controller.PostAsync("TEST TEXT").Result.ExecuteAsync(CancellationToken.None);
-            var actualResult = createdResult.Content.ReadAsAsync<NodeModel>().Result;
+            var createdResponse = await Controller.PostAsync("TEST TEXT").Result.ExecuteAsync(CancellationToken.None);
+            createdResponse.TryGetContentValue(out object actualResult);
 
-            Assert.IsNotNull(createdResult.Content);
-            Assert.That(createdResult.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+            Assert.IsNotNull(createdResponse.Content);
+            Assert.That(createdResponse.StatusCode, Is.EqualTo(HttpStatusCode.Created));
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
         }
 
@@ -109,12 +108,12 @@ namespace TodoList.Api.Tests.Controllers
                 Text = "Planet Music"
             };
 
-            var createdResult = await Controller.PutAsync("6171ec89-e3b5-458e-ae43-bc0e8ec061e2", "Planet Music").Result
+            var createdResponse = await Controller.PutAsync("6171ec89-e3b5-458e-ae43-bc0e8ec061e2", "Planet Music").Result
                 .ExecuteAsync(CancellationToken.None);
-            var actualResult = createdResult.Content.ReadAsAsync<NodeModel>().Result;
+            createdResponse.TryGetContentValue(out object actualResult);
 
-            Assert.IsNotNull(createdResult.Content);
-            Assert.That(createdResult.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
+            Assert.IsNotNull(createdResponse.Content);
+            Assert.That(createdResponse.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
         }
 
@@ -127,12 +126,12 @@ namespace TodoList.Api.Tests.Controllers
                 Text = "Planet Music"
             };
 
-            var createdResult = await Controller.PutAsync("00018889-e3b5-458e-ab43-bc0e8ec761e2", "Planet Music").Result
+            var createdResponse = await Controller.PutAsync("00018889-e3b5-458e-ab43-bc0e8ec761e2", "Planet Music").Result
                 .ExecuteAsync(CancellationToken.None);
-            var actualResult = createdResult.Content.ReadAsAsync<NodeModel>().Result;
+            createdResponse.TryGetContentValue(out object actualResult);
 
-            Assert.IsNotNull(createdResult.Content);
-            Assert.That(createdResult.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
+            Assert.IsNotNull(createdResponse.Content);
+            Assert.That(createdResponse.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
             Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
         }
 
