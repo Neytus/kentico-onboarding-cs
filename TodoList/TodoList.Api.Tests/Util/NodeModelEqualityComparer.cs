@@ -6,7 +6,9 @@ namespace TodoList.Api.Tests.Util
 {
     public sealed class NodeModelEqualityComparer : IEqualityComparer<NodeModel>
     {
-        private static readonly Lazy<NodeModelEqualityComparer> Lazy = new Lazy<NodeModelEqualityComparer>();
+        private static readonly Lazy<NodeModelEqualityComparer> Lazy = new Lazy<NodeModelEqualityComparer>(
+            () => new NodeModelEqualityComparer()
+        );
 
         public static NodeModelEqualityComparer Instance => Lazy.Value;
 

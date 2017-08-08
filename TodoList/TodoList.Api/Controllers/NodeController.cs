@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Results;
 using TodoList.Api.Models;
 
 namespace TodoList.Api.Controllers
@@ -24,15 +26,15 @@ namespace TodoList.Api.Controllers
 
         [Route("api/v1/nodes/{text}")]
         public async Task<IHttpActionResult> PostAsync(string text)
-            => await Task.FromResult<IHttpActionResult>(Ok(Nodes[1]));
+            => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Created, Nodes[1]));
 
         [Route("api/v1/nodes/{id}/{text}")]
         public async Task<IHttpActionResult> PutAsync(string id, string text)
-            => await Task.FromResult<IHttpActionResult>(Ok(Nodes[2]));
+            => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Accepted, Nodes[2]));
 
         [Route("api/v1/nodes/{id}")]
         public async Task<IHttpActionResult> DeleteAsync(string id)
-            => await Task.FromResult<IHttpActionResult>(Ok(Nodes[3]));
+            => await Task.FromResult<IHttpActionResult>(Ok());
 
         private static NodeModel[] InitializeData()
         {
