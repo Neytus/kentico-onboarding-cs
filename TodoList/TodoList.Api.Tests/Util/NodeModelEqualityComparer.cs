@@ -11,7 +11,7 @@ namespace TodoList.Api.Tests.Util
         internal static NodeModelEqualityComparer Comparer => Lazy.Value;
 
         internal sealed class NodeModelEqualityComparer : IEqualityComparer<NodeModel>
-        {     
+        {
             public bool Equals(NodeModel x, NodeModel y)
             {
                 if ((x == null) || (y == null) || x.GetType() != y.GetType()) return false;

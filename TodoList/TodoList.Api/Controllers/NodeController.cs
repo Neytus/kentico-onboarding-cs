@@ -20,7 +20,7 @@ namespace TodoList.Api.Controllers
             => await Task.FromResult<IHttpActionResult>(Ok(Nodes));
 
         [Route("api/v1/nodes/{id}")]
-        public async Task<IHttpActionResult> GetAsync(Guid id)
+        public async Task<IHttpActionResult> GetAsync(string id)
             => await Task.FromResult<IHttpActionResult>(Ok(Nodes[0]));
 
         [Route("api/v1/nodes/{text}")]
@@ -28,11 +28,11 @@ namespace TodoList.Api.Controllers
             => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Created, Nodes[1]));
 
         [Route("api/v1/nodes/{id}/{text}")]
-        public async Task<IHttpActionResult> PutAsync(Guid id, string text)
+        public async Task<IHttpActionResult> PutAsync(string id, string text)
             => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Accepted, Nodes[2]));
 
         [Route("api/v1/nodes/{id}")]
-        public async Task<IHttpActionResult> DeleteAsync(Guid id) => await Task.FromResult<IHttpActionResult>(Ok());
+        public async Task<IHttpActionResult> DeleteAsync(string id) => await Task.FromResult<IHttpActionResult>(Ok());
 
         private static NodeModel[] InitializeData()
         {
