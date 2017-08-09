@@ -62,7 +62,8 @@ namespace TodoList.Api.Tests.Controllers
             responseMessage.TryGetContentValue(out NodeModel[] actualResult);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
+            Assert.That(expectedResult,
+                Is.EqualTo(actualResult).Using(NodeModelEqualityComparerWrapper.Comparer));
         }
 
         [Test]
@@ -75,7 +76,7 @@ namespace TodoList.Api.Tests.Controllers
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
+            Assert.That(expectedResult.NodeModelEquals(actualResult));
         }
 
         [Test]
@@ -88,7 +89,7 @@ namespace TodoList.Api.Tests.Controllers
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
+            Assert.That(expectedResult.NodeModelEquals(actualResult));
         }
 
         [Test]
@@ -101,41 +102,33 @@ namespace TodoList.Api.Tests.Controllers
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.Created));
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
+            Assert.That(expectedResult.NodeModelEquals(actualResult));
         }
 
         [Test]
         public async Task Put_UpdatesACorrectNode()
         {
-            var expectedResult = new NodeModel
-            {
-                Id = ThirdGuid,
-                Text = "Planet Music"
-            };
+            var expectedResult = new NodeModel {Id = ThirdGuid, Text = "Planet Music"};
 
             var createdResponse = await Controller.PutAsync(ThirdGuid, "Planet Music");
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
+            Assert.That(expectedResult.NodeModelEquals(actualResult));
         }
 
         [Test]
         public async Task Put_ActsLikeItUpdatedSomeNode()
         {
-            var expectedResult = new NodeModel
-            {
-                Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"),
-                Text = "Planet Music"
-            };
+            var expectedResult = new NodeModel {Id = ThirdGuid, Text = "Planet Music"};
 
             var createdResponse = await Controller.PutAsync(NotFoundGuid, "Planet Music");
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparer.Instance));
+            Assert.That(expectedResult.NodeModelEquals(actualResult));
         }
 
         [Test]

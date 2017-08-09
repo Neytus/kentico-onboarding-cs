@@ -32,8 +32,7 @@ namespace TodoList.Api.Controllers
             => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Accepted, Nodes[2]));
 
         [Route("api/v1/nodes/{id}")]
-        public async Task<IHttpActionResult> DeleteAsync(Guid id)
-            => await Task.FromResult<IHttpActionResult>(Ok());
+        public async Task<IHttpActionResult> DeleteAsync(Guid id) => await Task.FromResult<IHttpActionResult>(Ok());
 
         private static NodeModel[] InitializeData()
         {

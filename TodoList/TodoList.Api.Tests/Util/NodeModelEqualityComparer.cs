@@ -4,22 +4,27 @@ using TodoList.Api.Models;
 
 namespace TodoList.Api.Tests.Util
 {
-    public sealed class NodeModelEqualityComparer : IEqualityComparer<NodeModel>
+    internal static class NodeModelEqualityComparerWrapper
     {
         private static readonly Lazy<NodeModelEqualityComparer> Lazy = new Lazy<NodeModelEqualityComparer>();
 
-        public static NodeModelEqualityComparer Instance => Lazy.Value;
+        internal static NodeModelEqualityComparer Comparer => Lazy.Value;
 
-        public bool Equals(NodeModel x, NodeModel y)
-        {
-            if ((x == null) || (y == null) || x.GetType() != y.GetType()) return false;
+        internal sealed class NodeModelEqualityComparer : IEqualityComparer<NodeModel>
+        {     
+            public bool Equals(NodeModel x, NodeModel y)
+            {
+                if ((x == null) || (y == null) || x.GetType() != y.GetType()) return false;
 
-            return (x.Id == y.Id) && (x.Text == y.Text);
+                return (x.Id == y.Id) && (x.Text == y.Text);
+            }
+
+            public int GetHashCode(NodeModel obj) => obj.GetHashCode();
         }
 
-        public int GetHashCode(NodeModel obj)
+        internal static bool NodeModelEquals(this NodeModel x, NodeModel y)
         {
-            return obj.GetHashCode();
+            return Comparer.Equals(x, y);
         }
     }
 }
