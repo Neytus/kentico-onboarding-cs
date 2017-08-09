@@ -62,7 +62,6 @@
   <ItemGroup>
     <Compile Include="Controllers\NodeControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\HttpResponseMessageEqualityComparer.cs" />
     <Compile Include="Util\NodeModelEqualityComparer.cs" />
   </ItemGroup>
   <ItemGroup>
