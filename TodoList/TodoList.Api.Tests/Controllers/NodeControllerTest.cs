@@ -16,11 +16,11 @@ namespace TodoList.Api.Tests.Controllers
     [TestFixture]
     internal class NodeControllerTest
     {
-        private const string FirstGuidString = "d237bdda-e6d4-4e46-92db-1a7a0aeb9a72";
-        private const string SecondGuidString = "b84bbcc7-d516-4805-b2e3-20a2df3758a2";
-        private const string ThirdGuidString = "6171ec89-e3b5-458e-ae43-bc0e8ec061e2";
-        private const string FourthGuidString = "b61670fd-33ce-400e-a351-f960230e3aae";
-        private const string NotFoundGuidString = "aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72";
+        private const string FirstGuid = "d237bdda-e6d4-4e46-92db-1a7a0aeb9a72";
+        private const string SecondGuid = "b84bbcc7-d516-4805-b2e3-20a2df3758a2";
+        private const string ThirdGuid = "6171ec89-e3b5-458e-ae43-bc0e8ec061e2";
+        private const string FourthGuid = "b61670fd-33ce-400e-a351-f960230e3aae";
+        private const string NotFoundGuid = "aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72";
 
         public NodeController Controller;
 
@@ -51,10 +51,10 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel[]
             {
-                new NodeModel {Id = new Guid(FirstGuidString), Text = "poopy"},
-                new NodeModel {Id = new Guid(SecondGuidString), Text = "GEARS"},
-                new NodeModel {Id = new Guid(ThirdGuidString), Text = "Planet Music"},
-                new NodeModel {Id = new Guid(FourthGuidString), Text = "Time to get shwifty"}
+                new NodeModel {Id = new Guid(FirstGuid), Text = "poopy"},
+                new NodeModel {Id = new Guid(SecondGuid), Text = "GEARS"},
+                new NodeModel {Id = new Guid(ThirdGuid), Text = "Planet Music"},
+                new NodeModel {Id = new Guid(FourthGuid), Text = "Time to get shwifty"}
             };
 
             var createdResponse = await Controller.GetAsync();
@@ -68,9 +68,9 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task GetWithId_ReturnsCorrectNode()
         {
-            var expectedResult = new NodeModel {Id = new Guid(FirstGuidString), Text = "poopy"};
+            var expectedResult = new NodeModel {Id = new Guid(FirstGuid), Text = "poopy"};
 
-            var createdResponse = await Controller.GetAsync(FirstGuidString);
+            var createdResponse = await Controller.GetAsync(FirstGuid);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -81,9 +81,9 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task GetWithId_ReturnsDefaultNode()
         {
-            var expectedResult = new NodeModel {Id = new Guid(FirstGuidString), Text = "poopy"};
+            var expectedResult = new NodeModel {Id = new Guid(FirstGuid), Text = "poopy"};
 
-            var createdResponse = await Controller.GetAsync(NotFoundGuidString);
+            var createdResponse = await Controller.GetAsync(NotFoundGuid);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -94,7 +94,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Post_InsertsNewNodeCorrectly()
         {
-            var expectedResult = new NodeModel {Id = new Guid(SecondGuidString), Text = "GEARS"};
+            var expectedResult = new NodeModel {Id = new Guid(SecondGuid), Text = "GEARS"};
 
             var createdResponse = await Controller.PostAsync("TEST TEXT");
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
@@ -107,9 +107,9 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Put_UpdatesACorrectNode()
         {
-            var expectedResult = new NodeModel {Id = new Guid(ThirdGuidString), Text = "Planet Music"};
+            var expectedResult = new NodeModel {Id = new Guid(ThirdGuid), Text = "Planet Music"};
 
-            var createdResponse = await Controller.PutAsync(ThirdGuidString, "Planet Music");
+            var createdResponse = await Controller.PutAsync(ThirdGuid, "Planet Music");
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -120,9 +120,9 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Put_ActsLikeItUpdatedSomeNode()
         {
-            var expectedResult = new NodeModel {Id = new Guid(ThirdGuidString), Text = "Planet Music"};
+            var expectedResult = new NodeModel {Id = new Guid(ThirdGuid), Text = "Planet Music"};
 
-            var createdResponse = await Controller.PutAsync(NotFoundGuidString, "Planet Music");
+            var createdResponse = await Controller.PutAsync(NotFoundGuid, "Planet Music");
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -133,7 +133,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Delete_DeletesCorrectNode()
         {
-            var actualResponse = await Controller.DeleteAsync(FourthGuidString).Result
+            var actualResponse = await Controller.DeleteAsync(FourthGuid).Result
                 .ExecuteAsync(CancellationToken.None);
 
             Assert.IsNull(actualResponse.Content);
@@ -143,7 +143,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Delete_ActsLikeItDeletedSomeNode()
         {
-            var actualResponse = await Controller.DeleteAsync(NotFoundGuidString).Result
+            var actualResponse = await Controller.DeleteAsync(NotFoundGuid).Result
                 .ExecuteAsync(CancellationToken.None);
 
             Assert.IsNull(actualResponse.Content);
