@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Routing;
+using NSubstitute;
 using NUnit.Framework;
 using TodoList.Api.Controllers;
 using TodoList.Api.Models;
 using TodoList.Api.Tests.Util;
+using TodoList.BL;
 
 namespace TodoList.Api.Tests.Controllers
 {
@@ -24,10 +26,32 @@ namespace TodoList.Api.Tests.Controllers
 
         public NodeController Controller;
 
+        private INodeRepository MockRepository()
+        {
+            var repository = Substitute.For<INodeRepository>();
+
+            repository.GetAllAsync().Returns(new[]
+            {
+                new NodeDto {Id = new Guid(FirstGuid), Text = "poopy"},
+                new NodeDto {Id = new Guid(SecondGuid), Text = "GEARS"},
+                new NodeDto {Id = new Guid(ThirdGuid), Text = "Planet Music"},
+                new NodeDto {Id = new Guid(FourthGuid), Text = "Time to get shwifty"}
+            });
+
+            repository.AddAsync("random text").Returns(Task.FromResult(new NodeDto
+            {
+                Id = new Guid(SecondGuid),
+                Text = "GEARS"
+            }));
+
+            return repository;
+        }
+
         [SetUp]
         public void SetUp()
         {
-            Controller = new NodeController();
+            // TODO Mock a repository into this controller
+            Controller = new NodeController(MockRepository());
             SetupControllerForTests(Controller);
         }
 

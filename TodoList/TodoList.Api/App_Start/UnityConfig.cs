@@ -1,5 +1,6 @@
 using Microsoft.Practices.Unity;
 using System.Web.Http;
+using TodoList.Api.Models;
 using TodoList.BL;
 using TodoList.DAL;
 using Unity.WebApi;
@@ -16,7 +17,7 @@ namespace TodoList.Api
             // it is NOT necessary to register your controllers
             
             // e.g. container.RegisterType<ITestService, TestService>();        
-            container.RegisterType<INodeRepository, NodeRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<INodeRepository, NodeRepository>(new ContainerControlledLifetimeManager());
             
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }

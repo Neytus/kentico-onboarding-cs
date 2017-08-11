@@ -11,6 +11,7 @@ namespace TodoList.Api.Controllers
     {
         public INodeRepository Repository;
 
+        // TODO - Solve equality between NodeModel and NodeDto, or try a different approach 
         public NodeController(INodeRepository repository)
         {
             Repository = repository;
