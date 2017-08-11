@@ -37,10 +37,6 @@ namespace TodoList.DAL
             Text = "Planet Music"
         });
 
-        public async Task<NodeDto> DeleteAsync(string id) => await Task.FromResult(new NodeDto
-        {
-            Id = new Guid(FourthGuid),
-            Text = "Time to get shwifty"
-        });
+        public async Task DeleteAsync(string id) => await Task.CompletedTask;
     }
 }

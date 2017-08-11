@@ -1,7 +1,7 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 using TodoList.Api.Models;
 using TodoList.BL;
 
@@ -11,43 +11,32 @@ namespace TodoList.Api.Controllers
     {
         public INodeRepository Repository;
 
-        public NodeModel[] Nodes { get; set; }
-
-        public NodeController()
+        public NodeController(INodeRepository repository)
         {
-            Nodes = InitializeData();
+            Repository = repository;
         }
 
         [Route("api/v1/nodes")]
+        [ResponseType(typeof(NodeModel[]))]
         public async Task<IHttpActionResult> GetAsync()
-            => await Task.FromResult<IHttpActionResult>(Ok(Nodes));
+            => await Task.FromResult<IHttpActionResult>(Ok(Repository.GetAllAsync()));
 
         [Route("api/v1/nodes/{id}")]
+        [ResponseType(typeof(NodeModel))]
         public async Task<IHttpActionResult> GetAsync(string id)
-            => await Task.FromResult<IHttpActionResult>(Ok(Nodes[0]));
+            => await Task.FromResult<IHttpActionResult>(Ok(Repository.GetByIdAsync("d123bdda-e6d4-4e46-92db-1a7a0aeb9a72")));
 
         [Route("api/v1/nodes/{text}")]
+        [ResponseType(typeof(NodeModel))]
         public async Task<IHttpActionResult> PostAsync(string text)
-            => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Created, Nodes[1]));
+            => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Created, Repository.AddAsync("random text")));
 
         [Route("api/v1/nodes/{id}/{text}")]
+        [ResponseType(typeof(NodeModel))]
         public async Task<IHttpActionResult> PutAsync(string id, string text)
-            => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Accepted, Nodes[2]));
+            => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Accepted, Repository.UpdateAsync("6aabec89-e3b5-458e-ae43-bc0e8ec061e2", "any text")));
 
         [Route("api/v1/nodes/{id}")]
-        public async Task<IHttpActionResult> DeleteAsync(string id) => await Task.FromResult<IHttpActionResult>(Ok());
-
-        private static NodeModel[] InitializeData()
-        {
-            var nodes = new[]
-            {
-                new NodeModel {Id = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72"), Text = "poopy"},
-                new NodeModel {Id = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2"), Text = "GEARS"},
-                new NodeModel {Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"), Text = "Planet Music"},
-                new NodeModel {Id = new Guid("b61670fd-33ce-400e-a351-f960230e3aae"), Text = "Time to get shwifty"}
-            };
-
-            return nodes;
-        }
+        public async Task<IHttpActionResult> DeleteAsync(string id) => await Task.FromResult<IHttpActionResult>(Ok(Repository.DeleteAsync("b6215481-33ce-400e-a351-f960230e3aae")));
     }
 }

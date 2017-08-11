@@ -12,6 +12,6 @@ namespace TodoList.BL
 
         Task<NodeDto> UpdateAsync(string id, string text);
 
-        Task<NodeDto> DeleteAsync(string id);
+        Task DeleteAsync(string id);
     }
 }

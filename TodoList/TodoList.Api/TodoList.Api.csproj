@@ -126,6 +126,10 @@
       <Project>{bf2ec6a5-5ce1-44a0-885c-78caf103e032}</Project>
       <Name>TodoList.BL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TodoList.DAL\TodoList.DAL.csproj">
+      <Project>{75D45B39-C60F-44B2-B48B-4AAF5C8BCAB2}</Project>
+      <Name>TodoList.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
