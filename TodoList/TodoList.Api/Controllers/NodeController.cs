@@ -3,11 +3,14 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using TodoList.Api.Models;
+using TodoList.BL;
 
 namespace TodoList.Api.Controllers
 {
     public class NodeController : ApiController
     {
+        public INodeRepository Repository;
+
         public NodeModel[] Nodes { get; set; }
 
         public NodeController()
