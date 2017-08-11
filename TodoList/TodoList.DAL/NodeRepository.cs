@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TodoList.BL;
 
@@ -12,35 +11,36 @@ namespace TodoList.DAL
         private const string ThirdGuid = "6171ec89-e3b5-458e-ae43-bc0e8ec061e2";
         private const string FourthGuid = "b61670fd-33ce-400e-a351-f960230e3aae";
 
-        public async Task<NodeDto[]> GetAllAsync()
+        public async Task<NodeDto[]> GetAllAsync() => await Task.FromResult(new[]
         {
-            return await Task.FromResult(new NodeDto[]
-            {
-                new NodeDto {Id = new Guid(FirstGuid), Text = "poopy"},
-                new NodeDto {Id = new Guid(SecondGuid), Text = "GEARS"},
-                new NodeDto {Id = new Guid(ThirdGuid), Text = "Planet Music"},
-                new NodeDto {Id = new Guid(FourthGuid), Text = "Time to get shwifty"}
-            });
-        }
+            new NodeDto {Id = new Guid(FirstGuid), Text = "poopy"},
+            new NodeDto {Id = new Guid(SecondGuid), Text = "GEARS"},
+            new NodeDto {Id = new Guid(ThirdGuid), Text = "Planet Music"},
+            new NodeDto {Id = new Guid(FourthGuid), Text = "Time to get shwifty"}
+        });
 
-        public async Task<NodeDto> GetByIdAsync(string id)
+        public async Task<NodeDto> GetByIdAsync(string id) => await Task.FromResult(new NodeDto
         {
-            return await Task.FromResult(new NodeDto {Id = new Guid(FirstGuid), Text = "poopy"});
-        }
+            Id = new Guid(FirstGuid),
+            Text = "poopy"
+        });
 
-        public async Task<NodeDto> AddAsync(string text)
+        public async Task<NodeDto> AddAsync(string text) => await Task.FromResult(new NodeDto
         {
-            return await Task.FromResult(new NodeDto { Id = new Guid(SecondGuid), Text = "GEARS" });
-        }
+            Id = new Guid(SecondGuid),
+            Text = "GEARS"
+        });
 
-        public async Task<NodeDto> UpdateAsync(string id, string text)
+        public async Task<NodeDto> UpdateAsync(string id, string text) => await Task.FromResult(new NodeDto
         {
-            return await Task.FromResult(new NodeDto {Id = new Guid(ThirdGuid), Text = "Planet Music"});
-        }
+            Id = new Guid(ThirdGuid),
+            Text = "Planet Music"
+        });
 
-        public async Task<NodeDto> DeleteAsync(string id)
+        public async Task<NodeDto> DeleteAsync(string id) => await Task.FromResult(new NodeDto
         {
-            return await Task.FromResult(new NodeDto {Id = new Guid(FourthGuid), Text = "Time to get shwifty"});
-        }
+            Id = new Guid(FourthGuid),
+            Text = "Time to get shwifty"
+        });
     }
 }

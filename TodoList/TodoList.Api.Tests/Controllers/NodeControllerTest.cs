@@ -49,7 +49,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Get_ReturnsAllNodes()
         {
-            var expectedResult = new NodeModel[]
+            var expectedResult = new[]
             {
                 new NodeModel {Id = new Guid(FirstGuid), Text = "poopy"},
                 new NodeModel {Id = new Guid(SecondGuid), Text = "GEARS"},

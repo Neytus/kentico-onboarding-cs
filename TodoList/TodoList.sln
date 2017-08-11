@@ -4,12 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Api", "TodoList.Api\TodoList.Api.csproj", "{C014A56F-0C39-4748-AC71-8829912E6218}"
+	ProjectSection(ProjectDependencies) = postProject
+		{590CBA01-CBDD-42E3-914C-E6FDCB7170B6} = {590CBA01-CBDD-42E3-914C-E6FDCB7170B6}
+		{1486A440-8A26-4C21-B860-67F31E08EC6B} = {1486A440-8A26-4C21-B860-67F31E08EC6B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Api.Tests", "TodoList.Api.Tests\TodoList.Api.Tests.csproj", "{7915B4E2-27A8-47BB-947B-79D14C7EEEA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.DAL", "TodoList.DAL\TodoList.DAL.csproj", "{1486A440-8A26-4C21-B860-67F31E08EC6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.DAL", "TodoList.DAL\TodoList.DAL.csproj", "{1486A440-8A26-4C21-B860-67F31E08EC6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.BL", "TodoList.BL\TodoList.BL.csproj", "{590CBA01-CBDD-42E3-914C-E6FDCB7170B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.BL", "TodoList.BL\TodoList.BL.csproj", "{590CBA01-CBDD-42E3-914C-E6FDCB7170B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
