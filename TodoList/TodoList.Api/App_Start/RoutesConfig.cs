@@ -5,7 +5,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace TodoList.Api
 {
-    public static class WebApiConfig
+    public static class RoutesConfig
     {
         public static void Register(HttpConfiguration config)
         {
