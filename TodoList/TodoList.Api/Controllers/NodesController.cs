@@ -8,7 +8,7 @@ namespace TodoList.Api.Controllers
 {
     public class NodesController : ApiController
     {
-        public NodeModel[] Nodes { get; set; }
+        private NodeModel[] Nodes { get; }
 
         public NodesController()
         {
