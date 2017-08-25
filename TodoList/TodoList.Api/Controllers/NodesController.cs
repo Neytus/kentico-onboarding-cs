@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -12,7 +14,7 @@ namespace TodoList.Api.Controllers
 
         public NodesController()
         {
-            Nodes = InitializeData();
+            Nodes = InitializeData().ToArray();
         }
 
         [Route("api/v1/nodes")]
@@ -34,17 +36,16 @@ namespace TodoList.Api.Controllers
         [Route("api/v1/nodes/{id}")]
         public async Task<IHttpActionResult> DeleteAsync(string id) => await Task.FromResult<IHttpActionResult>(Ok());
 
-        private static NodeModel[] InitializeData()
+        private static IEnumerable<NodeModel> InitializeData()
         {
-            var nodes = new[]
+            yield return new NodeModel {Id = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72"), Text = "poopy"};
+            yield return new NodeModel {Id = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2"), Text = "GEARS"};
+            yield return new NodeModel {Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"), Text = "Planet Music"};
+            yield return new NodeModel
             {
-                new NodeModel {Id = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72"), Text = "poopy"},
-                new NodeModel {Id = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2"), Text = "GEARS"},
-                new NodeModel {Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"), Text = "Planet Music"},
-                new NodeModel {Id = new Guid("b61670fd-33ce-400e-a351-f960230e3aae"), Text = "Time to get shwifty"}
+                Id = new Guid("b61670fd-33ce-400e-a351-f960230e3aae"),
+                Text = "Time to get shwifty"
             };
-
-            return nodes;
         }
     }
 }
