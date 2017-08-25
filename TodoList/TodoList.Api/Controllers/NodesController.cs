@@ -36,7 +36,7 @@ namespace TodoList.Api.Controllers
 
         private static NodeModel[] InitializeData()
         {
-            var nodes = new NodeModel[]
+            var nodes = new[]
             {
                 new NodeModel {Id = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72"), Text = "poopy"},
                 new NodeModel {Id = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2"), Text = "GEARS"},
