@@ -1,0 +1,16 @@
+﻿using System.Linq;
+using System.Net.Http.Formatting;
+using System.Web.Http;
+using Newtonsoft.Json.Serialization;
+
+namespace TodoList.Api
+{
+    public static class FormatConfig
+    {
+        public static void Register(HttpConfiguration config)
+        {
+            var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
+            jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        }
+    }
+}

@@ -10,9 +10,6 @@ namespace TodoList.Api
         public static void Register(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes();
-
-            var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
-            jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }
