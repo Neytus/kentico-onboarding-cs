@@ -22,12 +22,12 @@ namespace TodoList.Api.Tests.Controllers
         private const string FourthGuid = "b61670fd-33ce-400e-a351-f960230e3aae";
         private const string NotFoundGuid = "aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72";
 
-        public NodeController Controller;
+        public NodesController Controller;
 
         [SetUp]
         public void SetUp()
         {
-            Controller = new NodeController();
+            Controller = new NodesController();
             SetupControllerForTests(Controller);
         }
 

@@ -6,11 +6,11 @@ using TodoList.Api.Models;
 
 namespace TodoList.Api.Controllers
 {
-    public class NodeController : ApiController
+    public class NodesController : ApiController
     {
         public NodeModel[] Nodes { get; set; }
 
-        public NodeController()
+        public NodesController()
         {
             Nodes = InitializeData();
         }
