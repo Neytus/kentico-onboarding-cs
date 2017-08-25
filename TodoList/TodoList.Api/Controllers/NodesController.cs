@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using TodoList.Api.Models;
@@ -27,11 +28,15 @@ namespace TodoList.Api.Controllers
 
         [Route("api/v1/nodes/{text}")]
         public async Task<IHttpActionResult> PostAsync(string text)
-            => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Created, Nodes[1]));
+        {
+            var response = await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Created, Nodes[1]));
+            response.ExecuteAsync(CancellationToken.None).Result.Headers.Location = Request.RequestUri;
+            return response;
+        }
 
         [Route("api/v1/nodes/{id}/{text}")]
-        public async Task<IHttpActionResult> PutAsync(string id, string text)
-            => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Accepted, Nodes[2]));
+        public async Task<IHttpActionResult> PutAsync(string id, string text) => 
+            await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Accepted, Nodes[2]));
 
         [Route("api/v1/nodes/{id}")]
         public async Task<IHttpActionResult> DeleteAsync(string id) => await Task.FromResult<IHttpActionResult>(Ok());

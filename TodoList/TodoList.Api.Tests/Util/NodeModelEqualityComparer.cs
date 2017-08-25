@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 using TodoList.Api.Models;
 
 namespace TodoList.Api.Tests.Util
 {
     internal static class NodeModelEqualityComparerWrapper
     {
-        private static readonly Lazy<NodeModelEqualityComparer> Lazy = new Lazy<NodeModelEqualityComparer>();
+        private static Lazy<NodeModelEqualityComparer> Lazy => new Lazy<NodeModelEqualityComparer>();
 
-        internal static NodeModelEqualityComparer Comparer => Lazy.Value;
+        private static NodeModelEqualityComparer Comparer => Lazy.Value;
 
-        internal sealed class NodeModelEqualityComparer : IEqualityComparer<NodeModel>
+        private sealed class NodeModelEqualityComparer : IEqualityComparer<NodeModel>
         {
             public bool Equals(NodeModel x, NodeModel y)
             {
@@ -22,9 +23,8 @@ namespace TodoList.Api.Tests.Util
             public int GetHashCode(NodeModel obj) => obj.GetHashCode();
         }
 
-        internal static bool NodeModelEquals(this NodeModel x, NodeModel y)
-        {
-            return Comparer.Equals(x, y);
-        }
+        internal static bool NodeModelEquals(this NodeModel x, NodeModel y) => Comparer.Equals(x, y);
+
+        public static EqualConstraint UsingNodeModelEqualityComparer(this EqualConstraint constraint) => constraint.Using(Comparer);
     }
 }

@@ -62,7 +62,7 @@ namespace TodoList.Api.Tests.Controllers
             responseMessage.TryGetContentValue(out NodeModel[] actualResult);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparerWrapper.Comparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).AsCollection.UsingNodeModelEqualityComparer());
         }
 
         [Test]
