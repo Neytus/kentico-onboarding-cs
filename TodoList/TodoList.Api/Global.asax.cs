@@ -7,7 +7,8 @@ namespace TodoList.Api
         protected void Application_Start()
         {
             UnityConfig.RegisterComponents();
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+            GlobalConfiguration.Configure(RoutesConfig.Register);
+            GlobalConfiguration.Configure(FormatConfig.Register);
         }
     }
 }

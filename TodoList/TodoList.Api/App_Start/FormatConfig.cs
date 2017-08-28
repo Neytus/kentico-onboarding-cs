@@ -5,12 +5,10 @@ using Newtonsoft.Json.Serialization;
 
 namespace TodoList.Api
 {
-    public static class WebApiConfig
+    public static class FormatConfig
     {
         public static void Register(HttpConfiguration config)
         {
-            config.MapHttpAttributeRoutes();
-
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }

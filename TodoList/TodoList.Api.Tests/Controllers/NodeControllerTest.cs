@@ -18,13 +18,13 @@ namespace TodoList.Api.Tests.Controllers
     [TestFixture]
     internal class NodeControllerTest
     {
-        private const string FirstGuid = "d237bdda-e6d4-4e46-92db-1a7a0aeb9a72";
-        private const string SecondGuid = "b84bbcc7-d516-4805-b2e3-20a2df3758a2";
-        private const string ThirdGuid = "6171ec89-e3b5-458e-ae43-bc0e8ec061e2";
-        private const string FourthGuid = "b61670fd-33ce-400e-a351-f960230e3aae";
-        private const string NotFoundGuid = "aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72";
+        private static readonly Guid FirstId = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72");
+        private static readonly Guid SecondId = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2");
+        private static readonly Guid ThirdId = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2");
+        private static readonly Guid FourthId = new Guid("b61670fd-33ce-400e-a351-f960230e3aae");
+        private static readonly string NotFoundStringId = "aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72";
 
-        public NodeController Controller;
+        public NodesController Controller;
 
         private INodeRepository MockRepository()
         {
@@ -32,15 +32,15 @@ namespace TodoList.Api.Tests.Controllers
 
             repository.GetAllAsync().Returns(new[]
             {
-                new NodeDto {Id = new Guid(FirstGuid), Text = "poopy"},
-                new NodeDto {Id = new Guid(SecondGuid), Text = "GEARS"},
-                new NodeDto {Id = new Guid(ThirdGuid), Text = "Planet Music"},
-                new NodeDto {Id = new Guid(FourthGuid), Text = "Time to get shwifty"}
+                new NodeDto {Id = FirstId, Text = "poopy"},
+                new NodeDto {Id = SecondId, Text = "GEARS"},
+                new NodeDto {Id = ThirdId, Text = "Planet Music"},
+                new NodeDto {Id = FourthId, Text = "Time to get shwifty"}
             });
 
             repository.AddAsync("random text").Returns(Task.FromResult(new NodeDto
             {
-                Id = new Guid(SecondGuid),
+                Id = SecondId,
                 Text = "GEARS"
             }));
 
@@ -51,7 +51,7 @@ namespace TodoList.Api.Tests.Controllers
         public void SetUp()
         {
             // TODO Mock a repository into this controller
-            Controller = new NodeController(MockRepository());
+            Controller = new NodesController();
             SetupControllerForTests(Controller);
         }
 
@@ -75,10 +75,10 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new[]
             {
-                new NodeModel {Id = new Guid(FirstGuid), Text = "poopy"},
-                new NodeModel {Id = new Guid(SecondGuid), Text = "GEARS"},
-                new NodeModel {Id = new Guid(ThirdGuid), Text = "Planet Music"},
-                new NodeModel {Id = new Guid(FourthGuid), Text = "Time to get shwifty"}
+                new NodeModel {Id = FirstId, Text = "poopy"},
+                new NodeModel {Id = SecondId, Text = "GEARS"},
+                new NodeModel {Id = ThirdId, Text = "Planet Music"},
+                new NodeModel {Id = FourthId, Text = "Time to get shwifty"}
             };
 
             var createdResponse = await Controller.GetAsync();
@@ -86,15 +86,15 @@ namespace TodoList.Api.Tests.Controllers
             responseMessage.TryGetContentValue(out NodeModel[] actualResult);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(expectedResult, Is.EqualTo(actualResult).Using(NodeModelEqualityComparerWrapper.Comparer));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).AsCollection.UsingNodeModelEqualityComparer());
         }
 
         [Test]
         public async Task GetWithId_ReturnsCorrectNode()
         {
-            var expectedResult = new NodeModel {Id = new Guid(FirstGuid), Text = "poopy"};
+            var expectedResult = new NodeModel {Id = FirstId, Text = "poopy"};
 
-            var createdResponse = await Controller.GetAsync(FirstGuid);
+            var createdResponse = await Controller.GetAsync("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72");
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -105,9 +105,9 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task GetWithId_ReturnsDefaultNode()
         {
-            var expectedResult = new NodeModel {Id = new Guid(FirstGuid), Text = "poopy"};
+            var expectedResult = new NodeModel {Id = FirstId, Text = "poopy"};
 
-            var createdResponse = await Controller.GetAsync(NotFoundGuid);
+            var createdResponse = await Controller.GetAsync(NotFoundStringId);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -118,7 +118,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Post_InsertsNewNodeCorrectly()
         {
-            var expectedResult = new NodeModel {Id = new Guid(SecondGuid), Text = "GEARS"};
+            var expectedResult = new NodeModel {Id = SecondId, Text = "GEARS"};
 
             var createdResponse = await Controller.PostAsync("TEST TEXT");
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
@@ -131,9 +131,9 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Put_UpdatesACorrectNode()
         {
-            var expectedResult = new NodeModel {Id = new Guid(ThirdGuid), Text = "Planet Music"};
+            var expectedResult = new NodeModel {Id = ThirdId, Text = "Planet Music"};
 
-            var createdResponse = await Controller.PutAsync(ThirdGuid, "Planet Music");
+            var createdResponse = await Controller.PutAsync("6171ec89-e3b5-458e-ae43-bc0e8ec061e2", "Planet Music");
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -144,9 +144,9 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Put_ActsLikeItUpdatedSomeNode()
         {
-            var expectedResult = new NodeModel {Id = new Guid(ThirdGuid), Text = "Planet Music"};
+            var expectedResult = new NodeModel {Id = ThirdId, Text = "Planet Music"};
 
-            var createdResponse = await Controller.PutAsync(NotFoundGuid, "Planet Music");
+            var createdResponse = await Controller.PutAsync(NotFoundStringId, "Planet Music");
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -157,7 +157,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Delete_DeletesCorrectNode()
         {
-            var actualResponse = await Controller.DeleteAsync(FourthGuid).Result
+            var actualResponse = await Controller.DeleteAsync("b61670fd-33ce-400e-a351-f960230e3aae").Result
                 .ExecuteAsync(CancellationToken.None);
 
             Assert.IsNull(actualResponse.Content);
@@ -167,7 +167,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Delete_ActsLikeItDeletedSomeNode()
         {
-            var actualResponse = await Controller.DeleteAsync(NotFoundGuid).Result
+            var actualResponse = await Controller.DeleteAsync(NotFoundStringId).Result
                 .ExecuteAsync(CancellationToken.None);
 
             Assert.IsNull(actualResponse.Content);

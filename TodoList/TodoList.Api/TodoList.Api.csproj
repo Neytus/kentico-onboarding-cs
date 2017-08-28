@@ -101,8 +101,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\UnityConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\NodeController.cs" />
+    <Compile Include="App_Start\FormatConfig.cs" />
+    <Compile Include="App_Start\RoutesConfig.cs" />
+    <Compile Include="Controllers\NodesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
