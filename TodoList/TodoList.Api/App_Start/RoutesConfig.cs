@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Net.Http.Formatting;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
+﻿using System.Web.Http;
 
 namespace TodoList.Api
 {
@@ -10,6 +7,11 @@ namespace TodoList.Api
         public static void Register(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes();
+
+            config.Routes.MapHttpRoute(
+                "DefaultPostRoute",
+                "api/v1/nodes/{text}"
+            );
         }
     }
 }
