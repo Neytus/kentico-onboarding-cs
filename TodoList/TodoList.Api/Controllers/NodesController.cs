@@ -26,10 +26,8 @@ namespace TodoList.Api.Controllers
             => await Task.FromResult<IHttpActionResult>(Ok(Nodes[0]));
 
         [Route("api/v1/nodes/{text}")]
-        public async Task<IHttpActionResult> PostAsync(string text)
-        {
-            return await Task.FromResult<IHttpActionResult>(CreatedAtRoute("DefaultPostRoute", text, Nodes[1]));
-        }
+        public async Task<IHttpActionResult> PostAsync(string text) => await Task.FromResult<IHttpActionResult>(
+            CreatedAtRoute("DefaultPostRoute", text, Nodes[1]));
 
         [Route("api/v1/nodes/{id}/{text}")]
         public async Task<IHttpActionResult> PutAsync(string id, string text) =>
