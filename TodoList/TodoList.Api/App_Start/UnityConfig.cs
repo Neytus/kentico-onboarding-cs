@@ -16,7 +16,7 @@ namespace TodoList.Api
             // it is NOT necessary to register your controllers
             
             // e.g. container.RegisterType<ITestService, TestService>();        
-            container.RegisterType<INodeRepository, NodeRepository>(new ContainerControlledLifetimeManager());
+            container.RegisterType<INodesRepository, NodesRepository>(new ContainerControlledLifetimeManager());
             
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }

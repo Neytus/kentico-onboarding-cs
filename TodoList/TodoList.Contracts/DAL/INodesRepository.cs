@@ -3,7 +3,7 @@ using TodoList.Contracts.Api;
 
 namespace TodoList.Contracts.DAL
 {
-    public interface INodeRepository
+    public interface INodesRepository
     {
         Task<NodeModel[]> GetAllAsync();
 

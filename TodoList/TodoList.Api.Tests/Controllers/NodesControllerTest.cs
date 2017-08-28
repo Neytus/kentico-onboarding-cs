@@ -16,7 +16,7 @@ using TodoList.Contracts.DAL;
 namespace TodoList.Api.Tests.Controllers
 {
     [TestFixture]
-    internal class NodeControllerTest
+    internal class NodesControllerTest
     {
         private static readonly Guid FirstId = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72");
         private static readonly Guid SecondId = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2");
@@ -26,9 +26,9 @@ namespace TodoList.Api.Tests.Controllers
 
         public NodesController Controller;
 
-        private INodeRepository MockRepository()
+        private INodesRepository MockRepository()
         {
-            var repository = Substitute.For<INodeRepository>();
+            var repository = Substitute.For<INodesRepository>();
 
             repository.GetAllAsync().Returns(new[]
             {

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using TodoList.Contracts.DAL;
@@ -8,9 +7,9 @@ namespace TodoList.Api.Controllers
 {
     public class NodesController : ApiController
     {
-        private readonly INodeRepository _repository;
+        private readonly INodesRepository _repository;
 
-        public NodesController(INodeRepository repository)
+        public NodesController(INodesRepository repository)
         {
             _repository = repository;
         }

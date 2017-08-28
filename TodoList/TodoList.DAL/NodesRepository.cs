@@ -5,7 +5,7 @@ using TodoList.Contracts.DAL;
 
 namespace TodoList.DAL
 {
-    public class NodeRepository : INodeRepository
+    public class NodesRepository : INodesRepository
     {
         private static readonly Guid FirstId = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72");
         private static readonly Guid SecondId = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2");
