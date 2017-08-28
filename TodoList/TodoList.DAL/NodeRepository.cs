@@ -1,39 +1,40 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TodoList.BL;
+using TodoList.Contracts.Api;
+using TodoList.Contracts.DAL;
 
 namespace TodoList.DAL
 {
     public class NodeRepository : INodeRepository
     {
-        private const string FirstGuid = "d237bdda-e6d4-4e46-92db-1a7a0aeb9a72";
-        private const string SecondGuid = "b84bbcc7-d516-4805-b2e3-20a2df3758a2";
-        private const string ThirdGuid = "6171ec89-e3b5-458e-ae43-bc0e8ec061e2";
-        private const string FourthGuid = "b61670fd-33ce-400e-a351-f960230e3aae";
+        private static readonly Guid FirstId = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72");
+        private static readonly Guid SecondId = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2");
+        private static readonly Guid ThirdId = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2");
+        private static readonly Guid FourthId = new Guid("b61670fd-33ce-400e-a351-f960230e3aae");
 
-        public async Task<NodeDto[]> GetAllAsync() => await Task.FromResult(new[]
+        public async Task<NodeModel[]> GetAllAsync() => await Task.FromResult(new[]
         {
-            new NodeDto {Id = new Guid(FirstGuid), Text = "poopy"},
-            new NodeDto {Id = new Guid(SecondGuid), Text = "GEARS"},
-            new NodeDto {Id = new Guid(ThirdGuid), Text = "Planet Music"},
-            new NodeDto {Id = new Guid(FourthGuid), Text = "Time to get shwifty"}
+            new NodeModel {Id = FirstId, Text = "poopy"},
+            new NodeModel {Id = SecondId, Text = "GEARS"},
+            new NodeModel {Id = ThirdId, Text = "Planet Music"},
+            new NodeModel {Id = FourthId, Text = "Time to get shwifty"}
         });
 
-        public async Task<NodeDto> GetByIdAsync(string id) => await Task.FromResult(new NodeDto
+        public async Task<NodeModel> GetByIdAsync(string id) => await Task.FromResult(new NodeModel
         {
-            Id = new Guid(FirstGuid),
+            Id = FirstId,
             Text = "poopy"
         });
 
-        public async Task<NodeDto> AddAsync(string text) => await Task.FromResult(new NodeDto
+        public async Task<NodeModel> AddAsync(string text) => await Task.FromResult(new NodeModel
         {
-            Id = new Guid(SecondGuid),
+            Id = SecondId,
             Text = "GEARS"
         });
 
-        public async Task<NodeDto> UpdateAsync(string id, string text) => await Task.FromResult(new NodeDto
+        public async Task<NodeModel> UpdateAsync(string id, string text) => await Task.FromResult(new NodeModel
         {
-            Id = new Guid(ThirdGuid),
+            Id = ThirdId,
             Text = "Planet Music"
         });
 

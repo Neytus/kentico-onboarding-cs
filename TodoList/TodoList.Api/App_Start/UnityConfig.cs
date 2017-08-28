@@ -1,9 +1,8 @@
 using Microsoft.Practices.Unity;
 using System.Web.Http;
-using TodoList.Api.Models;
-using TodoList.BL;
-using TodoList.DAL;
 using Unity.WebApi;
+using TodoList.Contracts.DAL;
+using TodoList.DAL;
 
 namespace TodoList.Api
 {

@@ -69,9 +69,9 @@
       <Project>{C014A56F-0C39-4748-AC71-8829912E6218}</Project>
       <Name>TodoList.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TodoList.BL\TodoList.BL.csproj">
-      <Project>{BF2EC6A5-5CE1-44A0-885C-78CAF103E032}</Project>
-      <Name>TodoList.BL</Name>
+    <ProjectReference Include="..\TodoList.Contracts\TodoList.Contracts.csproj">
+      <Project>{78917F5D-B824-4F57-BE8B-33B32677E389}</Project>
+      <Name>TodoList.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

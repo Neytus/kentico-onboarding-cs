@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework.Constraints;
-using TodoList.Api.Models;
+using TodoList.Contracts.Api;
 
 namespace TodoList.Api.Tests.Util
 {

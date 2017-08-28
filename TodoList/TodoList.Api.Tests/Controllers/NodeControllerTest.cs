@@ -9,9 +9,9 @@ using System.Web.Http.Routing;
 using NSubstitute;
 using NUnit.Framework;
 using TodoList.Api.Controllers;
-using TodoList.Api.Models;
 using TodoList.Api.Tests.Util;
-using TodoList.BL;
+using TodoList.Contracts.Api;
+using TodoList.Contracts.DAL;
 
 namespace TodoList.Api.Tests.Controllers
 {
@@ -32,17 +32,26 @@ namespace TodoList.Api.Tests.Controllers
 
             repository.GetAllAsync().Returns(new[]
             {
-                new NodeDto {Id = FirstId, Text = "poopy"},
-                new NodeDto {Id = SecondId, Text = "GEARS"},
-                new NodeDto {Id = ThirdId, Text = "Planet Music"},
-                new NodeDto {Id = FourthId, Text = "Time to get shwifty"}
+                new NodeModel {Id = FirstId, Text = "poopy"},
+                new NodeModel {Id = SecondId, Text = "GEARS"},
+                new NodeModel {Id = ThirdId, Text = "Planet Music"},
+                new NodeModel {Id = FourthId, Text = "Time to get shwifty"}
             });
 
-            repository.AddAsync("random text").Returns(Task.FromResult(new NodeDto
+            repository.GetByIdAsync("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72")
+                .Returns(new NodeModel {Id = FirstId, Text = "poopy"});
+
+            repository.AddAsync("text").Returns(new NodeModel
             {
                 Id = SecondId,
                 Text = "GEARS"
-            }));
+            });
+
+            repository.UpdateAsync("6171ec89-e3b5-458e-ae43-bc0e8ec061e2", "text").Returns(new NodeModel
+            {
+                Id = ThirdId,
+                Text = "Planet Music"
+            });
 
             return repository;
         }
@@ -50,8 +59,7 @@ namespace TodoList.Api.Tests.Controllers
         [SetUp]
         public void SetUp()
         {
-            // TODO Mock a repository into this controller
-            Controller = new NodesController();
+            Controller = new NodesController(MockRepository());
             SetupControllerForTests(Controller);
         }
 
@@ -124,6 +132,9 @@ namespace TodoList.Api.Tests.Controllers
             var createdResponse = await Controller.PostAsync("123");
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
+
+            Console.WriteLine(expectedResult);
+            Console.WriteLine(actualResult.Text);
 
             Assert.That(responseMessage.Headers.Location, Is.EqualTo(expectedLocation));
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.Created));

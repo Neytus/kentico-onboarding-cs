@@ -44,9 +44,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TodoList.BL\TodoList.BL.csproj">
-      <Project>{bf2ec6a5-5ce1-44a0-885c-78caf103e032}</Project>
-      <Name>TodoList.BL</Name>
+    <ProjectReference Include="..\TodoList.Contracts\TodoList.Contracts.csproj">
+      <Project>{78917F5D-B824-4F57-BE8B-33B32677E389}</Project>
+      <Name>TodoList.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

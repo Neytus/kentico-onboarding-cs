@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TodoList.BL")]
+[assembly: AssemblyTitle("TodoList.Contracts")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Kentico software")]
-[assembly: AssemblyProduct("TodoList.BL")]
+[assembly: AssemblyProduct("TodoList.Contracts")]
 [assembly: AssemblyCopyright("Copyright © Kentico software 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("bf2ec6a5-5ce1-44a0-885c-78caf103e032")]
+[assembly: Guid("78917f5d-b824-4f57-be8b-33b32677e389")]
 
 // Version information for an assembly consists of the following four values:
 //

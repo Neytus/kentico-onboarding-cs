@@ -1,51 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
-using TodoList.Api.Models;
+using TodoList.Contracts.DAL;
 
 namespace TodoList.Api.Controllers
 {
     public class NodesController : ApiController
     {
-        private NodeModel[] Nodes { get; }
+        private readonly INodeRepository _repository;
 
-        public NodesController()
+        public NodesController(INodeRepository repository)
         {
-            Nodes = InitializeData().ToArray();
+            _repository = repository;
         }
 
         [Route("api/v1/nodes")]
         public async Task<IHttpActionResult> GetAsync()
-            => await Task.FromResult<IHttpActionResult>(Ok(Nodes));
+            => await Task.FromResult<IHttpActionResult>(Ok(_repository.GetAllAsync().Result));
 
         [Route("api/v1/nodes/{id}")]
         public async Task<IHttpActionResult> GetAsync(string id)
-            => await Task.FromResult<IHttpActionResult>(Ok(Nodes[0]));
+            => await Task.FromResult<IHttpActionResult>(Ok(_repository.GetByIdAsync("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72").Result));
 
         [Route("api/v1/nodes/{text}")]
         public async Task<IHttpActionResult> PostAsync(string text) => await Task.FromResult<IHttpActionResult>(
-            Created("http://localhost:52713/api/v1/nodes/123", Nodes[1]));
+            Created("http://localhost:52713/api/v1/nodes/123", _repository.AddAsync("text").Result));
 
         [Route("api/v1/nodes/{id}/{text}")]
         public async Task<IHttpActionResult> PutAsync(string id, string text) =>
-            await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Accepted, Nodes[2]));
+            await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Accepted, _repository.UpdateAsync("6171ec89-e3b5-458e-ae43-bc0e8ec061e2", "text").Result));
 
         [Route("api/v1/nodes/{id}")]
         public async Task<IHttpActionResult> DeleteAsync(string id) => await Task.FromResult<IHttpActionResult>(Ok());
-
-        private static IEnumerable<NodeModel> InitializeData()
-        {
-            yield return new NodeModel {Id = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72"), Text = "poopy"};
-            yield return new NodeModel {Id = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2"), Text = "GEARS"};
-            yield return new NodeModel {Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"), Text = "Planet Music"};
-            yield return new NodeModel
-            {
-                Id = new Guid("b61670fd-33ce-400e-a351-f960230e3aae"),
-                Text = "Time to get shwifty"
-            };
-        }
     }
 }
