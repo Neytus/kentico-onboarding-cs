@@ -118,12 +118,14 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Post_InsertsNewNodeCorrectly()
         {
+            var expectedLocation = new Uri("http://localhost:52713/api/v1/nodes/123");
             var expectedResult = new NodeModel {Id = SecondId, Text = "GEARS"};
 
-            var createdResponse = await Controller.PostAsync("TEST TEXT");
+            var createdResponse = await Controller.PostAsync("123");
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
+            Assert.That(responseMessage.Headers.Location, Is.EqualTo(expectedLocation));
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.Created));
             Assert.That(expectedResult.NodeModelEquals(actualResult));
         }
