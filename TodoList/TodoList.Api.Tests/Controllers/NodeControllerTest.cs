@@ -94,7 +94,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Post_InsertsNewNodeCorrectly()
         {
-            var expectedLocation = new Uri("http://localhost:52713/api/v1/nodes/123");
+            var expectedLocation = new Uri("http://localhost:52713/api/v1/nodes/?text=123");
             var expectedResult = new NodeModel {Id = SecondId, Text = "GEARS"};
 
             var createdResponse = await Controller.PostAsync("123");
