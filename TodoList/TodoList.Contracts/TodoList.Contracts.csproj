@@ -50,9 +50,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="TodoList.DAL">
-      <HintPath>..\TodoList.Api\Bin\TodoList.DAL.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\NodeModel.cs" />
@@ -62,6 +59,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TodoList.DAL\TodoList.DAL.csproj">
+      <Project>{75d45b39-c60f-44b2-b48b-4aaf5c8bcab2}</Project>
+      <Name>TodoList.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

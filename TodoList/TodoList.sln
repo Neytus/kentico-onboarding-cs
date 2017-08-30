@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Api", "TodoList.Api\TodoList.Api.csproj", "{C014A56F-0C39-4748-AC71-8829912E6218}"
-	ProjectSection(ProjectDependencies) = postProject
-		{75D45B39-C60F-44B2-B48B-4AAF5C8BCAB2} = {75D45B39-C60F-44B2-B48B-4AAF5C8BCAB2}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Api.Tests", "TodoList.Api.Tests\TodoList.Api.Tests.csproj", "{7915B4E2-27A8-47BB-947B-79D14C7EEEA7}"
 EndProject

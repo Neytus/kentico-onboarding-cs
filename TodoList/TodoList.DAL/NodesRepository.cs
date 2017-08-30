@@ -5,7 +5,7 @@ using TodoList.Contracts.DAL;
 
 namespace TodoList.DAL
 {
-    internal class NodesRepository : INodesRepository
+    public class NodesRepository : INodesRepository
     {
         private static readonly Guid FirstId = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72");
         private static readonly Guid SecondId = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2");
@@ -26,13 +26,13 @@ namespace TodoList.DAL
             Text = "poopy"
         });
 
-        public async Task<NodeModel> AddAsync(string text) => await Task.FromResult(new NodeModel
+        public async Task<NodeModel> AddAsync(NodeModel model) => await Task.FromResult(new NodeModel
         {
             Id = SecondId,
             Text = "GEARS"
         });
 
-        public async Task<NodeModel> UpdateAsync(Guid id, string text) => await Task.FromResult(new NodeModel
+        public async Task<NodeModel> UpdateAsync(NodeModel model) => await Task.FromResult(new NodeModel
         {
             Id = ThirdId,
             Text = "Planet Music"

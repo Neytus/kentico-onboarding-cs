@@ -10,9 +10,9 @@ namespace TodoList.Contracts.DAL
 
         Task<NodeModel> GetByIdAsync(Guid id);
 
-        Task<NodeModel> AddAsync(string text);
+        Task<NodeModel> AddAsync(NodeModel model);
 
-        Task<NodeModel> UpdateAsync(Guid id, string text);
+        Task<NodeModel> UpdateAsync(NodeModel model);
 
         Task DeleteAsync(Guid id);
     }
