@@ -19,7 +19,7 @@ namespace TodoList.Api.Tests.Controllers
         private static readonly Guid SecondId = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2");
         private static readonly Guid ThirdId = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2");
         private static readonly Guid FourthId = new Guid("b61670fd-33ce-400e-a351-f960230e3aae");
-        private static readonly string NotFoundStringId = "aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72";
+        private static readonly Guid NotFoundId = new Guid("aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72");
 
         public NodesController Controller;
 
@@ -67,7 +67,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel { Id = FirstId, Text = "poopy" };
 
-            var createdResponse = await Controller.GetAsync(FirstId.ToString());
+            var createdResponse = await Controller.GetAsync(FirstId);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -80,7 +80,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel { Id = FirstId, Text = "poopy" };
 
-            var createdResponse = await Controller.GetAsync(NotFoundStringId);
+            var createdResponse = await Controller.GetAsync(NotFoundId);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -108,7 +108,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel { Id = ThirdId, Text = "Planet Music" };
 
-            var createdResponse = await Controller.PutAsync(ThirdId.ToString(), "Planet Music");
+            var createdResponse = await Controller.PutAsync(ThirdId, "Planet Music");
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -121,7 +121,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel { Id = ThirdId, Text = "Planet Music" };
 
-            var createdResponse = await Controller.PutAsync(NotFoundStringId, "Planet Music");
+            var createdResponse = await Controller.PutAsync(NotFoundId, "Planet Music");
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -132,7 +132,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Delete_DeletesCorrectNode()
         {
-            var actualResponse = await Controller.DeleteAsync(FourthId.ToString()).Result
+            var actualResponse = await Controller.DeleteAsync(FourthId).Result
                 .ExecuteAsync(CancellationToken.None);
 
             Assert.IsNull(actualResponse.Content);
@@ -142,7 +142,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Delete_ActsLikeItDeletedSomeNode()
         {
-            var actualResponse = await Controller.DeleteAsync(NotFoundStringId).Result
+            var actualResponse = await Controller.DeleteAsync(NotFoundId).Result
                 .ExecuteAsync(CancellationToken.None);
 
             Assert.IsNull(actualResponse.Content);

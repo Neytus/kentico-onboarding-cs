@@ -8,7 +8,7 @@ using TodoList.Api.Models;
 
 namespace TodoList.Api.Controllers
 {
-    [Route("api/v1/Nodes/{id?}", Name = "Nodes")]
+    [Route("api/v1/Nodes/{id:guid?}", Name = "Nodes")]
     public class NodesController : ApiController
     {
         private NodeModel[] Nodes { get; }
@@ -21,16 +21,16 @@ namespace TodoList.Api.Controllers
         public async Task<IHttpActionResult> GetAsync()
             => await Task.FromResult<IHttpActionResult>(Ok(Nodes));
 
-        public async Task<IHttpActionResult> GetAsync(string id)
+        public async Task<IHttpActionResult> GetAsync(Guid id)
             => await Task.FromResult<IHttpActionResult>(Ok(Nodes[0]));
 
         public async Task<IHttpActionResult> PostAsync([FromBody] string text) 
             => await Task.FromResult<IHttpActionResult>(CreatedAtRoute("Nodes", new { id = Nodes[1].Id.ToString() }, Nodes[1]));
 
-        public async Task<IHttpActionResult> PutAsync(string id, string text)
+        public async Task<IHttpActionResult> PutAsync(Guid id, string text)
             => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Accepted, Nodes[2]));
 
-        public async Task<IHttpActionResult> DeleteAsync(string id)
+        public async Task<IHttpActionResult> DeleteAsync(Guid id)
             => await Task.FromResult<IHttpActionResult>(Ok());
 
         private static IEnumerable<NodeModel> InitializeData()
