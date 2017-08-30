@@ -20,6 +20,7 @@ namespace TodoList.Api.Tests.Controllers
         private static readonly Guid ThirdId = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2");
         private static readonly Guid FourthId = new Guid("b61670fd-33ce-400e-a351-f960230e3aae");
         private static readonly Guid NotFoundId = new Guid("aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72");
+        private static readonly Guid DefaultId = new Guid("00000000-0000-0000-0000-000000000000");
 
         public NodesController Controller;
 
@@ -92,7 +93,7 @@ namespace TodoList.Api.Tests.Controllers
                 Configuration = new HttpConfiguration()
             };
 
-            var createdResponse = await controller.PostAsync(new NodeModel { Id = FirstId, Text = "poopy" });
+            var createdResponse = await controller.PostAsync(new NodeModel { Id = DefaultId, Text = "poopy" });
 
             Assert.That(createdResponse, Is.InstanceOf<CreatedAtRouteNegotiatedContentResult<NodeModel>>());
             Assert.That(((CreatedAtRouteNegotiatedContentResult<NodeModel>) createdResponse).RouteValues["Id"], Is.EqualTo(SecondId.ToString()));
