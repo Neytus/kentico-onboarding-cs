@@ -37,7 +37,7 @@ namespace TodoList.Api.Tests.Controllers
                 new NodeModel {Id = FourthId, Text = "Time to get shwifty"}
             });
 
-            repository.GetByIdAsync("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72")
+            repository.GetByIdAsync(FirstId)
                 .Returns(new NodeModel {Id = FirstId, Text = "poopy"});
 
             repository.AddAsync("text").Returns(new NodeModel
@@ -46,7 +46,7 @@ namespace TodoList.Api.Tests.Controllers
                 Text = "GEARS"
             });
 
-            repository.UpdateAsync("6171ec89-e3b5-458e-ae43-bc0e8ec061e2", "text").Returns(new NodeModel
+            repository.UpdateAsync(ThirdId, "text").Returns(new NodeModel
             {
                 Id = ThirdId,
                 Text = "Planet Music"

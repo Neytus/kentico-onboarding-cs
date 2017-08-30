@@ -20,7 +20,7 @@ namespace TodoList.DAL
             new NodeModel {Id = FourthId, Text = "Time to get shwifty"}
         });
 
-        public async Task<NodeModel> GetByIdAsync(string id) => await Task.FromResult(new NodeModel
+        public async Task<NodeModel> GetByIdAsync(Guid id) => await Task.FromResult(new NodeModel
         {
             Id = FirstId,
             Text = "poopy"
@@ -32,12 +32,12 @@ namespace TodoList.DAL
             Text = "GEARS"
         });
 
-        public async Task<NodeModel> UpdateAsync(string id, string text) => await Task.FromResult(new NodeModel
+        public async Task<NodeModel> UpdateAsync(Guid id, string text) => await Task.FromResult(new NodeModel
         {
             Id = ThirdId,
             Text = "Planet Music"
         });
 
-        public async Task DeleteAsync(string id) => await Task.CompletedTask;
+        public async Task DeleteAsync(Guid id) => await Task.CompletedTask;
     }
 }
