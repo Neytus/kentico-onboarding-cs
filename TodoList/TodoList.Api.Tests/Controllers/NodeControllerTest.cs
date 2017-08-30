@@ -38,11 +38,6 @@ namespace TodoList.Api.Tests.Controllers
             };
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-        }
-
         [Test]
         public async Task Get_ReturnsAllNodes()
         {
@@ -97,7 +92,7 @@ namespace TodoList.Api.Tests.Controllers
                 Configuration = new HttpConfiguration()
             };
 
-            var createdResponse = await controller.PostAsync("GEARS");
+            var createdResponse = await controller.PostAsync(new NodeModel { Id = FirstId, Text = "poopy" });
 
             Assert.That(createdResponse, Is.InstanceOf<CreatedAtRouteNegotiatedContentResult<NodeModel>>());
             Assert.That(((CreatedAtRouteNegotiatedContentResult<NodeModel>) createdResponse).RouteValues["Id"], Is.EqualTo(SecondId.ToString()));
@@ -108,7 +103,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel { Id = ThirdId, Text = "Planet Music" };
 
-            var createdResponse = await Controller.PutAsync(ThirdId, "Planet Music");
+            var createdResponse = await Controller.PutAsync(expectedResult);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -121,7 +116,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel { Id = ThirdId, Text = "Planet Music" };
 
-            var createdResponse = await Controller.PutAsync(NotFoundId, "Planet Music");
+            var createdResponse = await Controller.PutAsync(expectedResult);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
