@@ -24,7 +24,7 @@ namespace TodoList.Api.Controllers
         public async Task<IHttpActionResult> GetAsync(Guid id)
             => await Task.FromResult<IHttpActionResult>(Ok(Nodes[0]));
 
-        public async Task<IHttpActionResult> PostAsync([FromBody] NodeModel text) 
+        public async Task<IHttpActionResult> PostAsync([FromBody] NodeModel model) 
             => await Task.FromResult<IHttpActionResult>(CreatedAtRoute("Nodes", new { id = Nodes[1].Id.ToString() }, Nodes[1]));
 
         public async Task<IHttpActionResult> PutAsync([FromBody] NodeModel model)
