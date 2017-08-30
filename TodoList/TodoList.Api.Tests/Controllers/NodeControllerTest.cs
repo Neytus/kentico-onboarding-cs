@@ -31,10 +31,10 @@ namespace TodoList.Api.Tests.Controllers
 
         private static NodesController GetControllerForTests()
         {
-            return new NodesController()
+            return new NodesController
             {
-                ControllerContext = { Configuration = new HttpConfiguration(new HttpRouteCollection() {}) },
-                Request = new HttpRequestMessage() { RequestUri = new Uri("api/v1/nodes/", UriKind.Relative) }
+                ControllerContext = { Configuration = new HttpConfiguration(new HttpRouteCollection()) },
+                Request = new HttpRequestMessage { RequestUri = new Uri("api/v1/nodes/", UriKind.Relative) }
             };
         }
 
@@ -97,10 +97,10 @@ namespace TodoList.Api.Tests.Controllers
                 Configuration = new HttpConfiguration()
             };
 
-            var response = await controller.PostAsync("Go home");
+            var createdResponse = await controller.PostAsync("GEARS");
 
-            Assert.That(response, Is.InstanceOf<CreatedAtRouteNegotiatedContentResult<NodeModel>>());
-            Assert.That(((CreatedAtRouteNegotiatedContentResult<NodeModel>) response).RouteValues["Id"], Is.EqualTo(SecondId.ToString()));
+            Assert.That(createdResponse, Is.InstanceOf<CreatedAtRouteNegotiatedContentResult<NodeModel>>());
+            Assert.That(((CreatedAtRouteNegotiatedContentResult<NodeModel>) createdResponse).RouteValues["Id"], Is.EqualTo(SecondId.ToString()));
         }
 
         [Test]
