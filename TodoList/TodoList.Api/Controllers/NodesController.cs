@@ -33,7 +33,7 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> PutAsync(NodeModel model)
             => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Accepted,
-                _repository.UpdateAsync(new NodeModel{ Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"), Text = "text" })));
+                _repository.UpdateAsync(new NodeModel { Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"), Text = "Planet Music" }).Result));
 
         public async Task<IHttpActionResult> DeleteAsync(Guid id)
             => await Task.FromResult<IHttpActionResult>(Ok());

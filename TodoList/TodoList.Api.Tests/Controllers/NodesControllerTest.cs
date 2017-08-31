@@ -41,13 +41,13 @@ namespace TodoList.Api.Tests.Controllers
             repository.GetByIdAsync(FirstId)
                 .Returns(new NodeModel {Id = FirstId, Text = "poopy"});
 
-            repository.AddAsync(new NodeModel{ Text = "text" }).Returns(new NodeModel
+            repository.AddAsync(new NodeModel()).ReturnsForAnyArgs(new NodeModel
             {
                 Id = SecondId,
                 Text = "GEARS"
             });
 
-            repository.UpdateAsync(new NodeModel { Id = ThirdId, Text = "text" }).Returns(new NodeModel
+            repository.UpdateAsync(new NodeModel()).ReturnsForAnyArgs(new NodeModel
             {
                 Id = ThirdId,
                 Text = "Planet Music"

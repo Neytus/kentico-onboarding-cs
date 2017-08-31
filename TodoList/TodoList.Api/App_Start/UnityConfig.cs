@@ -5,7 +5,7 @@ using TodoList.DAL.Dependency;
 
 namespace TodoList.Api
 {
-    public static class UnityConfig
+    internal static class UnityConfig
     {
         internal static void RegisterComponents()
         {
