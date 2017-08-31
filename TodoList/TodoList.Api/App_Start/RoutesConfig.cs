@@ -4,7 +4,7 @@ namespace TodoList.Api
 {
     public static class RoutesConfig
     {
-        public static void Register(HttpConfiguration config)
+        internal static void Register(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes();
         }

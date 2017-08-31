@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Api\NodeModel.cs" />
     <Compile Include="DAL\INodesRepository.cs" />
+    <Compile Include="Dependency\IRegisterTypes.cs" />
     <Compile Include="Dependency\RegisterTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

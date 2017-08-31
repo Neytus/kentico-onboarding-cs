@@ -5,7 +5,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace TodoList.Api
 {
-    public static class FormatConfig
+    internal static class FormatConfig
     {
         public static void Register(HttpConfiguration config)
         {

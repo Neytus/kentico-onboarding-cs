@@ -1,4 +1,5 @@
 using System.Web.Http;
+using Microsoft.Practices.Unity;
 using Unity.WebApi;
 using TodoList.Contracts.Dependency;
 
@@ -6,9 +7,11 @@ namespace TodoList.Api
 {
     public static class UnityConfig
     {
-        public static void RegisterComponents()
+        internal static void RegisterComponents()
         {
-            var container = RegisterTypes.Register();
+            var container = new UnityContainer();
+
+            new RegisterTypes().RegisterType(container);
             
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }

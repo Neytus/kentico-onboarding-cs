@@ -4,15 +4,11 @@ using TodoList.DAL;
 
 namespace TodoList.Contracts.Dependency
 {
-    public static class RegisterTypes
+    public class RegisterTypes : IRegisterTypes
     {
-        public static UnityContainer Register()
+        public void RegisterType(IUnityContainer container)
         {
-            var container = new UnityContainer();
-      
             container.RegisterType<INodesRepository, NodesRepository>(new ContainerControlledLifetimeManager());
-
-            return container;
         }
     }
 }
