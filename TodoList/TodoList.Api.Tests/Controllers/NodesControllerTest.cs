@@ -5,9 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using NSubstitute;
-using System.Web.Http.Results;
 using NUnit.Framework;
 using TodoList.Api.Controllers;
+using TodoList.Api.Helpers;
 using TodoList.Api.Tests.Util;
 using TodoList.Contracts.Api;
 using TodoList.Contracts.DAL;
@@ -64,7 +64,11 @@ namespace TodoList.Api.Tests.Controllers
 
         private static NodesController GetControllerForTests(INodesRepository repository)
         {
-            return new NodesController(repository)
+            var locationHelper = Substitute.For<ILocationHelper>();
+
+            locationHelper.GetLocation(new Guid()).ReturnsForAnyArgs("api/v1/nodes/id");
+
+            return new NodesController(repository, locationHelper)
             {
                 ControllerContext = { Configuration = new HttpConfiguration(new HttpRouteCollection()) },
                 Request = new HttpRequestMessage { RequestUri = new Uri("api/v1/nodes/", UriKind.Relative) }
@@ -119,15 +123,15 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Post_InsertsNewNodeCorrectly()
         {
-            var controller = new NodesController(MockRepository()) { 
-                Request = new HttpRequestMessage(),
-                Configuration = new HttpConfiguration()
-            };
+            var expectedResult = new NodeModel { Id = SecondId, Text = "GEARS" };
 
-            var createdResponse = await controller.PostAsync(new NodeModel { Id = DefaultId, Text = "poopy" });
+            var createdResponse = await Controller.PostAsync(new NodeModel { Id = DefaultId, Text = "poopy" });
+            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            responseMessage.TryGetContentValue(out NodeModel actualResult);
 
-            Assert.That(createdResponse, Is.InstanceOf<CreatedAtRouteNegotiatedContentResult<NodeModel>>());
-            Assert.That(((CreatedAtRouteNegotiatedContentResult<NodeModel>) createdResponse).RouteValues["Id"], Is.EqualTo(SecondId.ToString()));
+            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+            Assert.That(responseMessage.Headers.Location.ToString(), Is.EqualTo("api/v1/nodes/id"));
+            Assert.That(expectedResult.NodeModelEquals(actualResult));
         }
 
         [Test]
@@ -175,5 +179,6 @@ namespace TodoList.Api.Tests.Controllers
             Assert.IsNull(actualResponse.Content);
             Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
+        
     }
 }

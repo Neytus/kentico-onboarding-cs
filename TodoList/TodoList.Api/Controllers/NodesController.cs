@@ -2,19 +2,24 @@
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using TodoList.Api.Helpers;
 using TodoList.Contracts.Api;
 using TodoList.Contracts.DAL;
 
 namespace TodoList.Api.Controllers
 {
-    [Route("api/v1/Nodes/{id:guid?}", Name = "Nodes")]
+    [Route("api/v1/nodes/{id:guid?}", Name = "nodes")]
     public class NodesController : ApiController
     {
         private readonly INodesRepository _repository;
+        private readonly ILocationHelper _locationHelper;
 
-        public NodesController(INodesRepository repository)
+        public NodesController() { }
+
+        public NodesController(INodesRepository repository, ILocationHelper locationHelper)
         {
             _repository = repository;
+            _locationHelper = locationHelper;
         }
 
         public async Task<IHttpActionResult> GetAsync()
@@ -26,17 +31,20 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> PostAsync(NodeModel model)
         {
-            var result = _repository.AddAsync(new NodeModel {Text = "text"}).Result;
+            var returnedModel = _repository.AddAsync(new NodeModel {Text = "text"}).Result;
             return await Task.FromResult<IHttpActionResult>(
-                CreatedAtRoute("Nodes", new {id = result.Id.ToString()}, result));
+                Created(_locationHelper.GetLocation(returnedModel.Id), returnedModel));
         }
 
         public async Task<IHttpActionResult> PutAsync(NodeModel model)
             => await Task.FromResult<IHttpActionResult>(Content(HttpStatusCode.Accepted,
-                _repository.UpdateAsync(new NodeModel { Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"), Text = "Planet Music" }).Result));
+                _repository.UpdateAsync(new NodeModel
+                {
+                    Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"),
+                    Text = "Planet Music"
+                }).Result));
 
         public async Task<IHttpActionResult> DeleteAsync(Guid id)
             => await Task.FromResult<IHttpActionResult>(Ok());
-
     }
 }

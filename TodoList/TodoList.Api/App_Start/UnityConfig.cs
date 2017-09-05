@@ -1,7 +1,6 @@
 using System.Web.Http;
 using Microsoft.Practices.Unity;
 using Unity.WebApi;
-using TodoList.DAL.Dependency;
 
 namespace TodoList.Api
 {
@@ -10,8 +9,8 @@ namespace TodoList.Api
         internal static void RegisterComponents()
         {
             var container = new UnityContainer();
-
-            new RegisterTypes().RegisterType(container);
+            new DAL.Dependency.RegisterTypes().RegisterType(container);
+            new Dependency.RegisterTypes().RegisterType(container);
             
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
