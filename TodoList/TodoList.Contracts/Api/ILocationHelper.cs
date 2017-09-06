@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TodoList.Api.Helpers
+namespace TodoList.Contracts.Api
 {
     public interface ILocationHelper
     {

@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
-using TodoList.Api.Helpers;
 using TodoList.Contracts.Api;
 using TodoList.Contracts.DAL;
 
@@ -31,7 +30,7 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> PostAsync(NodeModel model)
         {
-            var returnedModel = _repository.AddAsync(new NodeModel {Text = "text"}).Result;
+            var returnedModel = _repository.AddAsync(new NodeModel { Text = "text" }).Result;
             return await Task.FromResult<IHttpActionResult>(
                 Created(_locationHelper.GetLocation(returnedModel.Id), returnedModel));
         }

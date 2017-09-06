@@ -103,7 +103,6 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\FormatConfig.cs" />
     <Compile Include="App_Start\RoutesConfig.cs" />
-    <Compile Include="Helpers\ILocationHelper.cs" />
     <Compile Include="Helpers\LocationHelper.cs" />
     <Compile Include="Controllers\NodesController.cs" />
     <Compile Include="Dependency\RegisterTypes.cs" />
