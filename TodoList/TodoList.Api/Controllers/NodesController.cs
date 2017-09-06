@@ -32,7 +32,7 @@ namespace TodoList.Api.Controllers
         {
             var returnedModel = _repository.AddAsync(new NodeModel { Text = "text" }).Result;
             return await Task.FromResult<IHttpActionResult>(
-                Created(_locationHelper.GetLocation(returnedModel.Id), returnedModel));
+                Created(_locationHelper.GetLocation(Request, returnedModel.Id), returnedModel));
         }
 
         public async Task<IHttpActionResult> PutAsync(NodeModel model)

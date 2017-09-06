@@ -65,7 +65,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var locationHelper = Substitute.For<ILocationHelper>();
 
-            locationHelper.GetLocation(new Guid()).ReturnsForAnyArgs("api/v1/nodes/id");
+            locationHelper.GetLocation(new HttpRequestMessage(), new Guid()).ReturnsForAnyArgs("api/v1/nodes/id");
 
             return new NodesController(repository, locationHelper)
             {
