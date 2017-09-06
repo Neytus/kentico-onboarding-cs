@@ -4,7 +4,7 @@ using Unity.WebApi;
 
 namespace TodoList.Api
 {
-    internal static class UnityConfig
+    internal static class DependencyInjectionConfig
     {
         internal static void RegisterComponents()
         {
