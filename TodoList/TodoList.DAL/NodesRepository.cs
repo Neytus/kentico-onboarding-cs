@@ -12,13 +12,14 @@ namespace TodoList.DAL
         private static readonly Guid ThirdId = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2");
         private static readonly Guid FourthId = new Guid("b61670fd-33ce-400e-a351-f960230e3aae");
 
-        public async Task<NodeModel[]> GetAllAsync() => await Task.FromResult(new[]
-        {
+        private readonly NodeModel[] _initialData = {
             new NodeModel {Id = FirstId, Text = "poopy"},
             new NodeModel {Id = SecondId, Text = "GEARS"},
             new NodeModel {Id = ThirdId, Text = "Planet Music"},
             new NodeModel {Id = FourthId, Text = "Time to get shwifty"}
-        });
+        };
+
+        public async Task<NodeModel[]> GetAllAsync() => await Task.FromResult(_initialData);
 
         public async Task<NodeModel> GetByIdAsync(Guid id) => await Task.FromResult(new NodeModel
         {
