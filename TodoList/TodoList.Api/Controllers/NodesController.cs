@@ -13,8 +13,6 @@ namespace TodoList.Api.Controllers
         private readonly INodesRepository _repository;
         private readonly ILocationHelper _locationHelper;
 
-        public NodesController() { }
-
         public NodesController(INodesRepository repository, ILocationHelper locationHelper)
         {
             _repository = repository;

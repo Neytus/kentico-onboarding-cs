@@ -23,7 +23,7 @@ namespace TodoList.Api.Tests.Controllers
         private static readonly Guid NotFoundId = new Guid("aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72");
         private static readonly Guid DefaultId = new Guid("00000000-0000-0000-0000-000000000000");
 
-        public NodesController Controller;
+        private NodesController _controller;
 
         private INodesRepository MockRepository()
         {
@@ -55,22 +55,26 @@ namespace TodoList.Api.Tests.Controllers
             return repository;
         }
 
+        private ILocationHelper MockLocationHelper()
+        {
+            var locationHelper = Substitute.For<ILocationHelper>();
+            locationHelper.GetLocation(new HttpRequestMessage(), new Guid()).ReturnsForAnyArgs("api/v1/nodes/id");
+
+            return locationHelper;
+        }
+
         [SetUp]
         public void SetUp()
         {
-            Controller = GetControllerForTests(MockRepository());
+            _controller = GetControllerForTests(MockRepository(), MockLocationHelper());
         }
 
-        private static NodesController GetControllerForTests(INodesRepository repository)
-        {
-            var locationHelper = Substitute.For<ILocationHelper>();
-
-            locationHelper.GetLocation(new HttpRequestMessage(), new Guid()).ReturnsForAnyArgs("api/v1/nodes/id");
-
+        private static NodesController GetControllerForTests(INodesRepository repository, ILocationHelper locationHelper)
+        {          
             return new NodesController(repository, locationHelper)
             {
-                ControllerContext = {Configuration = new HttpConfiguration(new HttpRouteCollection())},
-                Request = new HttpRequestMessage {RequestUri = new Uri("api/v1/nodes/", UriKind.Relative)}
+                Configuration = new HttpConfiguration(),
+                Request = new HttpRequestMessage()
             };
         }
 
@@ -85,7 +89,7 @@ namespace TodoList.Api.Tests.Controllers
                 new NodeModel {Id = FourthId, Text = "Time to get shwifty"}
             };
 
-            var createdResponse = await Controller.GetAsync();
+            var createdResponse = await _controller.GetAsync();
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel[] actualResult);
 
@@ -98,7 +102,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel {Id = FirstId, Text = "poopy"};
 
-            var createdResponse = await Controller.GetAsync(FirstId);
+            var createdResponse = await _controller.GetAsync(FirstId);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -111,7 +115,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel {Id = FirstId, Text = "poopy"};
 
-            var createdResponse = await Controller.GetAsync(NotFoundId);
+            var createdResponse = await _controller.GetAsync(NotFoundId);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -124,7 +128,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel {Id = SecondId, Text = "GEARS"};
 
-            var createdResponse = await Controller.PostAsync(new NodeModel {Id = DefaultId, Text = "poopy"});
+            var createdResponse = await _controller.PostAsync(new NodeModel {Id = DefaultId, Text = "poopy"});
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -138,20 +142,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel {Id = ThirdId, Text = "Planet Music"};
 
-            var createdResponse = await Controller.PutAsync(expectedResult);
-            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-            responseMessage.TryGetContentValue(out NodeModel actualResult);
-
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
-            Assert.That(expectedResult.NodeModelEquals(actualResult));
-        }
-
-        [Test]
-        public async Task Put_ActsLikeItUpdatedSomeNode()
-        {
-            var expectedResult = new NodeModel {Id = ThirdId, Text = "Planet Music"};
-
-            var createdResponse = await Controller.PutAsync(expectedResult);
+            var createdResponse = await _controller.PutAsync(expectedResult);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -162,7 +153,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Delete_DeletesCorrectNode()
         {
-            var actualResponse = await Controller.DeleteAsync(FourthId).Result
+            var actualResponse = await _controller.DeleteAsync(FourthId).Result
                 .ExecuteAsync(CancellationToken.None);
 
             Assert.IsNull(actualResponse.Content);
@@ -172,7 +163,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Delete_ActsLikeItDeletedSomeNode()
         {
-            var actualResponse = await Controller.DeleteAsync(NotFoundId).Result
+            var actualResponse = await _controller.DeleteAsync(NotFoundId).Result
                 .ExecuteAsync(CancellationToken.None);
 
             Assert.IsNull(actualResponse.Content);
