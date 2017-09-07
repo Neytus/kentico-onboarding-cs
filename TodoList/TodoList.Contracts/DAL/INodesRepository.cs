@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TodoList.Contracts.Api;
 
@@ -6,7 +7,7 @@ namespace TodoList.Contracts.DAL
 {
     public interface INodesRepository
     {
-        Task<NodeModel[]> GetAllAsync();
+        Task<IEnumerable<NodeModel>> GetAllAsync();
 
         Task<NodeModel> GetByIdAsync(Guid id);
 
