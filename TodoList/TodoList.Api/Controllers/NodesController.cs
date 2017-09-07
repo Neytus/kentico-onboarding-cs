@@ -25,10 +25,10 @@ namespace TodoList.Api.Controllers
         public async Task<IHttpActionResult> GetAsync(Guid id)
             => Ok(await _repository.GetByIdAsync(id));
 
-        public async Task<IHttpActionResult> PostAsync(NodeModel model)
+        public async Task<IHttpActionResult> PostAsync([FromBody] NodeModel model)
         {
-            var returnedModel = await _repository.AddAsync(new NodeModel {Text = "text"});
-            return Created(_locationHelper.GetLocation(returnedModel.Id), returnedModel);
+            await _repository.AddAsync(model);
+            return Created(_locationHelper.GetLocation(model.Id), model);
         }
 
         public async Task<IHttpActionResult> PutAsync(NodeModel model)

@@ -42,12 +42,6 @@ namespace TodoList.Api.Tests.Controllers
             repository.GetByIdAsync(NotFoundId)
                 .Returns(new NodeModel {Id = FirstId, Text = "poopy"});
 
-            repository.AddAsync(new NodeModel()).ReturnsForAnyArgs(new NodeModel
-            {
-                Id = SecondId,
-                Text = "GEARS"
-            });
-
             repository.UpdateAsync(new NodeModel()).ReturnsForAnyArgs(new NodeModel
             {
                 Id = ThirdId,
@@ -131,7 +125,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel {Id = SecondId, Text = "GEARS"};
 
-            var createdResponse = await _controller.PostAsync(new NodeModel {Id = DefaultId, Text = "poopy"});
+            var createdResponse = await _controller.PostAsync(new NodeModel { Id = SecondId, Text = "GEARS" });
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 

@@ -11,7 +11,7 @@ namespace TodoList.Contracts.DAL
 
         Task<NodeModel> GetByIdAsync(Guid id);
 
-        Task<NodeModel> AddAsync(NodeModel model);
+        Task AddAsync(NodeModel model);
 
         Task<NodeModel> UpdateAsync(NodeModel model);
 
