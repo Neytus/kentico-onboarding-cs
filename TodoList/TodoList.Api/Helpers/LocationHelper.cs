@@ -7,9 +7,16 @@ namespace TodoList.Api.Helpers
 {
     internal class LocationHelper : ILocationHelper
     {
-        public string GetLocation(HttpRequestMessage httpRequestMessage, Guid id)
+        private readonly HttpRequestMessage _requestMessage;
+
+        public LocationHelper(HttpRequestMessage requestMessage)
         {
-            return new UrlHelper(httpRequestMessage).Route("nodes", new { id });
+            _requestMessage = requestMessage;
+        }
+
+        public string GetLocation(Guid id)
+        {
+            return new UrlHelper(_requestMessage).Route("nodes", new { id });
         }
     }
 }

@@ -11,10 +11,11 @@ namespace TodoList.Api.Dependency
     {
         public void RegisterType(IUnityContainer container)
         {
-            container.RegisterType<HttpRequestMessage>(new HierarchicalLifetimeManager(), new InjectionFactory(c => RequestMessage));
+            container.RegisterType<HttpRequestMessage>(new HierarchicalLifetimeManager(), new InjectionFactory(GetRequestMessage));
             container.RegisterType<ILocationHelper, LocationHelper>(new HierarchicalLifetimeManager());
         }
 
-        private HttpRequestMessage RequestMessage { get; } = (HttpRequestMessage) HttpContext.Current.Items["MS_HttpRequestMessage"];
+        private static HttpRequestMessage GetRequestMessage(IUnityContainer container)
+            => (HttpRequestMessage) HttpContext.Current.Items["MS_HttpRequestMessage"];
     }
 }
