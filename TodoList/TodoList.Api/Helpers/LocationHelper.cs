@@ -5,7 +5,7 @@ using TodoList.Contracts.Api;
 
 namespace TodoList.Api.Helpers
 {
-    public class LocationHelper : ILocationHelper
+    internal class LocationHelper : ILocationHelper
     {
         private readonly HttpRequestMessage _requestMessage;
 
