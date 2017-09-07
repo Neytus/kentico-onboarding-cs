@@ -39,6 +39,8 @@ namespace TodoList.Api.Tests.Controllers
 
             repository.GetByIdAsync(FirstId)
                 .Returns(new NodeModel {Id = FirstId, Text = "poopy"});
+            repository.GetByIdAsync(NotFoundId)
+                .Returns(new NodeModel {Id = FirstId, Text = "poopy"});
 
             repository.AddAsync(new NodeModel()).ReturnsForAnyArgs(new NodeModel
             {
@@ -58,7 +60,7 @@ namespace TodoList.Api.Tests.Controllers
         private ILocationHelper MockLocationHelper()
         {
             var locationHelper = Substitute.For<ILocationHelper>();
-            locationHelper.GetLocation(new HttpRequestMessage(), new Guid()).ReturnsForAnyArgs("api/v1/nodes/id");
+            locationHelper.GetLocation(new Guid()).ReturnsForAnyArgs("api/v1/nodes/id");
 
             return locationHelper;
         }
@@ -69,8 +71,9 @@ namespace TodoList.Api.Tests.Controllers
             _controller = GetControllerForTests(MockRepository(), MockLocationHelper());
         }
 
-        private static NodesController GetControllerForTests(INodesRepository repository, ILocationHelper locationHelper)
-        {          
+        private static NodesController GetControllerForTests(INodesRepository repository,
+            ILocationHelper locationHelper)
+        {
             return new NodesController(repository, locationHelper)
             {
                 Configuration = new HttpConfiguration(),

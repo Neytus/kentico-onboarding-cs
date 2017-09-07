@@ -5,6 +5,6 @@ namespace TodoList.Contracts.Api
 {
     public interface ILocationHelper
     {
-        string GetLocation(HttpRequestMessage httpRequestMessage, Guid id);
+        string GetLocation(Guid id);
     }
 }
