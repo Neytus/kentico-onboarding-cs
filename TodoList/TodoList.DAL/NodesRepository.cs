@@ -20,24 +20,28 @@ namespace TodoList.DAL
             new NodeModel {Id = FourthId, Text = "Time to get shwifty"}
         });
 
-        public async Task<NodeModel> GetByIdAsync(Guid id) => await Task.FromResult(new NodeModel
-        {
-            Id = FirstId,
-            Text = "poopy"
-        });
+        public async Task<NodeModel> GetByIdAsync(Guid id)
+            => await Task.FromResult(new NodeModel
+            {
+                Id = FirstId,
+                Text = "poopy"
+            });
 
-        public async Task<NodeModel> AddAsync(NodeModel model) => await Task.FromResult(new NodeModel
-        {
-            Id = SecondId,
-            Text = "GEARS"
-        });
+        public async Task<NodeModel> AddAsync(NodeModel model)
+            => await Task.FromResult(new NodeModel
+            {
+                Id = SecondId,
+                Text = "GEARS"
+            });
 
-        public async Task<NodeModel> UpdateAsync(NodeModel model) => await Task.FromResult(new NodeModel
-        {
-            Id = ThirdId,
-            Text = "Planet Music"
-        });
+        public async Task<NodeModel> UpdateAsync(NodeModel model)
+            => await Task.FromResult(new NodeModel
+            {
+                Id = ThirdId,
+                Text = "Planet Music"
+            });
 
-        public async Task DeleteAsync(Guid id) => await Task.CompletedTask;
+        public async Task DeleteAsync(Guid id)
+            => await Task.CompletedTask;
     }
 }
