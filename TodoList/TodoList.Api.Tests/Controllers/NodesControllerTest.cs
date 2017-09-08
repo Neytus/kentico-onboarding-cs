@@ -56,6 +56,8 @@ namespace TodoList.Api.Tests.Controllers
         {
             var service = Substitute.For<ICreateNodeService>();
 
+            service.CreateNodeAsync(new NodeModel()).ReturnsForAnyArgs(new NodeModel {Id = SecondId, Text = "GEARS"});
+
             return service;
         }
 
@@ -73,7 +75,8 @@ namespace TodoList.Api.Tests.Controllers
             _controller = GetControllerForTests(MockRepository(), MockCreateNodeService(), MockLocationHelper());
         }
 
-       private static NodesController GetControllerForTests(INodesRepository repository, ICreateNodeService createNodeService,
+        private static NodesController GetControllerForTests(INodesRepository repository,
+            ICreateNodeService createNodeService,
             ILocationHelper locationHelper)
         {
             return new NodesController(repository, createNodeService, locationHelper)
@@ -133,7 +136,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel {Id = SecondId, Text = "GEARS"};
 
-            var createdResponse = await _controller.PostAsync(new NodeModel { Id = SecondId, Text = "GEARS" });
+            var createdResponse = await _controller.PostAsync(new NodeModel {Id = SecondId, Text = "GEARS"});
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
