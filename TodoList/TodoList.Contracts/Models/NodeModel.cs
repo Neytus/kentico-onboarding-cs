@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TodoList.Contracts.Api
+namespace TodoList.Contracts.Models
 {
     public class NodeModel
     {

@@ -1,4 +1,4 @@
-﻿using TodoList.Contracts.Api;
+﻿using TodoList.Contracts.Models;
 using TodoList.Contracts.DAL;
 
 namespace TodoList.DAL

@@ -10,6 +10,7 @@ using TodoList.Api.Controllers;
 using TodoList.Api.Tests.Util;
 using TodoList.Contracts.Api;
 using TodoList.Contracts.DAL;
+using TodoList.Contracts.Models;
 
 namespace TodoList.Api.Tests.Controllers
 {

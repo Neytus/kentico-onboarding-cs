@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ILocationHelper.cs" />
-    <Compile Include="Api\NodeModel.cs" />
+    <Compile Include="Models\NodeModel.cs" />
     <Compile Include="DAL\INodesIdGenerator.cs" />
     <Compile Include="DAL\INodesFactory.cs" />
     <Compile Include="DAL\INodesRepository.cs" />
