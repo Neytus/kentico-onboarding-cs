@@ -11,6 +11,7 @@ using TodoList.Api.Tests.Util;
 using TodoList.Contracts.Api;
 using TodoList.Contracts.DAL;
 using TodoList.Contracts.Models;
+using TodoList.Contracts.Services;
 
 namespace TodoList.Api.Tests.Controllers
 {
@@ -51,6 +52,13 @@ namespace TodoList.Api.Tests.Controllers
             return repository;
         }
 
+        private ICreateNodeService MockCreateNodeService()
+        {
+            var service = Substitute.For<ICreateNodeService>();
+
+            return service;
+        }
+
         private ILocationHelper MockLocationHelper()
         {
             var locationHelper = Substitute.For<ILocationHelper>();
@@ -62,13 +70,13 @@ namespace TodoList.Api.Tests.Controllers
         [SetUp]
         public void SetUp()
         {
-            _controller = GetControllerForTests(MockRepository(), MockLocationHelper());
+            _controller = GetControllerForTests(MockRepository(), MockCreateNodeService(), MockLocationHelper());
         }
 
-        private static NodesController GetControllerForTests(INodesRepository repository,
+       private static NodesController GetControllerForTests(INodesRepository repository, ICreateNodeService createNodeService,
             ILocationHelper locationHelper)
         {
-            return new NodesController(repository, locationHelper)
+            return new NodesController(repository, createNodeService, locationHelper)
             {
                 Configuration = new HttpConfiguration(),
                 Request = new HttpRequestMessage()

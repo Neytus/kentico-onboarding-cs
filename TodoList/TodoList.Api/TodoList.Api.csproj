@@ -125,10 +125,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TodoList.Api.Services\TodoList.Services.csproj">
-      <Project>{c7f7c724-c335-4599-a5ae-2029a78cdb4d}</Project>
-      <Name>TodoList.Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TodoList.Contracts\TodoList.Contracts.csproj">
       <Project>{78917F5D-B824-4F57-BE8B-33B32677E389}</Project>
       <Name>TodoList.Contracts</Name>
@@ -136,6 +132,10 @@
     <ProjectReference Include="..\TodoList.DAL\TodoList.DAL.csproj">
       <Project>{75d45b39-c60f-44b2-b48b-4aaf5c8bcab2}</Project>
       <Name>TodoList.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TodoList.Services\TodoList.Services.csproj">
+      <Project>{00ad9061-925d-4b3d-8961-10679abf79be}</Project>
+      <Name>TodoList.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

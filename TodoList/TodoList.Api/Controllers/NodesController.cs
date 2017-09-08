@@ -5,6 +5,7 @@ using System.Web.Http;
 using TodoList.Contracts.Api;
 using TodoList.Contracts.DAL;
 using TodoList.Contracts.Models;
+using TodoList.Contracts.Services;
 
 namespace TodoList.Api.Controllers
 {
@@ -12,11 +13,13 @@ namespace TodoList.Api.Controllers
     public class NodesController : ApiController
     {
         private readonly INodesRepository _repository;
+        private readonly ICreateNodeService _createNodeService;
         private readonly ILocationHelper _locationHelper;
 
-        public NodesController(INodesRepository repository, ILocationHelper locationHelper)
+        public NodesController(INodesRepository repository, ICreateNodeService createNodeService, ILocationHelper locationHelper)
         {
             _repository = repository;
+            _createNodeService = createNodeService;
             _locationHelper = locationHelper;
         }
 
@@ -26,13 +29,13 @@ namespace TodoList.Api.Controllers
         public async Task<IHttpActionResult> GetAsync(Guid id)
             => Ok(await _repository.GetByIdAsync(id));
 
-        public async Task<IHttpActionResult> PostAsync([FromBody] NodeModel model)
+        public async Task<IHttpActionResult> PostAsync([FromBody] NodeModel node)
         {
-            await _repository.AddAsync(model);
-            return Created(_locationHelper.GetLocation(model.Id), model);
+            var newNode = await _createNodeService.CreateNodeAsync(node);
+            return Created(_locationHelper.GetLocation(newNode.Id), newNode);
         }
 
-        public async Task<IHttpActionResult> PutAsync(NodeModel model)
+        public async Task<IHttpActionResult> PutAsync(NodeModel node)
             => Content(HttpStatusCode.Accepted, await _repository.UpdateAsync(
                 new NodeModel
                 {
