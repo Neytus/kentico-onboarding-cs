@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Api\ILocationHelper.cs" />
     <Compile Include="Models\NodeModel.cs" />
+    <Compile Include="Services\ICreateNodeService.cs" />
     <Compile Include="Services\IGenerateIdService.cs" />
     <Compile Include="DAL\INodesRepository.cs" />
     <Compile Include="Dependency\IRegisterTypes.cs" />
