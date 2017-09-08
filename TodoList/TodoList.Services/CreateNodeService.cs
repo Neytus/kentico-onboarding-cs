@@ -10,11 +10,13 @@ namespace TodoList.Services
     {
         private readonly INodesRepository _repository;
         private readonly IGenerateIdService _generateIdService;
+        private readonly ICurrentTimeService _timeService;
 
-        public CreateNodeService(INodesRepository repository, IGenerateIdService generateIdService)
+        public CreateNodeService(INodesRepository repository, IGenerateIdService generateIdService, ICurrentTimeService timeService)
         {
             _repository = repository;
             _generateIdService = generateIdService;
+            _timeService = timeService;
         }
 
         public async Task<NodeModel> CreateNodeAsync(NodeModel node)
@@ -22,7 +24,15 @@ namespace TodoList.Services
 
         public async Task<NodeModel> CreateNodeAsync(NodeModel node, Guid id)
         {
-            var newModel = new NodeModel { Id = id, Text = node.Text };
+            var currentTime = _timeService.GetCurrentTime();
+
+            var newModel = new NodeModel
+            {
+                Id = id,
+                Text = node.Text,
+                Creation = currentTime,
+                LastUpdate = currentTime
+            };
 
             await _repository.AddAsync(newModel);
 

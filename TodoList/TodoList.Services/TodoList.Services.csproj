@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="CreateNodeService.cs" />
     <Compile Include="Dependency\RegisterTypes.cs" />
+    <Compile Include="Helpers\CurrentTimeService.cs" />
     <Compile Include="Helpers\GenerateIdService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
