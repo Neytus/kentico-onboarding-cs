@@ -125,6 +125,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TodoList.Api.Services\TodoList.Services.csproj">
+      <Project>{c7f7c724-c335-4599-a5ae-2029a78cdb4d}</Project>
+      <Name>TodoList.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TodoList.Contracts\TodoList.Contracts.csproj">
       <Project>{78917F5D-B824-4F57-BE8B-33B32677E389}</Project>
       <Name>TodoList.Contracts</Name>
