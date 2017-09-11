@@ -28,15 +28,15 @@ namespace TodoList.DAL
             => (await _dbCollection.FindAsync(FilterDefinition<NodeModel>.Empty)).ToEnumerable();
 
         public async Task<NodeModel> GetByIdAsync(Guid id)
-            => await _dbCollection.Find(content => content.Id == id).FirstOrDefaultAsync();
+            => await _dbCollection.Find(node => node.Id == id).FirstOrDefaultAsync();
 
         public async Task AddAsync(NodeModel model) 
             => await _dbCollection.InsertOneAsync(model);
 
-        public async Task<NodeModel> UpdateAsync(NodeModel model)
-            => await Task.FromResult(model);
+        public async Task UpdateAsync(NodeModel model)
+            => await _dbCollection.ReplaceOneAsync(node => node.Id == model.Id, model);
 
         public async Task DeleteAsync(Guid id)
-            => await Task.CompletedTask;
+            => await _dbCollection.DeleteOneAsync(node => node.Id == id);
     }
 }

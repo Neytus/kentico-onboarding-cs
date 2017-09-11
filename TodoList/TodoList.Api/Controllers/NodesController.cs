@@ -73,18 +73,16 @@ namespace TodoList.Api.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (!ValidatePutNodeModel(node)) return BadRequest(ModelState);
 
-            NodeModel updatedNode;
-
             try
             {
-                updatedNode = await _repository.UpdateAsync(node);
+                await _repository.UpdateAsync(node);
             }
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
             }
 
-            return Content(HttpStatusCode.Accepted, updatedNode);
+            return Content(HttpStatusCode.Accepted, node);
         }
 
         public async Task<IHttpActionResult> DeleteAsync(Guid id)

@@ -43,11 +43,7 @@ namespace TodoList.Api.Tests.Controllers
             repository.GetByIdAsync(NotFoundId)
                 .Returns(new NodeModel {Id = FirstId, Text = "poopy"});
 
-            repository.UpdateAsync(new NodeModel()).ReturnsForAnyArgs(new NodeModel
-            {
-                Id = ThirdId,
-                Text = "Planet Music"
-            });
+            repository.UpdateAsync(new NodeModel()).ReturnsForAnyArgs(Task.CompletedTask);
 
             return repository;
         }
@@ -136,7 +132,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var expectedResult = new NodeModel {Id = SecondId, Text = "GEARS"};
 
-            var createdResponse = await _controller.PostAsync(new NodeModel {Id = SecondId, Text = "GEARS"});
+            var createdResponse = await _controller.PostAsync(new NodeModel {Text = "GEARS"});
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 

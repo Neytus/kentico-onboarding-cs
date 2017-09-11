@@ -13,7 +13,7 @@ namespace TodoList.Contracts.DAL
 
         Task AddAsync(NodeModel model);
 
-        Task<NodeModel> UpdateAsync(NodeModel model);
+        Task UpdateAsync(NodeModel model);
 
         Task DeleteAsync(Guid id);
     }
