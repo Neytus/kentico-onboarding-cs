@@ -12,8 +12,6 @@ namespace TodoList.DAL
     {
         private readonly IMongoCollection<NodeModel> _dbCollection;
 
-        private static readonly Guid ThirdId = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2");
-
         public NodesRepository()
         {
             var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;

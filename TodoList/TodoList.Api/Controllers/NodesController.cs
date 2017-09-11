@@ -31,7 +31,7 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> GetAsync(Guid id)
         {
-            if (!ValidateId(id)) return BadRequest();
+            if (!ValidateId(id)) return BadRequest("Invalid id format.");
 
             NodeModel returnTask;
 
@@ -51,29 +51,46 @@ namespace TodoList.Api.Controllers
         public async Task<IHttpActionResult> PostAsync([FromBody] NodeModel node)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (!ValidateNodeModel(node)) return BadRequest(ModelState);
+            if (!ValidatePostNodeModel(node)) return BadRequest(ModelState);
+
+            NodeModel newNode;
 
             try
             {
-                var newNode = await _createNodeService.CreateNodeAsync(node);
-                return Created(_locationHelper.GetLocation(newNode.Id), newNode);
+                newNode = await _createNodeService.CreateNodeAsync(node);
             }
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
             }
+
+            return Created(_locationHelper.GetLocation(newNode.Id), newNode);
+
         }
 
         public async Task<IHttpActionResult> PutAsync(NodeModel node)
-            => Content(HttpStatusCode.Accepted, await _repository.UpdateAsync(
-                new NodeModel
-                {
-                    Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"),
-                    Text = "Planet Music"
-                }));
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ValidatePutNodeModel(node)) return BadRequest(ModelState);
+
+            NodeModel updatedNode;
+
+            try
+            {
+                updatedNode = await _repository.UpdateAsync(node);
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+
+            return Content(HttpStatusCode.Accepted, updatedNode);
+        }
 
         public async Task<IHttpActionResult> DeleteAsync(Guid id)
         {
+            if (!ValidateId(id)) return BadRequest(ModelState);
+
             await _repository.DeleteAsync(id);
             return Ok();
         }
@@ -84,9 +101,18 @@ namespace TodoList.Api.Controllers
             return Guid.TryParse(id.ToString("D"), out returnGuid);
         }
 
-        private bool ValidateNodeModel(NodeModel node)
+        private bool ValidatePostNodeModel(NodeModel node)
         {
-            return node?.Text != null;
+            if (node.Id == Guid.Empty) return node?.Text != null;
+            ModelState.AddModelError(node.Text, "Id value can't be specified here.");
+            return false;
+        }
+
+        private bool ValidatePutNodeModel(NodeModel node)
+        {
+            if (node.Id != Guid.Empty) return node?.Text != null;
+            ModelState.AddModelError(node.Text, "Id value has to be specified.");
+            return false;
         }
     }
 }
