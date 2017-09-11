@@ -16,7 +16,8 @@ namespace TodoList.Api.Controllers
         private readonly ICreateNodeService _createNodeService;
         private readonly ILocationHelper _locationHelper;
 
-        public NodesController(INodesRepository repository, ICreateNodeService createNodeService, ILocationHelper locationHelper)
+        public NodesController(INodesRepository repository, ICreateNodeService createNodeService,
+            ILocationHelper locationHelper)
         {
             _repository = repository;
             _createNodeService = createNodeService;
@@ -24,15 +25,40 @@ namespace TodoList.Api.Controllers
         }
 
         public async Task<IHttpActionResult> GetAsync()
-            => Ok(await _repository.GetAllAsync());
+        {
+            return Ok(await _repository.GetAllAsync());
+        }
 
         public async Task<IHttpActionResult> GetAsync(Guid id)
-            => Ok(await _repository.GetByIdAsync(id));
+        {
+            if (!ValidateId(id)) return BadRequest();
+
+            try
+            {
+                return Ok(await _repository.GetByIdAsync(id));
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
 
         public async Task<IHttpActionResult> PostAsync([FromBody] NodeModel node)
         {
-            var newNode = await _createNodeService.CreateNodeAsync(node);
-            return Created(_locationHelper.GetLocation(newNode.Id), newNode);
+            if (!ModelState.IsValid)
+            {
+                BadRequest(ModelState);
+            }
+
+            try
+            {
+                var newNode = await _createNodeService.CreateNodeAsync(node);
+                return Created(_locationHelper.GetLocation(newNode.Id), newNode);
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
         }
 
         public async Task<IHttpActionResult> PutAsync(NodeModel node)
@@ -47,6 +73,12 @@ namespace TodoList.Api.Controllers
         {
             await _repository.DeleteAsync(id);
             return Ok();
+        }
+
+        private bool ValidateId(Guid id)
+        {
+            Guid returnGuid;
+            return Guid.TryParse(id.ToString("D"), out returnGuid);
         }
     }
 }
