@@ -33,22 +33,25 @@ namespace TodoList.Api.Controllers
         {
             if (!ValidateId(id)) return BadRequest();
 
+            NodeModel returnTask;
+
             try
             {
-                return Ok(await _repository.GetByIdAsync(id));
+                returnTask = await _repository.GetByIdAsync(id);
             }
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
             }
+            if (returnTask == null) return NotFound();
+
+            return Ok(returnTask);
         }
 
         public async Task<IHttpActionResult> PostAsync([FromBody] NodeModel node)
         {
-            if (!ModelState.IsValid)
-            {
-                BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ValidateNodeModel(node)) return BadRequest(ModelState);
 
             try
             {
@@ -79,6 +82,11 @@ namespace TodoList.Api.Controllers
         {
             Guid returnGuid;
             return Guid.TryParse(id.ToString("D"), out returnGuid);
+        }
+
+        private bool ValidateNodeModel(NodeModel node)
+        {
+            return node?.Text != null;
         }
     }
 }

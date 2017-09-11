@@ -36,11 +36,7 @@ namespace TodoList.DAL
             => await _dbCollection.InsertOneAsync(model);
 
         public async Task<NodeModel> UpdateAsync(NodeModel model)
-            => await Task.FromResult(new NodeModel
-            {
-                Id = ThirdId,
-                Text = "Planet Music"
-            });
+            => await Task.FromResult(model);
 
         public async Task DeleteAsync(Guid id)
             => await Task.CompletedTask;
