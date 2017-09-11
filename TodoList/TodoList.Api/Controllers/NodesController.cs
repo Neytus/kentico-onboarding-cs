@@ -14,13 +14,18 @@ namespace TodoList.Api.Controllers
     {
         private readonly INodesRepository _repository;
         private readonly ICreateNodeService _createNodeService;
+        private readonly IUpdateNodeService _updateNodeService;
         private readonly ILocationHelper _locationHelper;
 
-        public NodesController(INodesRepository repository, ICreateNodeService createNodeService,
+        public NodesController(
+            INodesRepository repository, 
+            ICreateNodeService createNodeService, 
+            IUpdateNodeService updateNodeService,
             ILocationHelper locationHelper)
         {
             _repository = repository;
             _createNodeService = createNodeService;
+            _updateNodeService = updateNodeService;
             _locationHelper = locationHelper;
         }
 
@@ -73,21 +78,30 @@ namespace TodoList.Api.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (!ValidatePutNodeModel(node)) return BadRequest(ModelState);
 
+            NodeModel updatedNode;
+
             try
             {
-                await _repository.UpdateAsync(node);
+                updatedNode = await _updateNodeService.UpdateNodeAsync(node);
             }
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
             }
 
-            return Content(HttpStatusCode.Accepted, node);
+            return Content(HttpStatusCode.Accepted, updatedNode);
         }
 
         public async Task<IHttpActionResult> DeleteAsync(Guid id)
         {
             if (!ValidateId(id)) return BadRequest(ModelState);
+
+            var isInDb = _updateNodeService.IsInDb(id);
+
+            if (!isInDb)
+            {
+                return BadRequest("Node does not exist in the database");
+            }
 
             await _repository.DeleteAsync(id);
             return Ok();
@@ -96,7 +110,9 @@ namespace TodoList.Api.Controllers
         private bool ValidateId(Guid id)
         {
             Guid returnGuid;
-            return Guid.TryParse(id.ToString("D"), out returnGuid);
+            if (Guid.TryParse(id.ToString("D"), out returnGuid)) return true;
+            ModelState.AddModelError(id.ToString(), "Invalid id format.");
+            return false;
         }
 
         private bool ValidatePostNodeModel(NodeModel node)

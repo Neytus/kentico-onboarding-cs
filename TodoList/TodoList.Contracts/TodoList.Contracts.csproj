@@ -67,6 +67,7 @@
     <Compile Include="DAL\INodesRepository.cs" />
     <Compile Include="Dependency\IRegisterTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IUpdateNodeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

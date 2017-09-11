@@ -43,7 +43,7 @@ namespace TodoList.Api.Tests.Controllers
             repository.GetByIdAsync(NotFoundId)
                 .Returns(new NodeModel {Id = FirstId, Text = "poopy"});
 
-            repository.UpdateAsync(new NodeModel()).ReturnsForAnyArgs(Task.CompletedTask);
+            repository.DeleteAsync(new Guid()).ReturnsForAnyArgs(Task.CompletedTask);
 
             return repository;
         }
@@ -53,6 +53,16 @@ namespace TodoList.Api.Tests.Controllers
             var service = Substitute.For<ICreateNodeService>();
 
             service.CreateNodeAsync(new NodeModel()).ReturnsForAnyArgs(new NodeModel {Id = SecondId, Text = "GEARS"});
+
+            return service;
+        }
+
+        private IUpdateNodeService MockUpdateNodeService()
+        {
+            var service = Substitute.For<IUpdateNodeService>();
+
+            service.UpdateNodeAsync(new NodeModel()).ReturnsForAnyArgs(new NodeModel { Id = ThirdId, Text = "Planet Music" });
+            service.IsInDb(Guid.NewGuid()).ReturnsForAnyArgs(true);
 
             return service;
         }
@@ -68,14 +78,20 @@ namespace TodoList.Api.Tests.Controllers
         [SetUp]
         public void SetUp()
         {
-            _controller = GetControllerForTests(MockRepository(), MockCreateNodeService(), MockLocationHelper());
+            _controller = GetControllerForTests(
+                MockRepository(), 
+                MockCreateNodeService(), 
+                MockUpdateNodeService(),
+                MockLocationHelper());
         }
 
-        private static NodesController GetControllerForTests(INodesRepository repository,
+        private static NodesController GetControllerForTests(
+            INodesRepository repository,
             ICreateNodeService createNodeService,
+            IUpdateNodeService updateNodeService,
             ILocationHelper locationHelper)
         {
-            return new NodesController(repository, createNodeService, locationHelper)
+            return new NodesController(repository, createNodeService, updateNodeService, locationHelper)
             {
                 Configuration = new HttpConfiguration(),
                 Request = new HttpRequestMessage()
