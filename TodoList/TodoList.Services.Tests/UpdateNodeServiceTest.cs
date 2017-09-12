@@ -44,14 +44,16 @@ namespace TodoList.Services.Tests
         [Test]
         public async Task UpdatesNodeCorrectly()
         {
+            var updateTime = new DateTime(2017, 9, 10, 16, 28, 48);
             var expectedNode = new NodeModel
             {
                 Id = TestId,
                 Text = "poopy butt",
                 Creation = TestTime,
-                LastUpdate = TestTime
+                LastUpdate = updateTime
             };
 
+            _currentTimeService.GetCurrentTime().Returns(updateTime);
             _repository.UpdateAsync(expectedNode).Returns(Task.CompletedTask);
 
             var actualNode = await _updateNodeService.UpdateNodeAsync(expectedNode);
