@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using TodoList.Contracts.Models;
@@ -12,10 +11,8 @@ namespace TodoList.DAL
     {
         private readonly IMongoCollection<NodeModel> _dbCollection;
 
-        public NodesRepository()
+        public NodesRepository(string connectionString)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
             const string collectionName = "TodoList";
             var mongoClient = new MongoClient(connectionString);
             var databaseName = MongoUrl.Create(connectionString).DatabaseName;

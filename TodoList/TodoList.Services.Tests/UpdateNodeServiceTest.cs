@@ -6,7 +6,6 @@ using TodoList.Api.Tests.Util;
 using TodoList.Contracts.DAL;
 using TodoList.Contracts.Models;
 using TodoList.Contracts.Services;
-using Assert = NUnit.Framework.Assert;
 
 namespace TodoList.Services.Tests
 {
