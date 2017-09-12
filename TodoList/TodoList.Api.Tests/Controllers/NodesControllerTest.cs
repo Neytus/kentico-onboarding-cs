@@ -62,7 +62,7 @@ namespace TodoList.Api.Tests.Controllers
             var service = Substitute.For<IUpdateNodeService>();
 
             service.UpdateNodeAsync(new NodeModel()).ReturnsForAnyArgs(new NodeModel { Id = ThirdId, Text = "Planet Music" });
-            service.IsInDb(Guid.NewGuid()).ReturnsForAnyArgs(true);
+            service.IsInDbAsync(Guid.NewGuid()).ReturnsForAnyArgs(true);
 
             return service;
         }

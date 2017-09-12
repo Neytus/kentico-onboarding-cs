@@ -96,13 +96,9 @@ namespace TodoList.Api.Controllers
         {
             if (!ValidateId(id)) return BadRequest(ModelState);
 
-            var isInDb = _updateNodeService.IsInDb(id);
+            var isInDb = await _updateNodeService.IsInDbAsync(id);
 
-            if (!isInDb)
-            {
-                return BadRequest("Node does not exist in the database");
-            }
-
+            if (!isInDb) return BadRequest("Node does not exist in the database");
             await _repository.DeleteAsync(id);
             return Ok();
         }

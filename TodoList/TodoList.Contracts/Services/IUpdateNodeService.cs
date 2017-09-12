@@ -8,6 +8,6 @@ namespace TodoList.Contracts.Services
     {
         Task<NodeModel> UpdateNodeAsync(NodeModel node);
 
-        bool IsInDb(Guid id);
+        Task<bool> IsInDbAsync(Guid id);
     }
 }

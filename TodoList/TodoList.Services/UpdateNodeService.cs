@@ -36,9 +36,9 @@ namespace TodoList.Services
             return chosenNode;
         }
 
-        public bool IsInDb(Guid id)
+        public async Task<bool> IsInDbAsync(Guid id)
         {
-            var foundNode = _repository.GetByIdAsync(id);
+            var foundNode = await _repository.GetByIdAsync(id);
             return foundNode != null;
         }
     }
