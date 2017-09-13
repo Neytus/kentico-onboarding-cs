@@ -27,17 +27,12 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> PostAsync(NodeModel model)
         {
-            var returnedModel = await _repository.AddAsync(new NodeModel {Text = "text"});
+            var returnedModel = await _repository.AddAsync(model);
             return Created(_locationHelper.GetLocation(returnedModel.Id), returnedModel);
         }
 
         public async Task<IHttpActionResult> PutAsync(NodeModel model)
-            => Content(HttpStatusCode.Accepted, await _repository.UpdateAsync(
-                new NodeModel
-                {
-                    Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"),
-                    Text = "Planet Music"
-                }));
+            => Content(HttpStatusCode.Accepted, await _repository.UpdateAsync(model));
 
         public async Task<IHttpActionResult> DeleteAsync(Guid id)
         {
