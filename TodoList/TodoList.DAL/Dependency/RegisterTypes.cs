@@ -4,7 +4,7 @@ using TodoList.Contracts.Dependency;
 
 namespace TodoList.DAL.Dependency
 {
-    public class RegisterTypes : IRegisterTypes
+    public class RegisterTypes : IBootstrapper
     {
         public void RegisterType(IUnityContainer container)
         {
