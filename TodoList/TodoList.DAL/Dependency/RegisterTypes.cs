@@ -8,7 +8,7 @@ namespace TodoList.DAL.Dependency
     {
         public void RegisterType(IUnityContainer container)
         {
-            container.RegisterType<INodesRepository, NodesRepository>(new ContainerControlledLifetimeManager());
+            container.RegisterType<INodesRepository, NodesRepository>(new HierarchicalLifetimeManager());
         }
     }
 }
