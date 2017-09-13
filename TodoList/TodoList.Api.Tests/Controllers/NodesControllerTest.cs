@@ -7,7 +7,7 @@ using System.Web.Http;
 using NSubstitute;
 using NUnit.Framework;
 using TodoList.Api.Controllers;
-using TodoList.Api.Tests.Util;
+using TodoList.Api.Tests.Extensions;
 using TodoList.Contracts.Api;
 using TodoList.Contracts.DAL;
 

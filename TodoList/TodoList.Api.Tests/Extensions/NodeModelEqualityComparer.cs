@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework.Constraints;
 using TodoList.Contracts.Api;
 
-namespace TodoList.Api.Tests.Util
+namespace TodoList.Api.Tests.Extensions
 {
     internal static class NodeModelEqualityComparerWrapper
     {
