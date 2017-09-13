@@ -40,7 +40,7 @@ namespace TodoList.Api.Tests.Helpers
             var configuration = new HttpConfiguration();
             var route = configuration.Routes.MapHttpRoute(
                 name: "nodes",
-                routeTemplate: "api/v1/{controller}/{id}",
+                routeTemplate: "my/awesome/shwifty/{controller}/{id}",
                 defaults: new {id = RouteParameter.Optional}
             );
             var routeData = new HttpRouteData(route,
