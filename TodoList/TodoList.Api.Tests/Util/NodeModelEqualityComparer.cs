@@ -23,8 +23,6 @@ namespace TodoList.Api.Tests.Util
             public int GetHashCode(NodeModel obj) => obj.GetHashCode();
         }
 
-        internal static bool NodeModelEquals(this NodeModel x, NodeModel y) => Comparer.Equals(x, y);
-
-        public static EqualConstraint UsingNodeModelEqualityComparer(this EqualConstraint constraint) => constraint.Using(Comparer);
+        internal static EqualConstraint UsingNodeModelEqualityComparer(this EqualConstraint constraint) => constraint.Using(Comparer);
     }
 }

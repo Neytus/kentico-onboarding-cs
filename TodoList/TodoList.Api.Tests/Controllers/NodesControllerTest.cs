@@ -57,16 +57,6 @@ namespace TodoList.Api.Tests.Controllers
             _controller = GetControllerForTests(repository, locationHelper);
         }
 
-        private static NodesController GetControllerForTests(INodesRepository repository,
-            ILocationHelper locationHelper)
-        {
-            return new NodesController(repository, locationHelper)
-            {
-                Configuration = new HttpConfiguration(),
-                Request = new HttpRequestMessage()
-            };
-        }
-
         [Test]
         public async Task Get_ReturnsAllNodes()
         {
@@ -96,7 +86,7 @@ namespace TodoList.Api.Tests.Controllers
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(expectedResult.NodeModelEquals(actualResult));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
         }
 
         [Test]
@@ -109,7 +99,7 @@ namespace TodoList.Api.Tests.Controllers
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(expectedResult.NodeModelEquals(actualResult));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
         }
 
         [Test]
@@ -123,7 +113,7 @@ namespace TodoList.Api.Tests.Controllers
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.Created));
             Assert.That(responseMessage.Headers.Location.ToString(), Is.EqualTo("my/awesome/shwifty/path"));
-            Assert.That(expectedResult.NodeModelEquals(actualResult));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
         }
 
         [Test]
@@ -136,7 +126,7 @@ namespace TodoList.Api.Tests.Controllers
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
-            Assert.That(expectedResult.NodeModelEquals(actualResult));
+            Assert.That(expectedResult, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
         }
 
         [Test]
@@ -157,6 +147,16 @@ namespace TodoList.Api.Tests.Controllers
 
             Assert.IsNull(actualResponse.Content);
             Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        }
+
+        private static NodesController GetControllerForTests(INodesRepository repository,
+            ILocationHelper locationHelper)
+        {
+            return new NodesController(repository, locationHelper)
+            {
+                Configuration = new HttpConfiguration(),
+                Request = new HttpRequestMessage()
+            };
         }
     }
 }
