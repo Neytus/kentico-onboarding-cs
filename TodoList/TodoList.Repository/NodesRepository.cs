@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using TodoList.Contracts.Api;
 using TodoList.Contracts.DAL;
 
-namespace TodoList.DAL
+namespace TodoList.Repository
 {
     internal class NodesRepository : INodesRepository
     {

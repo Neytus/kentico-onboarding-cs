@@ -9,7 +9,7 @@ namespace TodoList.Api
         internal static void RegisterComponents()
         {
             var container = new UnityContainer();
-            new DAL.Dependency.RegisterTypes().RegisterType(container);
+            new Repository.Dependency.RegisterTypes().RegisterType(container);
             new Dependency.RegisterTypes().RegisterType(container);
             
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);

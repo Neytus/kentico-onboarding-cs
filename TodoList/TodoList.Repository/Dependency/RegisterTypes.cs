@@ -2,7 +2,7 @@
 using TodoList.Contracts.DAL;
 using TodoList.Contracts.Dependency;
 
-namespace TodoList.DAL.Dependency
+namespace TodoList.Repository.Dependency
 {
     public class RegisterTypes : IBootstrapper
     {
