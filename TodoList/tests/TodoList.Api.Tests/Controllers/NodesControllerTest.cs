@@ -9,7 +9,7 @@ using NUnit.Framework;
 using TodoList.Api.Controllers;
 using TodoList.Api.Tests.Extensions;
 using TodoList.Contracts.Api;
-using TodoList.Contracts.DAL;
+using TodoList.Contracts.Repository;
 
 namespace TodoList.Api.Tests.Controllers
 {

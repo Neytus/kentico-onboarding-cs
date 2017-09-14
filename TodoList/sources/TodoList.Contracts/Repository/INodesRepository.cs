@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using TodoList.Contracts.Api;
 
-namespace TodoList.Contracts.DAL
+namespace TodoList.Contracts.Repository
 {
     public interface INodesRepository
     {

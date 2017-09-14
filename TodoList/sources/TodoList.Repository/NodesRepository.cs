@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TodoList.Contracts.Api;
-using TodoList.Contracts.DAL;
+using TodoList.Contracts.Repository;
 
 namespace TodoList.Repository
 {

@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using TodoList.Contracts.Api;
-using TodoList.Contracts.DAL;
+using TodoList.Contracts.Repository;
 
 namespace TodoList.Api.Controllers
 {
