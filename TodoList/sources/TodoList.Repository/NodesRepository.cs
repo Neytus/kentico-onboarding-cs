@@ -5,7 +5,7 @@ using MongoDB.Driver;
 using TodoList.Contracts.Models;
 using TodoList.Contracts.DAL;
 
-namespace TodoList.DAL
+namespace TodoList.Repository
 {
     internal class NodesRepository : INodesRepository
     {

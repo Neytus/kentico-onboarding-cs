@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Api", "TodoList.Api\TodoList.Api.csproj", "{C014A56F-0C39-4748-AC71-8829912E6218}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Api", "sources\TodoList.Api\TodoList.Api.csproj", "{C014A56F-0C39-4748-AC71-8829912E6218}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Api.Tests", "TodoList.Api.Tests\TodoList.Api.Tests.csproj", "{7915B4E2-27A8-47BB-947B-79D14C7EEEA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Api.Tests", "tests\TodoList.Api.Tests\TodoList.Api.Tests.csproj", "{7915B4E2-27A8-47BB-947B-79D14C7EEEA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.DAL", "TodoList.DAL\TodoList.DAL.csproj", "{75D45B39-C60F-44B2-B48B-4AAF5C8BCAB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Repository", "sources\TodoList.Repository\TodoList.Repository.csproj", "{75D45B39-C60F-44B2-B48B-4AAF5C8BCAB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Contracts", "TodoList.Contracts\TodoList.Contracts.csproj", "{78917F5D-B824-4F57-BE8B-33B32677E389}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Contracts", "sources\TodoList.Contracts\TodoList.Contracts.csproj", "{78917F5D-B824-4F57-BE8B-33B32677E389}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Services", "TodoList.Services\TodoList.Services.csproj", "{00AD9061-925D-4B3D-8961-10679ABF79BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Services", "sources\TodoList.Services\TodoList.Services.csproj", "{00AD9061-925D-4B3D-8961-10679ABF79BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Services.Tests", "TodoList.Services.Tests\TodoList.Services.Tests.csproj", "{85AF272C-647D-428F-9DFF-46EF7CCEB105}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Services.Tests", "tests\TodoList.Services.Tests\TodoList.Services.Tests.csproj", "{85AF272C-647D-428F-9DFF-46EF7CCEB105}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

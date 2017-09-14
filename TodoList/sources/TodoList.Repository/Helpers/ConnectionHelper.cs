@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace TodoList.DAL.Helpers
+namespace TodoList.Repository.Helpers
 {
     internal static class ConnectionHelper
     {

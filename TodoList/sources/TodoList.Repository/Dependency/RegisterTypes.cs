@@ -1,9 +1,9 @@
 ﻿using Microsoft.Practices.Unity;
 using TodoList.Contracts.DAL;
 using TodoList.Contracts.Dependency;
-using TodoList.DAL.Helpers;
+using TodoList.Repository.Helpers;
 
-namespace TodoList.DAL.Dependency
+namespace TodoList.Repository.Dependency
 {
     public class RegisterTypes : IRegisterTypes
     {
