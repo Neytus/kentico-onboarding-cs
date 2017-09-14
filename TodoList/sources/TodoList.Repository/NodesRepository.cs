@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using TodoList.Contracts.Models;
-using TodoList.Contracts.DAL;
+using TodoList.Contracts.Repository;
 
 namespace TodoList.Repository
 {

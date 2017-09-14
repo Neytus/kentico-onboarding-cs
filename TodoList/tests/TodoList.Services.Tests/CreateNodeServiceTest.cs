@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
-using TodoList.Contracts.DAL;
 using TodoList.Contracts.Models;
 using TodoList.Contracts.Services;
 using TodoList.Api.Tests.Util;
+using TodoList.Contracts.Repository;
 
 namespace TodoList.Services.Tests
 {

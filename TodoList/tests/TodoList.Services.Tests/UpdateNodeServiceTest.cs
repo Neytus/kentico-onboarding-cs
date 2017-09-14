@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
 using TodoList.Api.Tests.Util;
-using TodoList.Contracts.DAL;
 using TodoList.Contracts.Models;
+using TodoList.Contracts.Repository;
 using TodoList.Contracts.Services;
 
 namespace TodoList.Services.Tests

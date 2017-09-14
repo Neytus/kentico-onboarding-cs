@@ -1,6 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
-using TodoList.Contracts.DAL;
 using TodoList.Contracts.Dependency;
+using TodoList.Contracts.Repository;
 using TodoList.Repository.Helpers;
 
 namespace TodoList.Repository.Dependency

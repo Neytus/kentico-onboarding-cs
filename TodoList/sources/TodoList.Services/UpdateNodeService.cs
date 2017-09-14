@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TodoList.Contracts.DAL;
 using TodoList.Contracts.Models;
+using TodoList.Contracts.Repository;
 using TodoList.Contracts.Services;
 
 namespace TodoList.Services

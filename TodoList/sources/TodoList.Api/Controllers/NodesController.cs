@@ -3,8 +3,8 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using TodoList.Contracts.Api;
-using TodoList.Contracts.DAL;
 using TodoList.Contracts.Models;
+using TodoList.Contracts.Repository;
 using TodoList.Contracts.Services;
 
 namespace TodoList.Api.Controllers
