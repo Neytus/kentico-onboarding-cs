@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Api.Tests", "TodoList.Api.Tests\TodoList.Api.Tests.csproj", "{7915B4E2-27A8-47BB-947B-79D14C7EEEA7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Repository", "TodoList.Repository\TodoList.Repository.csproj", "{75D45B39-C60F-44B2-B48B-4AAF5C8BCAB2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{78917F5D-B824-4F57-BE8B-33B32677E389} = {78917F5D-B824-4F57-BE8B-33B32677E389}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Contracts", "TodoList.Contracts\TodoList.Contracts.csproj", "{78917F5D-B824-4F57-BE8B-33B32677E389}"
 EndProject
