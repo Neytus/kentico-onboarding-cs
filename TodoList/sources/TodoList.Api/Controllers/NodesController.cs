@@ -18,8 +18,8 @@ namespace TodoList.Api.Controllers
         private readonly ILocationHelper _locationHelper;
 
         public NodesController(
-            INodesRepository repository, 
-            ICreateNodeService createNodeService, 
+            INodesRepository repository,
+            ICreateNodeService createNodeService,
             IUpdateNodeService updateNodeService,
             ILocationHelper locationHelper)
         {

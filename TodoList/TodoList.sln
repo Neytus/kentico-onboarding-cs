@@ -14,6 +14,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Services", "sources\TodoList.Services\TodoList.Services.csproj", "{00AD9061-925D-4B3D-8961-10679ABF79BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Services.Tests", "tests\TodoList.Services.Tests\TodoList.Services.Tests.csproj", "{85AF272C-647D-428F-9DFF-46EF7CCEB105}"
+	ProjectSection(ProjectDependencies) = postProject
+		{78917F5D-B824-4F57-BE8B-33B32677E389} = {78917F5D-B824-4F57-BE8B-33B32677E389}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

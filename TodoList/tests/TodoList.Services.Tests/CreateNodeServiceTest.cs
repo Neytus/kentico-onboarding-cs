@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
+using TodoList.Api.Tests.Extensions;
 using TodoList.Contracts.Models;
 using TodoList.Contracts.Services;
-using TodoList.Api.Tests.Util;
 using TodoList.Contracts.Repository;
 
 namespace TodoList.Services.Tests
@@ -50,7 +50,7 @@ namespace TodoList.Services.Tests
 
             var actualNode = await _createNodeService.CreateNodeAsync(testModel);
 
-            Assert.That(actualNode.NodeModelEquals(expectedNode));
+            Assert.That(actualNode, Is.EqualTo(expectedNode).UsingNodeModelEqualityComparer());
         }
     }
 }

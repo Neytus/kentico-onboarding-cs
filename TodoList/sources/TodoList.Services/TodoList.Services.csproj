@@ -60,13 +60,13 @@
     <Compile Include="UpdateNodeService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TodoList.Contracts\TodoList.Contracts.csproj">
-      <Project>{78917F5D-B824-4F57-BE8B-33B32677E389}</Project>
-      <Name>TodoList.Contracts</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\TodoList.Contracts\TodoList.Contracts.csproj">
+      <Project>{78917f5d-b824-4f57-be8b-33b32677e389}</Project>
+      <Name>TodoList.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
