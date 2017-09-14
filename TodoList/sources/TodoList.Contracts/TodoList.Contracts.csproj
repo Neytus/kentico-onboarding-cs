@@ -65,7 +65,7 @@
     <Compile Include="Services\ICurrentTimeService.cs" />
     <Compile Include="Services\IGenerateIdService.cs" />
     <Compile Include="Repository\INodesRepository.cs" />
-    <Compile Include="Dependency\IRegisterTypes.cs" />
+    <Compile Include="Dependency\IBootstrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IUpdateNodeService.cs" />
   </ItemGroup>

@@ -2,7 +2,7 @@
 
 namespace TodoList.Contracts.Dependency
 {
-    public interface IRegisterTypes
+    public interface IBootstrapper
     {
         void RegisterType(IUnityContainer container);
     }

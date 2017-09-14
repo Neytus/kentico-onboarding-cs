@@ -5,7 +5,7 @@ using TodoList.Services.Helpers;
 
 namespace TodoList.Services.Dependency
 {
-    public class RegisterTypes : IRegisterTypes
+    public class RegisterTypes : IBootstrapper
     {
         public void RegisterType(IUnityContainer container)
         {

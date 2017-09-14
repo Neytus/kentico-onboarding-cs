@@ -5,7 +5,7 @@ using TodoList.Repository.Helpers;
 
 namespace TodoList.Repository.Dependency
 {
-    public class RegisterTypes : IRegisterTypes
+    public class RegisterTypes : IBootstrapper
     {
         public void RegisterType(IUnityContainer container)
         {
