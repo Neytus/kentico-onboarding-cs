@@ -6,9 +6,7 @@ namespace TodoList.Repository.Dependency
 {
     public class RegisterTypes : IBootstrapper
     {
-        public void RegisterType(IUnityContainer container)
-        {
-            container.RegisterType<INodesRepository, NodesRepository>(new HierarchicalLifetimeManager());
-        }
+        public IUnityContainer RegisterType(IUnityContainer container) 
+            => container.RegisterType<INodesRepository, NodesRepository>(new HierarchicalLifetimeManager());
     }
 }

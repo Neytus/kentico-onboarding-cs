@@ -9,10 +9,12 @@ namespace TodoList.Api.Dependency
 {
     public class RegisterTypes : IBootstrapper
     {
-        public void RegisterType(IUnityContainer container)
+        public IUnityContainer RegisterType(IUnityContainer container)
         {
             container.RegisterType<HttpRequestMessage>(new HierarchicalLifetimeManager(), new InjectionFactory(GetRequestMessage));
             container.RegisterType<ILocationHelper, LocationHelper>(new HierarchicalLifetimeManager());
+
+            return container;
         }
 
         private static HttpRequestMessage GetRequestMessage(IUnityContainer container)

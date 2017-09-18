@@ -10,17 +10,17 @@ namespace TodoList.Api
         internal static void RegisterComponents()
         {
             var container = new UnityContainer();
-            Register<Dependency.RegisterTypes>(container);
-            Register<Repository.Dependency.RegisterTypes>(container);
+            container.Register<Dependency.RegisterTypes>().
+                Register<Repository.Dependency.RegisterTypes>();
 
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
 
-        private static void Register<TRegisterTypes>(this IUnityContainer container)
+        private static IUnityContainer Register<TRegisterTypes>(this IUnityContainer container)
             where TRegisterTypes : IBootstrapper, new()
         {
             var register = new TRegisterTypes();
-            register.RegisterType(container);
+            return register.RegisterType(container);
         }
     }
 }

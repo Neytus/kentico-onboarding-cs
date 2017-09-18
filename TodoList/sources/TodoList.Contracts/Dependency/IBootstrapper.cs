@@ -4,6 +4,6 @@ namespace TodoList.Contracts.Dependency
 {
     public interface IBootstrapper
     {
-        void RegisterType(IUnityContainer container);
+        IUnityContainer RegisterType(IUnityContainer container);
     }
 }
