@@ -7,12 +7,14 @@ namespace TodoList.Services.Dependency
 {
     public class RegisterTypes : IBootstrapper
     {
-        public void RegisterType(IUnityContainer container)
+        public IUnityContainer RegisterType(IUnityContainer container)
         {
             container.RegisterType<IGenerateIdService, GenerateIdService>(new ContainerControlledLifetimeManager());
             container.RegisterType<ICreateNodeService, CreateNodeService>(new ContainerControlledLifetimeManager());
             container.RegisterType<ICurrentTimeService, CurrentTimeService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IUpdateNodeService, UpdateNodeService>(new ContainerControlledLifetimeManager());
+
+            return container;
         }
     }
 }
