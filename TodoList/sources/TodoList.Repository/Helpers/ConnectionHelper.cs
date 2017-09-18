@@ -4,7 +4,7 @@ namespace TodoList.Repository.Helpers
 {
     internal static class ConnectionHelper
     {
-        public static string GetDbConnection()
+        internal static string GetDbConnection()
         {
             return ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         }

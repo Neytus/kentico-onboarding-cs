@@ -18,16 +18,16 @@ namespace TodoList.Repository
             var databaseName = MongoUrl.Create(connectionString).DatabaseName;
             var database = mongoClient.GetDatabase(databaseName);
 
-            _dbCollection = database.GetCollection<NodeModel>(collectionName);            
+            _dbCollection = database.GetCollection<NodeModel>(collectionName);
         }
 
-        public async Task<IEnumerable<NodeModel>> GetAllAsync() 
+        public async Task<IEnumerable<NodeModel>> GetAllAsync()
             => (await _dbCollection.FindAsync(FilterDefinition<NodeModel>.Empty)).ToEnumerable();
 
         public async Task<NodeModel> GetByIdAsync(Guid id)
             => await _dbCollection.Find(node => node.Id == id).FirstOrDefaultAsync();
 
-        public async Task AddAsync(NodeModel model) 
+        public async Task AddAsync(NodeModel model)
             => await _dbCollection.InsertOneAsync(model);
 
         public async Task UpdateAsync(NodeModel model)

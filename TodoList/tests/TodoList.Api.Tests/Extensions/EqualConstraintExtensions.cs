@@ -23,6 +23,7 @@ namespace TodoList.Api.Tests.Extensions
             public int GetHashCode(NodeModel obj) => obj.GetHashCode();
         }
 
-        internal static EqualConstraint UsingNodeModelEqualityComparer(this EqualConstraint constraint) => constraint.Using(Comparer);
+        internal static EqualConstraint UsingNodeModelEqualityComparer(this EqualConstraint constraint)
+            => constraint.Using(Comparer);
     }
 }

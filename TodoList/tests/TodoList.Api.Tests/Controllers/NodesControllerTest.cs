@@ -74,13 +74,11 @@ namespace TodoList.Api.Tests.Controllers
             ICreateNodeService createNodeService,
             IUpdateNodeService updateNodeService,
             ILocationHelper locationHelper)
-        {
-            return new NodesController(repository, createNodeService, updateNodeService, locationHelper)
+            => new NodesController(repository, createNodeService, updateNodeService, locationHelper)
             {
                 Configuration = new HttpConfiguration(),
                 Request = new HttpRequestMessage()
             };
-        }
 
         [Test]
         public async Task Get_ReturnsAllNodes()
