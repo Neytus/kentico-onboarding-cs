@@ -56,8 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CreateNodeServiceTest.cs" />
-    <Compile Include="UpdateNodeServiceTest.cs" />
+    <Compile Include="CreateNodeServiceTests.cs" />
+    <Compile Include="UpdateNodeServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TodoList.Api.Tests\TodoList.Api.Tests.csproj">

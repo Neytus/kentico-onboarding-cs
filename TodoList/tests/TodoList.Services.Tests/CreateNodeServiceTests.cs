@@ -10,7 +10,7 @@ using TodoList.Contracts.Repository;
 namespace TodoList.Services.Tests
 {
     [TestFixture]
-    internal class CreateNodeServiceTest
+    internal class CreateNodeServiceTests
     {
         private static readonly DateTime TestTime = new DateTime(2017, 9, 8, 14, 20, 38);
         private static readonly Guid TestId = new Guid("61EDC3BF-0E94-456E-88C9-9034576C81B1");

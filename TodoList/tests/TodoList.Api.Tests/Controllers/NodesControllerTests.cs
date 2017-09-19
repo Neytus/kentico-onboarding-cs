@@ -16,7 +16,7 @@ using TodoList.Contracts.Services;
 namespace TodoList.Api.Tests.Controllers
 {
     [TestFixture]
-    internal class NodesControllerTest
+    internal class NodesControllerTests
     {
         private static readonly Guid FirstId = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72");
         private static readonly Guid SecondId = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2");
@@ -59,7 +59,7 @@ namespace TodoList.Api.Tests.Controllers
             updateNodeService.IsInDbAsync(Guid.NewGuid()).ReturnsForAnyArgs(true);
 
             var locationHelper = Substitute.For<ILocationHelper>();
-            locationHelper.GetLocation(new Guid()).ReturnsForAnyArgs("my/awesome/shwifty/path");
+            locationHelper.GetNodeLocation(new Guid()).ReturnsForAnyArgs(new Uri("my/awesome/shwifty/path", UriKind.Relative));
 
             _controller = GetControllerForTests(
                 repository,

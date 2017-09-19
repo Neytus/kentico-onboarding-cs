@@ -11,7 +11,7 @@ using TodoList.Contracts.Api;
 namespace TodoList.Api.Tests.Helpers
 {
     [TestFixture]
-    public class LocationHelperTest
+    public class LocationHelperTests
     {
         private static readonly Guid TestedId = new Guid("aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72");
 
@@ -30,9 +30,11 @@ namespace TodoList.Api.Tests.Helpers
         public void ReturnsCorrectUrl()
         {
             ConfigureRequestMessage(TestedId);
-            var actualUrl = _locationHelper.GetLocation(TestedId);
+            var expectedUrl = "/my/awesome/shwifty/nodes/" + TestedId;
 
-            Assert.That(actualUrl, Does.EndWith(TestedId.ToString()));
+            var actualUrl = _locationHelper.GetNodeLocation(TestedId);
+
+            Assert.That(expectedUrl, Is.EqualTo(actualUrl));
         }
 
         private void ConfigureRequestMessage(Guid id)
@@ -47,7 +49,7 @@ namespace TodoList.Api.Tests.Helpers
                 new HttpRouteValueDictionary
                 {
                     {"id", id},
-                    {"controller", "Nodes"}
+                    {"controller", "nodes"}
                 }
             );
 

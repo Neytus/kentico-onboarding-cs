@@ -29,10 +29,8 @@ namespace TodoList.Api.Controllers
             _locationHelper = locationHelper;
         }
 
-        public async Task<IHttpActionResult> GetAsync()
-        {
-            return Ok(await _repository.GetAllAsync());
-        }
+        public async Task<IHttpActionResult> GetAsync() 
+            => Ok(await _repository.GetAllAsync());
 
         public async Task<IHttpActionResult> GetAsync(Guid id)
         {
@@ -69,7 +67,7 @@ namespace TodoList.Api.Controllers
                 return BadRequest(exception.Message);
             }
 
-            return Created(_locationHelper.GetLocation(newNode.Id), newNode);
+            return Created(_locationHelper.GetNodeLocation(newNode.Id), newNode);
 
         }
 
@@ -113,14 +111,14 @@ namespace TodoList.Api.Controllers
 
         private bool ValidatePostNodeModel(NodeModel node)
         {
-            if (node.Id == Guid.Empty) return node?.Text != null;
+            if (node.Id == Guid.Empty) return node.Text != null;
             ModelState.AddModelError(node.Text, "Id value can't be specified here.");
             return false;
         }
 
         private bool ValidatePutNodeModel(NodeModel node)
         {
-            if (node.Id != Guid.Empty) return node?.Text != null;
+            if (node.Id != Guid.Empty) return node.Text != null;
             ModelState.AddModelError(node.Text, "Id value has to be specified.");
             return false;
         }
