@@ -8,6 +8,9 @@ namespace TodoList.Api
         {
             GlobalConfiguration.Configure(RoutesConfig.Register);
             GlobalConfiguration.Configure(FormatConfig.Register);
+            GlobalConfiguration.Configure(DependencyInjectionConfig.Register);
+
+            GlobalConfiguration.Configuration.EnsureInitialized();
         }
     }
 }
