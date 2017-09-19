@@ -19,15 +19,32 @@ namespace TodoList.Api.Tests.Controllers
     internal class NodesControllerTests
     {
         private static readonly Guid FirstId = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72");
-        private static readonly Guid SecondId = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2");
-        private static readonly Guid ThirdId = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2");
-        private static readonly Guid FourthId = new Guid("b61670fd-33ce-400e-a351-f960230e3aae");
+        private static readonly Guid SecondId = new Guid("b61670fd-33ce-400e-a351-f960230e3aae");
         private static readonly Guid NotFoundId = new Guid("aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72");
 
-        private static readonly NodeModel FirstModel = new NodeModel {Id = FirstId, Text = "poopy"};
-        private static readonly NodeModel SecondModel = new NodeModel {Id = SecondId, Text = "GEARS"};
-        private static readonly NodeModel ThirdModel = new NodeModel {Id = ThirdId, Text = "Planet Music"};
-        private static readonly NodeModel FourthModel = new NodeModel {Id = FourthId, Text = "Time to get shwifty"};
+        private static readonly NodeModel FirstModel = new NodeModel
+        {
+            Id = FirstId,
+            Text = "poopy"
+        };
+
+        private static readonly NodeModel SecondModel = new NodeModel
+        {
+            Id = new Guid("b84bbcc7-d516-4805-b2e3-20a2df3758a2"),
+            Text = "GEARS"
+        };
+
+        private static readonly NodeModel ThirdModel = new NodeModel
+        {
+            Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"),
+            Text = "Planet Music"
+        };
+
+        private static readonly NodeModel FourthModel = new NodeModel
+        {
+            Id = SecondId,
+            Text = "Time to get shwifty"
+        };
 
         private NodesController _controller;
 
@@ -69,19 +86,8 @@ namespace TodoList.Api.Tests.Controllers
             );
         }
 
-        private static NodesController GetControllerForTests(
-            INodesRepository repository,
-            ICreateNodeService createNodeService,
-            IUpdateNodeService updateNodeService,
-            ILocationHelper locationHelper)
-            => new NodesController(repository, createNodeService, updateNodeService, locationHelper)
-            {
-                Configuration = new HttpConfiguration(),
-                Request = new HttpRequestMessage()
-            };
-
         [Test]
-        public async Task Get_ReturnsAllNodes()
+        public async Task Get_WithoutSpecifiedId_ReturnsAllNodes()
         {
             var expectedResult = new[]
             {
@@ -97,7 +103,7 @@ namespace TodoList.Api.Tests.Controllers
         }
 
         [Test]
-        public async Task GetWithId_ReturnsCorrectNode()
+        public async Task Get_WithCorrectId_ReturnsCorrectNode()
         {
             var expectedResult = FirstModel;
 
@@ -110,7 +116,7 @@ namespace TodoList.Api.Tests.Controllers
         }
 
         [Test]
-        public async Task GetWithId_ReturnsDefaultNode()
+        public async Task Get_WithNotFoundId_ReturnsDefaultNode()
         {
             var expectedResult = FirstModel;
 
@@ -152,7 +158,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Delete_DeletesCorrectNode()
         {
-            var actualResponse = await _controller.DeleteAsync(FourthId).Result
+            var actualResponse = await _controller.DeleteAsync(SecondId).Result
                 .ExecuteAsync(CancellationToken.None);
 
             Assert.IsNull(actualResponse.Content);
@@ -168,5 +174,16 @@ namespace TodoList.Api.Tests.Controllers
             Assert.IsNull(actualResponse.Content);
             Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
+
+        private static NodesController GetControllerForTests(
+            INodesRepository repository,
+            ICreateNodeService createNodeService,
+            IUpdateNodeService updateNodeService,
+            ILocationHelper locationHelper)
+            => new NodesController(repository, createNodeService, updateNodeService, locationHelper)
+            {
+                Configuration = new HttpConfiguration(),
+                Request = new HttpRequestMessage()
+            };
     }
 }

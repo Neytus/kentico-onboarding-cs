@@ -68,7 +68,6 @@ namespace TodoList.Api.Controllers
             }
 
             return Created(_locationHelper.GetNodeLocation(newNode.Id), newNode);
-
         }
 
         public async Task<IHttpActionResult> PutAsync(NodeModel node)
