@@ -7,7 +7,7 @@ namespace TodoList.Api
 {
     internal static class DependencyInjectionConfig
     {
-        internal static void RegisterComponents(HttpConfiguration config)
+        internal static void Register(HttpConfiguration config)
         {
             var container = new UnityContainer()
                 .Register<Dependency.RegisterTypes>()
