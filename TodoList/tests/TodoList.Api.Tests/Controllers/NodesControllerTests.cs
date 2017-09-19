@@ -9,6 +9,7 @@ using NUnit.Framework;
 using TodoList.Api.Controllers;
 using TodoList.Api.Tests.Extensions;
 using TodoList.Contracts.Api;
+using TodoList.Contracts.Models;
 using TodoList.Contracts.Repository;
 
 namespace TodoList.Api.Tests.Controllers
@@ -69,7 +70,7 @@ namespace TodoList.Api.Tests.Controllers
             repository.UpdateAsync(new NodeModel()).ReturnsForAnyArgs(ThirdModel);
 
             var locationHelper = Substitute.For<ILocationHelper>();
-            locationHelper.GetNodeLocation(new Guid()).ReturnsForAnyArgs("my/awesome/shwifty/path");
+            locationHelper.GetNodeLocation(new Guid()).ReturnsForAnyArgs(new Uri("my/awesome/shwifty/path", UriKind.Relative));
 
             _controller = GetControllerForTests(repository, locationHelper);
         }
@@ -166,8 +167,7 @@ namespace TodoList.Api.Tests.Controllers
             Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
-        private static NodesController GetControllerForTests(INodesRepository repository,
-            ILocationHelper locationHelper)
+        private static NodesController GetControllerForTests(INodesRepository repository, ILocationHelper locationHelper)
             => new NodesController(repository, locationHelper)
             {
                 Configuration = new HttpConfiguration(),

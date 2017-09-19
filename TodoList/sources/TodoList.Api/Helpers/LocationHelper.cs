@@ -14,7 +14,7 @@ namespace TodoList.Api.Helpers
             _urlHelper = new UrlHelper(requestMessage);
         }
 
-        public string GetNodeLocation(Guid id) 
-            => _urlHelper.Route("nodes", new { id });
+        public Uri GetNodeLocation(Guid id) 
+            => new Uri(_urlHelper.Route("nodes", new { id }), UriKind.Relative);
     }
 }

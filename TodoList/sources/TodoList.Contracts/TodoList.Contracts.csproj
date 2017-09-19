@@ -53,7 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ILocationHelper.cs" />
-    <Compile Include="Api\NodeModel.cs" />
+    <Compile Include="Models\NodeModel.cs" />
     <Compile Include="Repository\INodesRepository.cs" />
     <Compile Include="Dependency\IBootstrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
