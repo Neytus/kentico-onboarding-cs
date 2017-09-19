@@ -18,7 +18,7 @@ namespace TodoList.Api.Tests.Controllers
     internal class NodesControllerTests
     {
         private static readonly Guid FirstId = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72");
-        private static readonly Guid FourthId = new Guid("b61670fd-33ce-400e-a351-f960230e3aae");
+        private static readonly Guid SecondId = new Guid("b61670fd-33ce-400e-a351-f960230e3aae");
         private static readonly Guid NotFoundId = new Guid("aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72");
 
         private static readonly NodeModel FirstModel = new NodeModel
@@ -41,7 +41,7 @@ namespace TodoList.Api.Tests.Controllers
 
         private static readonly NodeModel FourthModel = new NodeModel
         {
-            Id = FourthId,
+            Id = SecondId,
             Text = "Time to get shwifty"
         };
 
@@ -150,7 +150,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Delete_DeletesCorrectNode()
         {
-            var actualResponse = await _controller.DeleteAsync(FourthId).Result
+            var actualResponse = await _controller.DeleteAsync(SecondId).Result
                 .ExecuteAsync(CancellationToken.None);
 
             Assert.IsNull(actualResponse.Content);

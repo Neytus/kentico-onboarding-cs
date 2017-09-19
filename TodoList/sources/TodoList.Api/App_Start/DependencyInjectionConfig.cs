@@ -17,7 +17,7 @@ namespace TodoList.Api
         }
 
         private static IUnityContainer Register<TRegisterTypes>(this IUnityContainer container)
-            where TRegisterTypes : IBootstrapper, 
-            new() => new TRegisterTypes().RegisterType(container);
+            where TRegisterTypes : IBootstrapper, new() 
+            => new TRegisterTypes().RegisterType(container);
     }
 }

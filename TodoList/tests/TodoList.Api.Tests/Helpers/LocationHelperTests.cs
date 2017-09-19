@@ -30,7 +30,7 @@ namespace TodoList.Api.Tests.Helpers
         public void ReturnsCorrectUrl()
         {
             ConfigureRequestMessage(TestedId);
-            var expectedUrl = "/my/awesome/shwifty/Nodes/" + TestedId;
+            var expectedUrl = "/my/awesome/shwifty/nodes/" + TestedId;
 
             var actualUrl = _locationHelper.GetNodeLocation(TestedId);
 
@@ -49,7 +49,7 @@ namespace TodoList.Api.Tests.Helpers
                 new HttpRouteValueDictionary
                 {
                     {"id", id},
-                    {"controller", "Nodes"}
+                    {"controller", "nodes"}
                 }
             );
 
