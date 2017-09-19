@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Repository", "sour
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Contracts", "sources\TodoList.Contracts\TodoList.Contracts.csproj", "{78917F5D-B824-4F57-BE8B-33B32677E389}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sources", "sources", "{672DB65F-362C-46EE-850E-D2A220AD5303}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AB0BE1B0-777E-4D0B-B0F4-6B9BC2BC7E4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,5 +43,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C014A56F-0C39-4748-AC71-8829912E6218} = {672DB65F-362C-46EE-850E-D2A220AD5303}
+		{7915B4E2-27A8-47BB-947B-79D14C7EEEA7} = {AB0BE1B0-777E-4D0B-B0F4-6B9BC2BC7E4D}
+		{75D45B39-C60F-44B2-B48B-4AAF5C8BCAB2} = {672DB65F-362C-46EE-850E-D2A220AD5303}
+		{78917F5D-B824-4F57-BE8B-33B32677E389} = {672DB65F-362C-46EE-850E-D2A220AD5303}
 	EndGlobalSection
 EndGlobal
