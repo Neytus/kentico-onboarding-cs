@@ -6,7 +6,7 @@ namespace TodoList.Api
     {
         protected void Application_Start()
         {
-            DependencyInjectionConfig.RegisterComponents();
+            GlobalConfiguration.Configure(DependencyInjectionConfig.RegisterComponents);
             GlobalConfiguration.Configure(RoutesConfig.Register);
             GlobalConfiguration.Configure(FormatConfig.Register);
         }

@@ -7,20 +7,17 @@ namespace TodoList.Api
 {
     internal static class DependencyInjectionConfig
     {
-        internal static void RegisterComponents()
+        internal static void RegisterComponents(HttpConfiguration config)
         {
-            var container = new UnityContainer();
-            container.Register<Dependency.RegisterTypes>().
-                Register<Repository.Dependency.RegisterTypes>();
+            var container = new UnityContainer()
+                .Register<Dependency.RegisterTypes>()
+                .Register<Repository.Dependency.RegisterTypes>();
 
-            GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
+            config.DependencyResolver = new UnityDependencyResolver(container);
         }
 
         private static IUnityContainer Register<TRegisterTypes>(this IUnityContainer container)
-            where TRegisterTypes : IBootstrapper, new()
-        {
-            var register = new TRegisterTypes();
-            return register.RegisterType(container);
-        }
+            where TRegisterTypes : IBootstrapper, 
+            new() => new TRegisterTypes().RegisterType(container);
     }
 }
