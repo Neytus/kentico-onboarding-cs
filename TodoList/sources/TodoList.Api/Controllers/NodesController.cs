@@ -34,27 +34,19 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> GetAsync(Guid id)
         {
-            if (!ValidateId(id)) return BadRequest("Invalid id format.");
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            NodeModel returnTask;
+            var returnedNode = await _repository.GetByIdAsync(id);
 
-            try
-            {
-                returnTask = await _repository.GetByIdAsync(id);
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
-            if (returnTask == null) return NotFound();
+            if (returnedNode == null) return NotFound();
 
-            return Ok(returnTask);
+            return Ok(returnedNode);
         }
 
         public async Task<IHttpActionResult> PostAsync([FromBody] NodeModel node)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
             if (!ValidatePostNodeModel(node)) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             NodeModel newNode;
 
@@ -72,8 +64,8 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> PutAsync(NodeModel node)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
             if (!ValidatePutNodeModel(node)) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             NodeModel updatedNode;
 
@@ -91,27 +83,21 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> DeleteAsync(Guid id)
         {
-            if (!ValidateId(id)) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var isInDb = await _updateNodeService.IsInDbAsync(id);
 
-            if (!isInDb) return BadRequest("Node does not exist in the database");
-            await _repository.DeleteAsync(id);
-            return Ok();
-        }
+            if (!isInDb) return NotFound();
 
-        private bool ValidateId(Guid id)
-        {
-            Guid returnGuid;
-            if (Guid.TryParse(id.ToString("D"), out returnGuid)) return true;
-            ModelState.AddModelError(id.ToString(), "Invalid id format.");
-            return false;
+            await _repository.DeleteAsync(id);
+
+            return Ok();
         }
 
         private bool ValidatePostNodeModel(NodeModel node)
         {
             if (node.Id == Guid.Empty) return node.Text != null;
-            ModelState.AddModelError(node.Text, "Id value can't be specified here.");
+                ModelState.AddModelError(node.Text, "Id value can't be specified here.");
             return false;
         }
 
