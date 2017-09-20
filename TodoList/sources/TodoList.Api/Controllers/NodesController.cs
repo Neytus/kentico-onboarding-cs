@@ -6,6 +6,7 @@ using TodoList.Contracts.Api;
 using TodoList.Contracts.Models;
 using TodoList.Contracts.Repository;
 using TodoList.Contracts.Services;
+using static System.String;
 
 namespace TodoList.Api.Controllers
 {
@@ -29,7 +30,7 @@ namespace TodoList.Api.Controllers
             _locationHelper = locationHelper;
         }
 
-        public async Task<IHttpActionResult> GetAsync() 
+        public async Task<IHttpActionResult> GetAsync()
             => Ok(await _repository.GetAllAsync());
 
         public async Task<IHttpActionResult> GetAsync(Guid id)
@@ -67,18 +68,21 @@ namespace TodoList.Api.Controllers
             if (!ValidatePutNodeModel(node)) return BadRequest(ModelState);
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            NodeModel updatedNode;
+            if (!await _updateNodeService.IsInDbAsync(node.Id))
+            {
+                var newNode = await _createNodeService.CreateNodeAsync(node, node.Id);
+                return Created(_locationHelper.GetNodeLocation(newNode.Id), newNode);
+            }
 
             try
             {
-                updatedNode = await _updateNodeService.UpdateNodeAsync(node);
+                var updatedNode = await _updateNodeService.UpdateNodeAsync(node);
+                return Content(HttpStatusCode.Accepted, updatedNode);
             }
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
             }
-
-            return Content(HttpStatusCode.Accepted, updatedNode);
         }
 
         public async Task<IHttpActionResult> DeleteAsync(Guid id)
@@ -94,17 +98,29 @@ namespace TodoList.Api.Controllers
             return Ok();
         }
 
+        private bool ValidateNodeText(string text)
+        {
+            if (!IsNullOrWhiteSpace(text)) return true;
+
+            ModelState.AddModelError(text, "Text can't be null or whitespace.");
+            return false;
+        }
+
         private bool ValidatePostNodeModel(NodeModel node)
         {
-            if (node.Id == Guid.Empty) return node.Text != null;
-                ModelState.AddModelError(node.Text, "Id value can't be specified here.");
+            if (node.Id == Guid.Empty) return ValidateNodeText(node.Text);
+
+            ModelState.AddModelError(node.Text, "Id value can't be specified here.");
+
             return false;
         }
 
         private bool ValidatePutNodeModel(NodeModel node)
         {
-            if (node.Id != Guid.Empty) return node.Text != null;
+            if (node.Id != Guid.Empty) return ValidateNodeText(node.Text);
+
             ModelState.AddModelError(node.Text, "Id value has to be specified.");
+
             return false;
         }
     }
