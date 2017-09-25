@@ -14,6 +14,7 @@ namespace TodoList.Services.Tests
     {
         private static readonly DateTime TestTime = new DateTime(2017, 9, 8, 14, 20, 38);
         private static readonly Guid TestId = new Guid("61EDC3BF-0E94-456E-88C9-9034576C81B1");
+        private static readonly DateTime UpdateTime = new DateTime(2017, 9, 10, 16, 28, 48);
 
         private readonly NodeModel _baseNode = new NodeModel
         {
@@ -41,18 +42,17 @@ namespace TodoList.Services.Tests
         }
 
         [Test]
-        public async Task UpdatesNodeCorrectly()
+        public async Task UpdatesNodeInDbCorrectly()
         {
-            var updateTime = new DateTime(2017, 9, 10, 16, 28, 48);
             var expectedNode = new NodeModel
             {
                 Id = TestId,
                 Text = "poopy butt",
                 Creation = TestTime,
-                LastUpdate = updateTime
+                LastUpdate = UpdateTime
             };
 
-            _currentTimeService.GetCurrentTime().Returns(updateTime);
+            _currentTimeService.GetCurrentTime().Returns(UpdateTime);
             _repository.UpdateAsync(expectedNode).Returns(Task.CompletedTask);
 
             var actualNode = await _updateNodeService.UpdateNodeAsync(expectedNode);

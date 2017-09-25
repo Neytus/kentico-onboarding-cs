@@ -68,14 +68,14 @@ namespace TodoList.Api.Controllers
             if (!ValidatePutNodeModel(node)) return BadRequest(ModelState);
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            if (!await _updateNodeService.IsInDbAsync(node.Id))
-            {
-                var newNode = await _createNodeService.CreateNodeAsync(node, node.Id);
-                return Created(_locationHelper.GetNodeLocation(newNode.Id), newNode);
-            }
-
             try
             {
+                if (!await _updateNodeService.IsInDbAsync(node.Id))
+                {
+                    var newNode = await _createNodeService.CreateNodeAsync(node, node.Id);
+                    return Created(_locationHelper.GetNodeLocation(newNode.Id), newNode);
+                }
+
                 var updatedNode = await _updateNodeService.UpdateNodeAsync(node);
                 return Content(HttpStatusCode.Accepted, updatedNode);
             }
