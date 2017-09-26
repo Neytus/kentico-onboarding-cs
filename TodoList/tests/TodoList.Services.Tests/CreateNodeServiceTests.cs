@@ -34,7 +34,7 @@ namespace TodoList.Services.Tests
         }
 
         [Test]
-        public async Task CreateNodeAsyncReturnsCorrectNodeModel()
+        public async Task CreateNodeAsync_ReturnsCorrectNodeModel()
         {
             var testModel = new NodeModel {Text = "poopy"};
 

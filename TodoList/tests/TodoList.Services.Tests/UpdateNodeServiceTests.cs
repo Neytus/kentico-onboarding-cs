@@ -42,7 +42,7 @@ namespace TodoList.Services.Tests
         }
 
         [Test]
-        public async Task UpdatesNodeInDbCorrectly()
+        public async Task UpdateNodeInDB_UpdatesNodeInDbCorrectly()
         {
             var expectedNode = new NodeModel
             {
@@ -61,7 +61,7 @@ namespace TodoList.Services.Tests
         }
 
         [Test]
-        public async Task FindsNodeInDb()
+        public async Task IsInDbAsync_FindsNodeInDb()
         {
             var expectedValue = await _updateNodeService.IsInDbAsync(TestId);
 
