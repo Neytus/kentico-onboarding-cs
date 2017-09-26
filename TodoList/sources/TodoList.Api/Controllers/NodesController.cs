@@ -70,7 +70,7 @@ namespace TodoList.Api.Controllers
 
             try
             {
-                if (!await _updateNodeService.IsInDbAsync(node.Id))
+                if (await _repository.GetByIdAsync(node.Id) == null)
                 {
                     var newNode = await _createNodeService.CreateNodeAsync(node, node.Id);
                     return Created(_locationHelper.GetNodeLocation(newNode.Id), newNode);
@@ -89,9 +89,7 @@ namespace TodoList.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var isInDb = await _updateNodeService.IsInDbAsync(id);
-
-            if (!isInDb) return NotFound();
+            if (_repository.GetByIdAsync(id) == null) return NotFound();
 
             await _repository.DeleteAsync(id);
 

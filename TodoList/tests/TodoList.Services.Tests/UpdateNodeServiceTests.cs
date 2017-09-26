@@ -59,13 +59,5 @@ namespace TodoList.Services.Tests
 
             Assert.That(actualNode, Is.EqualTo(expectedNode).UsingNodeModelEqualityComparer());
         }
-
-        [Test]
-        public async Task IsInDbAsync_FindsNodeInDb()
-        {
-            var expectedValue = await _updateNodeService.IsInDbAsync(TestId);
-
-            Assert.That(expectedValue, Is.True);
-        }
     }
 }

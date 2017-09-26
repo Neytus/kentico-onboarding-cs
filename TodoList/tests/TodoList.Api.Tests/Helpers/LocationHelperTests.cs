@@ -27,7 +27,7 @@ namespace TodoList.Api.Tests.Helpers
         }
 
         [Test]
-        public void GetNodeLocation_ReturnsCorrectUrl()
+        public void GetNodeLocation_WithCorrectId_ReturnsCorrectUrl()
         {
             ConfigureRequestMessage(TestedId);
             var expectedUrl = "/my/awesome/shwifty/nodes/" + TestedId;

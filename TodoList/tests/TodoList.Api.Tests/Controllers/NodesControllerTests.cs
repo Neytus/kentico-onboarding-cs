@@ -20,6 +20,7 @@ namespace TodoList.Api.Tests.Controllers
     {
         private static readonly Guid FirstId = new Guid("d237bdda-e6d4-4e46-92db-1a7a0aeb9a72");
         private static readonly Guid SecondId = new Guid("b61670fd-33ce-400e-a351-f960230e3aae");
+        private static readonly Guid ThirdId = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2");
         private static readonly Guid NotFoundId = new Guid("aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72");
 
         private static readonly NodeModel FirstModel = new NodeModel
@@ -36,7 +37,7 @@ namespace TodoList.Api.Tests.Controllers
 
         private static readonly NodeModel ThirdModel = new NodeModel
         {
-            Id = new Guid("6171ec89-e3b5-458e-ae43-bc0e8ec061e2"),
+            Id = ThirdId,
             Text = "Planet Music"
         };
 
@@ -65,6 +66,8 @@ namespace TodoList.Api.Tests.Controllers
                 .Returns(FirstModel);
             repository.GetByIdAsync(NotFoundId)
                 .Returns(FirstModel);
+            repository.GetByIdAsync(ThirdId)
+                .Returns(ThirdModel);
 
             repository.DeleteAsync(new Guid()).ReturnsForAnyArgs(Task.CompletedTask);
 
@@ -73,7 +76,6 @@ namespace TodoList.Api.Tests.Controllers
 
             var updateNodeService = Substitute.For<IUpdateNodeService>();
             updateNodeService.UpdateNodeAsync(new NodeModel()).ReturnsForAnyArgs(ThirdModel);
-            updateNodeService.IsInDbAsync(Guid.NewGuid()).ReturnsForAnyArgs(true);
 
             var locationHelper = Substitute.For<ILocationHelper>();
             locationHelper.GetNodeLocation(new Guid()).ReturnsForAnyArgs(new Uri("my/awesome/shwifty/path", UriKind.Relative));
@@ -146,6 +148,7 @@ namespace TodoList.Api.Tests.Controllers
         public async Task Put_UpdatesACorrectNode()
         {
             var expectedResult = ThirdModel;
+            
 
             var createdResponse = await _controller.PutAsync(expectedResult);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);

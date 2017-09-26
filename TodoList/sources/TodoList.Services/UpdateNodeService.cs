@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using TodoList.Contracts.Models;
 using TodoList.Contracts.Repository;
 using TodoList.Contracts.Services;
@@ -28,12 +27,6 @@ namespace TodoList.Services
             await _repository.UpdateAsync(chosenNode);
 
             return chosenNode;
-        }
-
-        public async Task<bool> IsInDbAsync(Guid id)
-        {
-            var foundNode = await _repository.GetByIdAsync(id);
-            return foundNode != null;
         }
     }
 }
