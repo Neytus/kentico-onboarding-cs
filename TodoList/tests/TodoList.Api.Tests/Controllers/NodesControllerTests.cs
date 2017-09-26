@@ -47,45 +47,21 @@ namespace TodoList.Api.Tests.Controllers
             Text = "Time to get shwifty"
         };
 
+        private readonly INodesRepository _repository = NodesRepository();
+        private readonly ICreateNodeService _createNodeService = CreateNodeService();
+        private readonly IUpdateNodeService _updateNodeService = UpdateNodeService();
+        private readonly ILocationHelper _locationHelper = LocationHelper();
+
         private NodesController _controller;
 
         [SetUp]
         public void SetUp()
         {
-            var repository = Substitute.For<INodesRepository>();
-
-            repository.GetAllAsync().Returns(new[]
+            _controller = new NodesController(_repository, _createNodeService, _updateNodeService, _locationHelper)
             {
-                FirstModel,
-                SecondModel,
-                ThirdModel,
-                FourthModel
-            });
-
-            repository.GetByIdAsync(FirstId)
-                .Returns(FirstModel);
-            repository.GetByIdAsync(NotFoundId)
-                .Returns(FirstModel);
-            repository.GetByIdAsync(ThirdId)
-                .Returns(ThirdModel);
-
-            repository.DeleteAsync(new Guid()).ReturnsForAnyArgs(Task.CompletedTask);
-
-            var createNodeService = Substitute.For<ICreateNodeService>();
-            createNodeService.CreateNodeAsync(new NodeModel()).ReturnsForAnyArgs(SecondModel);
-
-            var updateNodeService = Substitute.For<IUpdateNodeService>();
-            updateNodeService.UpdateNodeAsync(new NodeModel()).ReturnsForAnyArgs(ThirdModel);
-
-            var locationHelper = Substitute.For<ILocationHelper>();
-            locationHelper.GetNodeLocation(new Guid()).ReturnsForAnyArgs(new Uri("my/awesome/shwifty/path", UriKind.Relative));
-
-            _controller = GetControllerForTests(
-                repository,
-                createNodeService,
-                updateNodeService,
-                locationHelper
-            );
+                Configuration = new HttpConfiguration(),
+                Request = new HttpRequestMessage()
+            };
         }
 
         [Test]
@@ -131,7 +107,7 @@ namespace TodoList.Api.Tests.Controllers
         }
 
         [Test]
-        public async Task Post_InsertsNewNodeCorrectly()
+        public async Task Post_WithCorrectTextData_InsertsNewNodeCorrectly()
         {
             var expectedResult = SecondModel;
 
@@ -145,10 +121,31 @@ namespace TodoList.Api.Tests.Controllers
         }
 
         [Test]
-        public async Task Put_UpdatesACorrectNode()
+        public async Task Post_WithIncorrectTextData_ReturnsBadRequest()
         {
-            var expectedResult = ThirdModel;
-            
+            var createdResponse = await _controller.PostAsync(new NodeModel { Text = "   " });
+            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            responseMessage.TryGetContentValue(out NodeModel actualResult);
+
+            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            Assert.That(null, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
+        }
+
+        [Test]
+        public async Task Post_WithSpecifiedId_ReturnsBadRequest()
+        {
+            var createdResponse = await _controller.PostAsync(new NodeModel { Id = NotFoundId, Text = "GEARS" });
+            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            responseMessage.TryGetContentValue(out NodeModel actualResult);
+
+            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            Assert.That(null, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
+        }
+
+        [Test]
+        public async Task Put_WithCorrectNodeModel_UpdatesACorrectNode()
+        {
+            var expectedResult = ThirdModel;            
 
             var createdResponse = await _controller.PutAsync(expectedResult);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
@@ -159,9 +156,34 @@ namespace TodoList.Api.Tests.Controllers
         }
 
         [Test]
-        public async Task Delete_DeletesCorrectNode()
+        public async Task Put_WithIncorrectTextData_ReturnsBadRequest()
         {
-            var actualResponse = await _controller.DeleteAsync(SecondId).Result
+            var createdResponse = await _controller.PutAsync(new NodeModel { Id = ThirdId, Text = "    " });
+            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            responseMessage.TryGetContentValue(out NodeModel actualResult);
+
+            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            Assert.That(null, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
+        }
+
+        [Test]
+        public async Task Put_WithoutSpecifiedId_CreatesANewNode()
+        {
+            var methodInput = new NodeModel { Text = "Nothing like you" };
+            var expectedOutput = SecondModel;
+
+            var createdResponse = await _controller.PutAsync(methodInput);
+            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            responseMessage.TryGetContentValue(out NodeModel actualResult);
+
+            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+            Assert.That(expectedOutput, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
+        }
+
+        [Test]
+        public async Task Delete_WithIdFromDb_DeletesCorrectNode()
+        {
+            var actualResponse = await _controller.DeleteAsync(FirstId).Result
                 .ExecuteAsync(CancellationToken.None);
 
             Assert.IsNull(actualResponse.Content);
@@ -169,24 +191,57 @@ namespace TodoList.Api.Tests.Controllers
         }
 
         [Test]
-        public async Task Delete_ActsLikeItDeletedSomeNode()
+        public async Task Delete_WithIdNotFromDb_ReturnsNotFoundStatus()
         {
-            var actualResponse = await _controller.DeleteAsync(NotFoundId).Result
+            var actualResponse = await _controller.DeleteAsync(SecondId).Result
                 .ExecuteAsync(CancellationToken.None);
 
             Assert.IsNull(actualResponse.Content);
-            Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
-        private static NodesController GetControllerForTests(
-            INodesRepository repository,
-            ICreateNodeService createNodeService,
-            IUpdateNodeService updateNodeService,
-            ILocationHelper locationHelper)
-            => new NodesController(repository, createNodeService, updateNodeService, locationHelper)
+        private static ILocationHelper LocationHelper()
+        {
+            var locationHelper = Substitute.For<ILocationHelper>();
+            locationHelper.GetNodeLocation(new Guid()).ReturnsForAnyArgs(new Uri("my/awesome/shwifty/path", UriKind.Relative));
+            return locationHelper;
+        }
+
+        private static IUpdateNodeService UpdateNodeService()
+        {
+            var updateNodeService = Substitute.For<IUpdateNodeService>();
+            updateNodeService.UpdateNodeAsync(new NodeModel()).ReturnsForAnyArgs(ThirdModel);
+            return updateNodeService;
+        }
+
+        private static ICreateNodeService CreateNodeService()
+        {
+            var createNodeService = Substitute.For<ICreateNodeService>();
+            createNodeService.CreateNodeAsync(new NodeModel()).ReturnsForAnyArgs(SecondModel);
+            return createNodeService;
+        }
+
+        private static INodesRepository NodesRepository()
+        {
+            var repository = Substitute.For<INodesRepository>();
+
+            repository.GetAllAsync().Returns(new[]
             {
-                Configuration = new HttpConfiguration(),
-                Request = new HttpRequestMessage()
-            };
+                FirstModel,
+                SecondModel,
+                ThirdModel,
+                FourthModel
+            });
+
+            repository.GetByIdAsync(FirstId)
+                .Returns(FirstModel);
+            repository.GetByIdAsync(NotFoundId)
+                .Returns(FirstModel);
+            repository.GetByIdAsync(ThirdId)
+                .Returns(ThirdModel);
+
+            repository.DeleteAsync(new Guid()).ReturnsForAnyArgs(Task.CompletedTask);
+            return repository;
+        }
     }
 }

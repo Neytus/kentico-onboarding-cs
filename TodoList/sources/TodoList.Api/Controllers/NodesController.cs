@@ -65,14 +65,14 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> PutAsync(NodeModel node)
         {
-            if (!ValidatePutNodeModel(node)) return BadRequest(ModelState);
+            if (!ValidateNodeText(node.Text)) return BadRequest(ModelState);
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             try
             {
                 if (await _repository.GetByIdAsync(node.Id) == null)
                 {
-                    var newNode = await _createNodeService.CreateNodeAsync(node, node.Id);
+                    var newNode = await _createNodeService.CreateNodeAsync(node);
                     return Created(_locationHelper.GetNodeLocation(newNode.Id), newNode);
                 }
 
@@ -89,7 +89,7 @@ namespace TodoList.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            if (_repository.GetByIdAsync(id) == null) return NotFound();
+            if (await _repository.GetByIdAsync(id) == null) return NotFound();
 
             await _repository.DeleteAsync(id);
 
@@ -109,15 +109,6 @@ namespace TodoList.Api.Controllers
             if (node.Id == Guid.Empty) return ValidateNodeText(node.Text);
 
             ModelState.AddModelError(node.Text, "Id value can't be specified here.");
-
-            return false;
-        }
-
-        private bool ValidatePutNodeModel(NodeModel node)
-        {
-            if (node.Id != Guid.Empty) return ValidateNodeText(node.Text);
-
-            ModelState.AddModelError(node.Text, "Id value has to be specified.");
 
             return false;
         }
