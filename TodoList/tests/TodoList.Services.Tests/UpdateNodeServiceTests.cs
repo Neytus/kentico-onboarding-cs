@@ -56,7 +56,7 @@ namespace TodoList.Services.Tests
             _currentTimeService.GetCurrentTime().Returns(UpdateTime);
             _repository.UpdateAsync(expectedNode).Returns(Task.CompletedTask);
 
-            var actualNode = await _updateNodeService.UpdateNodeAsync(expectedNode);
+            var actualNode = await _updateNodeService.UpdateNodeAsync(_baseNode, expectedNode);
 
             Assert.That(actualNode, Is.EqualTo(expectedNode).UsingNodeModelEqualityComparer());
         }

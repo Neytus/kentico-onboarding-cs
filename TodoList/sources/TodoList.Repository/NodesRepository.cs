@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using TodoList.Contracts.Api;
 using TodoList.Contracts.Models;
 using TodoList.Contracts.Repository;
 
@@ -11,11 +12,11 @@ namespace TodoList.Repository
     {
         private readonly IMongoCollection<NodeModel> _dbCollection;
 
-        public NodesRepository(string connectionString)
+        public NodesRepository(IDatabaseConnector connector)
         {
             const string collectionName = "TodoList";
-            var mongoClient = new MongoClient(connectionString);
-            var databaseName = MongoUrl.Create(connectionString).DatabaseName;
+            var mongoClient = new MongoClient(connector.GetDbConnection());
+            var databaseName = MongoUrl.Create(connector.GetDbConnection()).DatabaseName;
             var database = mongoClient.GetDatabase(databaseName);
 
             _dbCollection = database.GetCollection<NodeModel>(collectionName);

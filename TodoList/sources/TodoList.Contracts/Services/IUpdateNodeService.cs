@@ -5,6 +5,6 @@ namespace TodoList.Contracts.Services
 {
     public interface IUpdateNodeService
     {
-        Task<NodeModel> UpdateNodeAsync(NodeModel nodeValues);
+        Task<NodeModel> UpdateNodeAsync(NodeModel existingNode, NodeModel newModelValues);
     }
 }

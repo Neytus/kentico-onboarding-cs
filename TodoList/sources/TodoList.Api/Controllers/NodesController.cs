@@ -66,19 +66,21 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> PutAsync([FromBody] NodeModel node)
         {
+            
             ValidatePutNodeModel(node);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (await _repository.GetByIdAsync(node.Id) == null)
+            var existingNode = await _repository.GetByIdAsync(node.Id);
+            if (existingNode == null)
             {
                 var newNode = await _createNodeService.CreateNodeAsync(node);
                 return Created(_locationHelper.GetNodeLocation(newNode.Id), newNode);
             }
 
-            var updatedNode = await _updateNodeService.UpdateNodeAsync(node);
+            var updatedNode = await _updateNodeService.UpdateNodeAsync(existingNode, node);
             return Content(HttpStatusCode.Accepted, updatedNode);
         }
 
