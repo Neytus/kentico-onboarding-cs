@@ -107,6 +107,15 @@ namespace TodoList.Api.Tests.Controllers
         }
 
         [Test]
+        public async Task Get_WithDefaultId_ReturnsBadRequest()
+        {
+            var createdResponse = await _controller.GetAsync(Guid.Empty);
+            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+
+            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        }
+
+        [Test]
         public async Task Post_WithCorrectTextData_InsertsNewNodeCorrectly()
         {
             var expectedResult = SecondModel;
@@ -135,6 +144,17 @@ namespace TodoList.Api.Tests.Controllers
         public async Task Post_WithSpecifiedId_ReturnsBadRequest()
         {
             var createdResponse = await _controller.PostAsync(new NodeModel {Id = NotFoundId, Text = "GEARS"});
+            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            responseMessage.TryGetContentValue(out NodeModel actualResult);
+
+            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            Assert.That(null, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
+        }
+
+        [Test]
+        public async Task Post_WithNullModel_ReturnsBadRequest()
+        {
+            var createdResponse = await _controller.PostAsync(null);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -175,6 +195,17 @@ namespace TodoList.Api.Tests.Controllers
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        }
+
+        [Test]
+        public async Task Put_WithNullModel_ReturnsBadRequest()
+        {
+            var createdResponse = await _controller.PutAsync(null);
+            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            responseMessage.TryGetContentValue(out NodeModel actualResult);
+
+            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            Assert.That(null, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
         }
 
         [Test]

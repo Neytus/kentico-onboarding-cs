@@ -66,7 +66,6 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> PutAsync([FromBody] NodeModel node)
         {
-            
             ValidatePutNodeModel(node);
             if (!ModelState.IsValid)
             {
@@ -158,7 +157,8 @@ namespace TodoList.Api.Controllers
         {
             if (node.Creation != default(DateTime))
             {
-                ModelState.AddModelError(nameof(node.Creation), "Node model can't have creation time specified here.");
+                ModelState.AddModelError(nameof(node.Creation),
+                    "Node model can't have creation time specified here.");
             }
             if (node.LastUpdate != default(DateTime))
             {
