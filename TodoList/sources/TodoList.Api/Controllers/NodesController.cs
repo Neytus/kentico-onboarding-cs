@@ -72,16 +72,15 @@ namespace TodoList.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingNode = await _repository.GetByIdAsync(node.Id);
-            if (existingNode == null)
+            if (await _updateNodeService.IsInDbAsync(node.Id))
             {
-                var newNode = await _createNodeService.CreateNodeAsync(node);
-                var location = _locationHelper.GetNodeLocation(newNode.Id);
-                return Created(location, newNode);
+                var updatedNode = await _updateNodeService.UpdateNodeAsync(node);
+                return Content(HttpStatusCode.Accepted, updatedNode);
             }
 
-            var updatedNode = await _updateNodeService.UpdateNodeAsync(existingNode, node);
-            return Content(HttpStatusCode.Accepted, updatedNode);
+            var newNode = await _createNodeService.CreateNodeAsync(node);
+            var location = _locationHelper.GetNodeLocation(newNode.Id);
+            return Created(location, newNode);
         }
 
         public async Task<IHttpActionResult> DeleteAsync(Guid id)

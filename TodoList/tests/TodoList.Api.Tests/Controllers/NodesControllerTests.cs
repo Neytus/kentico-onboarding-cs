@@ -239,7 +239,8 @@ namespace TodoList.Api.Tests.Controllers
         private static IUpdateNodeService UpdateNodeService()
         {
             var updateNodeService = Substitute.For<IUpdateNodeService>();
-            updateNodeService.UpdateNodeAsync(new NodeModel(), new NodeModel()).ReturnsForAnyArgs(ThirdModel);
+            updateNodeService.UpdateNodeAsync(new NodeModel()).ReturnsForAnyArgs(ThirdModel);
+            updateNodeService.IsInDbAsync(ThirdId).Returns(true);
             return updateNodeService;
         }
 
