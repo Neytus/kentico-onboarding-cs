@@ -8,6 +8,6 @@ namespace TodoList.Repository.Dependency
     public class Bootstrapper : IBootstrapper
     {
         public IUnityContainer RegisterType(IUnityContainer container) 
-            => container.RegisterType<INodesRepository, NodesRepository>(new InjectionConstructor(ConnectionHelper.GetDbConnection()));
+            => container.RegisterType<INodesRepository, NodesRepository>(new InjectionConstructor(DatabaseConnector.GetDbConnection()));
     }
 }
