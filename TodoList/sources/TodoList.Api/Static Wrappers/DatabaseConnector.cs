@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using TodoList.Contracts.Api;
 
-namespace TodoList.Repository.Static_Wrappers
+namespace TodoList.Api.Static_Wrappers
 {
     internal class DatabaseConnector : IDatabaseConnector
     {

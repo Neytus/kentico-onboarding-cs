@@ -105,6 +105,7 @@
     <Compile Include="App_Start\DependencyInjectionConfig.cs" />
     <Compile Include="App_Start\FormatConfig.cs" />
     <Compile Include="App_Start\RoutesConfig.cs" />
+    <Compile Include="Static Wrappers\DatabaseConnector.cs" />
     <Compile Include="Static Wrappers\LocationHelper.cs" />
     <Compile Include="Controllers\NodesController.cs" />
     <Compile Include="Dependency\Bootstrapper.cs" />

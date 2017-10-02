@@ -69,7 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dependency\Bootstrapper.cs" />
-    <Compile Include="Static Wrappers\DatabaseConnector.cs" />
     <Compile Include="NodesRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
