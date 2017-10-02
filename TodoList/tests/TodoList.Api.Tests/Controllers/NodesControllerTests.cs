@@ -123,7 +123,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Post_WithIncorrectTextData_ReturnsBadRequest()
         {
-            var createdResponse = await _controller.PostAsync(new NodeModel { Text = "   " });
+            var createdResponse = await _controller.PostAsync(new NodeModel {Text = "   "});
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -134,7 +134,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Post_WithSpecifiedId_ReturnsBadRequest()
         {
-            var createdResponse = await _controller.PostAsync(new NodeModel { Id = NotFoundId, Text = "GEARS" });
+            var createdResponse = await _controller.PostAsync(new NodeModel {Id = NotFoundId, Text = "GEARS"});
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -145,7 +145,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Put_WithCorrectNodeModel_UpdatesACorrectNode()
         {
-            var expectedResult = ThirdModel;            
+            var expectedResult = ThirdModel;
 
             var createdResponse = await _controller.PutAsync(expectedResult);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
@@ -158,7 +158,7 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Put_WithIncorrectTextData_ReturnsBadRequest()
         {
-            var createdResponse = await _controller.PutAsync(new NodeModel { Id = ThirdId, Text = "    " });
+            var createdResponse = await _controller.PutAsync(new NodeModel {Id = ThirdId, Text = "    "});
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -167,17 +167,14 @@ namespace TodoList.Api.Tests.Controllers
         }
 
         [Test]
-        public async Task Put_WithoutSpecifiedId_CreatesANewNode()
+        public async Task Put_WithoutSpecifiedId_ReturnsBadRequest()
         {
-            var methodInput = new NodeModel { Text = "Nothing like you" };
-            var expectedOutput = SecondModel;
+            var methodInput = new NodeModel {Text = "Nothing like you"};
 
             var createdResponse = await _controller.PutAsync(methodInput);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-            responseMessage.TryGetContentValue(out NodeModel actualResult);
 
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.Created));
-            Assert.That(expectedOutput, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
+            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
         [Test]
@@ -187,7 +184,7 @@ namespace TodoList.Api.Tests.Controllers
                 .ExecuteAsync(CancellationToken.None);
 
             Assert.IsNull(actualResponse.Content);
-            Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
         }
 
         [Test]
@@ -203,7 +200,8 @@ namespace TodoList.Api.Tests.Controllers
         private static ILocationHelper LocationHelper()
         {
             var locationHelper = Substitute.For<ILocationHelper>();
-            locationHelper.GetNodeLocation(new Guid()).ReturnsForAnyArgs(new Uri("my/awesome/shwifty/path", UriKind.Relative));
+            locationHelper.GetNodeLocation(new Guid())
+                .ReturnsForAnyArgs(new Uri("my/awesome/shwifty/path", UriKind.Relative));
             return locationHelper;
         }
 
