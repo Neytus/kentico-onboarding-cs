@@ -1,10 +1,18 @@
 ﻿using System.Configuration;
+using TodoList.Contracts.Api;
 
 namespace TodoList.Repository.Static_Wrappers
 {
-    internal class DatabaseConnector
+    internal class DatabaseConnector : IDatabaseConnector
     {
-        internal static string GetDbConnection() 
-            => ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        private readonly ConnectionStringSettings _connectionStringSettings;
+
+        public DatabaseConnector()
+        {
+            _connectionStringSettings = ConfigurationManager.ConnectionStrings["DefaultConnection"];
+        }
+
+        public string GetDbConnection() 
+            => _connectionStringSettings.ConnectionString;
     }
 }

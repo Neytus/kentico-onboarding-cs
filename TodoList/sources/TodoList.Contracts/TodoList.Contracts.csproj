@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\IDatabaseConnector.cs" />
     <Compile Include="Api\ILocationHelper.cs" />
     <Compile Include="Models\NodeModel.cs" />
     <Compile Include="Services\ICreateNodeService.cs" />
