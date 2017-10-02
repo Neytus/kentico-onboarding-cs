@@ -97,7 +97,7 @@ namespace TodoList.Api.Controllers
 
             await _repository.DeleteAsync(id);
 
-            return Ok();
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         private void ValidatePutNodeModel(NodeModel node)

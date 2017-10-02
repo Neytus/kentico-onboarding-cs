@@ -2,11 +2,9 @@
 
 namespace TodoList.Repository.Static_Wrappers
 {
-    internal static class ConnectionHelper
+    internal class ConnectionHelper
     {
-        internal static string GetDbConnection()
-        {
-            return ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-        }
+        internal static string GetDbConnection() 
+            => ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
     }
 }

@@ -16,17 +16,17 @@ namespace TodoList.Services.Nodes
             _timeService = timeService;
         }
 
-        public async Task<NodeModel> UpdateNodeAsync(NodeModel node)
+        public async Task<NodeModel> UpdateNodeAsync(NodeModel nodeValues)
         {
             var currentTime = _timeService.GetCurrentTime();
 
-            var chosenNode = await _repository.GetByIdAsync(node.Id);
-            chosenNode.Text = node.Text;
-            chosenNode.LastUpdate = currentTime;
+            var existingNode = await _repository.GetByIdAsync(nodeValues.Id);
+            existingNode.Text = nodeValues.Text;
+            existingNode.LastUpdate = currentTime;
 
-            await _repository.UpdateAsync(chosenNode);
+            await _repository.UpdateAsync(existingNode);
 
-            return chosenNode;
+            return existingNode;
         }
     }
 }
