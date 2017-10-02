@@ -35,82 +35,134 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> GetAsync(Guid id)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            ValidateIdAttribute(id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            var returnedNode = await _repository.GetByIdAsync(id);
+            var existingNode = await _repository.GetByIdAsync(id);
 
-            if (returnedNode == null) return NotFound();
+            if (existingNode == null)
+            {
+                return NotFound();
+            }
 
-            return Ok(returnedNode);
+            return Ok(existingNode);
         }
 
         public async Task<IHttpActionResult> PostAsync([FromBody] NodeModel node)
         {
-            if (!ValidatePostNodeModel(node)) return BadRequest(ModelState);
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            NodeModel newNode;
-
-            try
+            ValidatePostNodeModel(node);
+            if (!ModelState.IsValid)
             {
-                newNode = await _createNodeService.CreateNodeAsync(node);
+                return BadRequest(ModelState);
             }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
+
+            var newNode = await _createNodeService.CreateNodeAsync(node);
 
             return Created(_locationHelper.GetNodeLocation(newNode.Id), newNode);
         }
 
-        public async Task<IHttpActionResult> PutAsync(NodeModel node)
+        public async Task<IHttpActionResult> PutAsync([FromBody] NodeModel node)
         {
-            if (!ValidateNodeText(node.Text)) return BadRequest(ModelState);
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            try
+            ValidatePutNodeModel(node);
+            if (!ModelState.IsValid)
             {
-                if (await _repository.GetByIdAsync(node.Id) == null)
-                {
-                    var newNode = await _createNodeService.CreateNodeAsync(node);
-                    return Created(_locationHelper.GetNodeLocation(newNode.Id), newNode);
-                }
+                return BadRequest(ModelState);
+            }
 
-                var updatedNode = await _updateNodeService.UpdateNodeAsync(node);
-                return Content(HttpStatusCode.Accepted, updatedNode);
-            }
-            catch (Exception exception)
+            if (await _repository.GetByIdAsync(node.Id) == null)
             {
-                return BadRequest(exception.Message);
+                var newNode = await _createNodeService.CreateNodeAsync(node);
+                return Created(_locationHelper.GetNodeLocation(newNode.Id), newNode);
             }
+
+            var updatedNode = await _updateNodeService.UpdateNodeAsync(node);
+            return Content(HttpStatusCode.Accepted, updatedNode);
         }
 
         public async Task<IHttpActionResult> DeleteAsync(Guid id)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            ValidateIdAttribute(id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            if (await _repository.GetByIdAsync(id) == null) return NotFound();
+            if (await _repository.GetByIdAsync(id) == null)
+            {
+                return NotFound();
+            }
 
             await _repository.DeleteAsync(id);
 
             return Ok();
         }
 
-        private bool ValidateNodeText(string text)
+        private void ValidatePutNodeModel(NodeModel node)
         {
-            if (!IsNullOrWhiteSpace(text)) return true;
+            if (node == null)
+            {
+                ModelState.AddModelError(nameof(node), "Node model is not correctly defined.");
+                return;
+            }
+            if (node.Id == Guid.Empty)
+            {
+                ModelState.AddModelError(nameof(node.Id), "Node model requires a specified id parameter.");
+            }
 
-            ModelState.AddModelError(text, "Text can't be null or whitespace.");
-            return false;
+            ValidateNodeText(node.Text);
+            ValidateNodeTimeAttributes(node);
         }
 
-        private bool ValidatePostNodeModel(NodeModel node)
+        private void ValidatePostNodeModel(NodeModel node)
         {
-            if (node.Id == Guid.Empty) return ValidateNodeText(node.Text);
+            if (node == null)
+            {
+                ModelState.AddModelError(nameof(node), "Node model is not correctly defined.");
+                return;
+            }
+            if (node.Id != Guid.Empty)
+            {
+                ModelState.AddModelError(nameof(node.Id), "Node model can't have id parameter specified here.");
+            }
 
-            ModelState.AddModelError(node.Text, "Id value can't be specified here.");
+            ValidateNodeText(node.Text);
+            ValidateNodeTimeAttributes(node);
+        }
 
-            return false;
+        private void ValidateNodeText(string text)
+        {
+            if (IsNullOrWhiteSpace(text))
+            {
+                ModelState.AddModelError(text, "Text can't be null or whitespace.");
+            }
+        }
+
+        private void ValidateIdAttribute(Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return;
+            }
+            if (id == default(Guid))
+            {
+                ModelState.AddModelError(nameof(id), "Id attribute is not valid");
+            }
+        }
+
+        private void ValidateNodeTimeAttributes(NodeModel node)
+        {
+            if (node.Creation != default(DateTime))
+            {
+                ModelState.AddModelError(nameof(node.Creation), "Node model can't have creation time specified here.");
+            }
+            if (node.LastUpdate != default(DateTime))
+            {
+                ModelState.AddModelError(nameof(node.LastUpdate),
+                    "Node model can't have last update time specified here.");
+            }
         }
     }
 }
