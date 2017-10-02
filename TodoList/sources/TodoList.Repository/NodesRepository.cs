@@ -15,8 +15,8 @@ namespace TodoList.Repository
         public NodesRepository(IDatabaseConnector connector)
         {
             const string collectionName = "TodoList";
-            var mongoClient = new MongoClient(connector.GetDbConnection());
-            var databaseName = MongoUrl.Create(connector.GetDbConnection()).DatabaseName;
+            var mongoClient = new MongoClient(connector.DbConnection);
+            var databaseName = MongoUrl.Create(connector.DbConnection).DatabaseName;
             var database = mongoClient.GetDatabase(databaseName);
 
             _dbCollection = database.GetCollection<NodeModel>(collectionName);

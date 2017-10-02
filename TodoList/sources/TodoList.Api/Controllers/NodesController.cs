@@ -76,7 +76,8 @@ namespace TodoList.Api.Controllers
             if (existingNode == null)
             {
                 var newNode = await _createNodeService.CreateNodeAsync(node);
-                return Created(_locationHelper.GetNodeLocation(newNode.Id), newNode);
+                var location = _locationHelper.GetNodeLocation(newNode.Id);
+                return Created(location, newNode);
             }
 
             var updatedNode = await _updateNodeService.UpdateNodeAsync(existingNode, node);

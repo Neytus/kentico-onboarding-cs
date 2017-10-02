@@ -12,7 +12,6 @@ namespace TodoList.Api.Static_Wrappers
             _connectionStringSettings = ConfigurationManager.ConnectionStrings["DefaultConnection"];
         }
 
-        public string GetDbConnection()
-            => _connectionStringSettings.ConnectionString;
+        public string DbConnection => _connectionStringSettings.ConnectionString;
     }
 }
