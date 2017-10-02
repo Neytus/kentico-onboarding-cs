@@ -3,7 +3,6 @@ using TodoList.Contracts.Dependency;
 using TodoList.Contracts.Services;
 using TodoList.Services.Static_Wrappers;
 using TodoList.Services.Nodes;
-using TodoList.Services.Static_Wrappers;
 
 namespace TodoList.Services.Dependency
 {
@@ -11,10 +10,10 @@ namespace TodoList.Services.Dependency
     {
         public IUnityContainer RegisterType(IUnityContainer container)
         {
-            container.RegisterType<IGenerateIdService, GenerateIdService>(new ContainerControlledLifetimeManager());
-            container.RegisterType<ICreateNodeService, CreateNodeService>(new ContainerControlledLifetimeManager());
-            container.RegisterType<ICurrentTimeService, CurrentTimeService>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IUpdateNodeService, UpdateNodeService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IGenerateIdService, GenerateIdService>(new HierarchicalLifetimeManager());
+            container.RegisterType<ICreateNodeService, CreateNodeService>(new HierarchicalLifetimeManager());
+            container.RegisterType<ICurrentTimeService, CurrentTimeService>(new HierarchicalLifetimeManager());
+            container.RegisterType<IUpdateNodeService, UpdateNodeService>(new HierarchicalLifetimeManager());
 
             return container;
         }
