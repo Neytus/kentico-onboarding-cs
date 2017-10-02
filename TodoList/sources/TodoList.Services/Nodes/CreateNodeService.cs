@@ -4,7 +4,7 @@ using TodoList.Contracts.Models;
 using TodoList.Contracts.Repository;
 using TodoList.Contracts.Services;
 
-namespace TodoList.Services
+namespace TodoList.Services.Nodes
 {
     internal class CreateNodeService : ICreateNodeService
     {

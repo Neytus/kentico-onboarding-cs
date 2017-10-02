@@ -6,6 +6,7 @@ using TodoList.Api.Tests.Extensions;
 using TodoList.Contracts.Models;
 using TodoList.Contracts.Repository;
 using TodoList.Contracts.Services;
+using TodoList.Services.Nodes;
 
 namespace TodoList.Services.Tests
 {
