@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace TodoList.Repository.Helpers
+namespace TodoList.Repository.Static_Wrappers
 {
     internal static class ConnectionHelper
     {

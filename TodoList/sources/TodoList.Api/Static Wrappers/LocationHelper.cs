@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Web.Http.Routing;
 using TodoList.Contracts.Api;
 
-namespace TodoList.Api.Helpers
+namespace TodoList.Api.Static_Wrappers
 {
     internal class LocationHelper : ILocationHelper
     {

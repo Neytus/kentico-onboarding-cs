@@ -1,8 +1,9 @@
 ﻿using Microsoft.Practices.Unity;
 using TodoList.Contracts.Dependency;
 using TodoList.Contracts.Services;
-using TodoList.Services.Helpers;
+using TodoList.Services.Static_Wrappers;
 using TodoList.Services.Nodes;
+using TodoList.Services.Static_Wrappers;
 
 namespace TodoList.Services.Dependency
 {

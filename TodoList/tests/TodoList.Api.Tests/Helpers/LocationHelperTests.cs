@@ -5,7 +5,7 @@ using System.Web.Http.Hosting;
 using System.Web.Http.Routing;
 using NSubstitute;
 using NUnit.Framework;
-using TodoList.Api.Helpers;
+using TodoList.Api.Static_Wrappers;
 using TodoList.Contracts.Api;
 
 namespace TodoList.Api.Tests.Helpers
