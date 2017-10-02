@@ -11,9 +11,9 @@ namespace TodoList.Api
         internal static void Register(HttpConfiguration config)
         {
             var container = new UnityContainer()
-                .Register<RegisterTypes>()
-                .Register<Repository.Dependency.RegisterTypes>()
-                .Register<Services.Dependency.RegisterTypes>();
+                .Register<Bootstrapper>()
+                .Register<Repository.Dependency.Bootstrapper>()
+                .Register<Services.Dependency.Bootstrapper>();
 
             config.DependencyResolver = new UnityDependencyResolver(container);
         }

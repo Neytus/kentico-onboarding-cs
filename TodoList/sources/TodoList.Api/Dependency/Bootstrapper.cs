@@ -7,7 +7,7 @@ using TodoList.Contracts.Dependency;
 
 namespace TodoList.Api.Dependency
 {
-    public class RegisterTypes : IBootstrapper
+    public class Bootstrapper : IBootstrapper
     {
         public IUnityContainer RegisterType(IUnityContainer container)
         {

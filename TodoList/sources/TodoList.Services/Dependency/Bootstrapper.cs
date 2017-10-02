@@ -6,7 +6,7 @@ using TodoList.Services.Nodes;
 
 namespace TodoList.Services.Dependency
 {
-    public class RegisterTypes : IBootstrapper
+    public class Bootstrapper : IBootstrapper
     {
         public IUnityContainer RegisterType(IUnityContainer container)
         {

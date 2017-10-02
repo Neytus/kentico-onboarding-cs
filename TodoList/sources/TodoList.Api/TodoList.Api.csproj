@@ -107,7 +107,7 @@
     <Compile Include="App_Start\RoutesConfig.cs" />
     <Compile Include="Helpers\LocationHelper.cs" />
     <Compile Include="Controllers\NodesController.cs" />
-    <Compile Include="Dependency\RegisterTypes.cs" />
+    <Compile Include="Dependency\Bootstrapper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
