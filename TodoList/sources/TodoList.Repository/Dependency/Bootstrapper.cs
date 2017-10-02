@@ -1,7 +1,7 @@
 ﻿using Microsoft.Practices.Unity;
 using TodoList.Contracts.Dependency;
 using TodoList.Contracts.Repository;
-using TodoList.Repository.Helpers;
+using TodoList.Repository.Static_Wrappers;
 
 namespace TodoList.Repository.Dependency
 {

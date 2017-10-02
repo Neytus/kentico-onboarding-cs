@@ -54,8 +54,8 @@
   <ItemGroup>
     <Compile Include="Nodes\CreateNodeService.cs" />
     <Compile Include="Dependency\Bootstrapper.cs" />
-    <Compile Include="Helpers\CurrentTimeService.cs" />
-    <Compile Include="Helpers\GenerateIdService.cs" />
+    <Compile Include="Static Wrappers\CurrentTimeService.cs" />
+    <Compile Include="Static Wrappers\GenerateIdService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Nodes\UpdateNodeService.cs" />
   </ItemGroup>
