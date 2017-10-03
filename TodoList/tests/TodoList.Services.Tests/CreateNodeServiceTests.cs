@@ -69,5 +69,25 @@ namespace TodoList.Services.Tests
 
             Assert.That(actualNode, Is.EqualTo(expectedNode).UsingNodeModelEqualityComparer());
         }
+
+        [Test]
+        public async Task CreateNodeAsync_WithNullData_ThrowsException()
+        {
+            try
+            {
+                await _createNodeService.CreateNodeAsync(null);
+                Assert.Fail("No exception has been thrown on null data.");
+            }
+            catch (InvalidOperationException exception)
+            {
+                var expectedMessage = "Text to add has to be provided.";
+
+                Assert.That(expectedMessage, Is.EqualTo(exception.Message));
+            }
+            catch (Exception exception)
+            {
+                Assert.Fail("A different type of exception has been thrown: " + exception.GetType());
+            }
+        }
     }
 }

@@ -21,6 +21,11 @@ namespace TodoList.Services.Nodes
 
         public async Task<NodeModel> UpdateNodeAsync(NodeModel nodeValues)
         {
+            if (nodeValues == null)
+            {
+                throw new InvalidOperationException("Values to update have to be provided.");
+            }
+
             var currentTime = _timeService.GetCurrentTime();
             CheckCachedNode(nodeValues.Id);
 
