@@ -22,22 +22,30 @@ namespace TodoList.Services.Nodes
         public async Task<NodeModel> UpdateNodeAsync(NodeModel nodeValues)
         {
             var currentTime = _timeService.GetCurrentTime();
+            CheckCachedNode(nodeValues.Id);
 
-            if (_cachedNode != null) {
-                _cachedNode.Text = nodeValues.Text;
-                _cachedNode.LastUpdate = currentTime;
-                await _repository.UpdateAsync(_cachedNode);
-
-                return _cachedNode;
+            if (_cachedNode == null) {
+                _cachedNode = await _repository.GetByIdAsync(nodeValues.Id);
             }
 
-            var existingNode = await _repository.GetByIdAsync(nodeValues.Id);
-            existingNode.Text = nodeValues.Text;
-            existingNode.LastUpdate = currentTime;
+            _cachedNode.Text = nodeValues.Text;
+            _cachedNode.LastUpdate = currentTime;
 
-            await _repository.UpdateAsync(existingNode);
+            await _repository.UpdateAsync(_cachedNode);
 
-            return existingNode;
+            return _cachedNode;
+        }
+
+        private void CheckCachedNode(Guid id)
+        {
+            if (_cachedNode == null)
+            {
+                return;
+            }
+            if (_cachedNode.Id != id)
+            {
+                _cachedNode = null;
+            }
         }
 
         public async Task<bool> IsInDbAsync(Guid id)
