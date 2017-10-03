@@ -35,7 +35,7 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> GetAsync(Guid id)
         {
-            ValidateIdAttribute(id);
+            ValidateId(id);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -85,7 +85,7 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> DeleteAsync(Guid id)
         {
-            ValidateIdAttribute(id);
+            ValidateId(id);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -113,14 +113,14 @@ namespace TodoList.Api.Controllers
                 ModelState.AddModelError(nameof(node.Id), "Node model requires a specified id parameter.");
             }
 
-            ValidateNodeModelAttributes(node);
+            ValidateNodeModel(node);
         }
 
         private void ValidatePostNodeModel(NodeModel node)
         {
             if (node == null)
             {
-                ModelState.AddModelError(nameof(node), "Node model is not correctly defined.");
+                ModelState.AddModelError(Empty, "Node model is not correctly defined.");
                 return;
             }
             if (node.Id != Guid.Empty)
@@ -128,10 +128,10 @@ namespace TodoList.Api.Controllers
                 ModelState.AddModelError(nameof(node.Id), "Node model can't have id parameter specified here.");
             }
 
-            ValidateNodeModelAttributes(node);
+            ValidateNodeModel(node);
         }
 
-        private void ValidateIdAttribute(Guid id)
+        private void ValidateId(Guid id)
         {
             if (!ModelState.IsValid)
             {
@@ -143,11 +143,11 @@ namespace TodoList.Api.Controllers
             }
         }
 
-        private void ValidateNodeModelAttributes(NodeModel node)
+        private void ValidateNodeModel(NodeModel node)
         {
             if (IsNullOrWhiteSpace(node.Text))
             {
-                ModelState.AddModelError(nameof(node), "Text can't be null or whitespace.");
+                ModelState.AddModelError(nameof(node.Text), "Text can't be null or whitespace.");
             }
 
             if (node.Creation != default(DateTime))

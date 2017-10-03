@@ -159,7 +159,7 @@ namespace TodoList.Api.Tests.Controllers
             responseMessage.TryGetContentValue(out NodeModel actualResult);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-            Assert.That(null, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
+            Assert.That(actualResult, Is.Null);
         }
 
         [Test]
@@ -189,9 +189,9 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Put_WithoutSpecifiedId_ReturnsBadRequest()
         {
-            var methodInput = new NodeModel {Text = "Nothing like you"};
+            var putNode = new NodeModel {Text = "Nothing like you"};
 
-            var createdResponse = await _controller.PutAsync(methodInput);
+            var createdResponse = await _controller.PutAsync(putNode);
             var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
 
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));

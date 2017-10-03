@@ -19,6 +19,13 @@ namespace TodoList.Services.Nodes
             _timeService = timeService;
         }
 
+        public async Task<bool> IsInDbAsync(Guid id)
+        {
+            _cachedNode = await _repository.GetByIdAsync(id);
+
+            return _cachedNode != null;
+        }
+
         public async Task<NodeModel> UpdateNodeAsync(NodeModel nodeValues)
         {
             if (nodeValues == null)
@@ -26,38 +33,35 @@ namespace TodoList.Services.Nodes
                 throw new InvalidOperationException("Values to update have to be provided.");
             }
 
-            var currentTime = _timeService.GetCurrentTime();
-            CheckCachedNode(nodeValues.Id);
+            await CacheNodeWithAsync(nodeValues.Id);
 
-            if (_cachedNode == null) {
-                _cachedNode = await _repository.GetByIdAsync(nodeValues.Id);
-            }
-
-            _cachedNode.Text = nodeValues.Text;
-            _cachedNode.LastUpdate = currentTime;
+            MergeCachedNodeWith(nodeValues);
 
             await _repository.UpdateAsync(_cachedNode);
 
             return _cachedNode;
         }
 
-        private void CheckCachedNode(Guid id)
+        private void MergeCachedNodeWith(NodeModel nodeValues)
         {
-            if (_cachedNode == null)
-            {
-                return;
-            }
-            if (_cachedNode.Id != id)
+            var currentTime = _timeService.GetCurrentTime();
+            _cachedNode.Text = nodeValues.Text;
+            _cachedNode.LastUpdate = currentTime;
+        }
+
+        private async Task CacheNodeWithAsync(Guid id)
+        {
+            if (_cachedNode?.Id != id)
             {
                 _cachedNode = null;
             }
-        }
 
-        public async Task<bool> IsInDbAsync(Guid id)
-        {
-            _cachedNode = await _repository.GetByIdAsync(id);
+            _cachedNode = _cachedNode ?? await _repository.GetByIdAsync(id);
 
-            return _cachedNode != null;
+            if (_cachedNode == null)
+            {
+                throw new InvalidOperationException($"Node with {id} was not found in the repository.");
+            }
         }
     }
 }
