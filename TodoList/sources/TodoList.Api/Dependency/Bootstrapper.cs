@@ -12,7 +12,7 @@ namespace TodoList.Api.Dependency
         public IUnityContainer RegisterType(IUnityContainer container)
         {
             container.RegisterType<HttpRequestMessage>(new HierarchicalLifetimeManager(), new InjectionFactory(GetRequestMessage));
-            container.RegisterType<ILocationHelper, LocationHelper>(new HierarchicalLifetimeManager());
+            container.RegisterType<ILocator, Locator>(new HierarchicalLifetimeManager());
             container.RegisterType<IDatabaseConnector, DatabaseConnector>(new HierarchicalLifetimeManager());
 
             return container;

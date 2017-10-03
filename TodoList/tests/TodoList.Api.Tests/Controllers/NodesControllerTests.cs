@@ -50,14 +50,14 @@ namespace TodoList.Api.Tests.Controllers
         private readonly INodesRepository _repository = NodesRepository();
         private readonly ICreateNodeService _createNodeService = CreateNodeService();
         private readonly IUpdateNodeService _updateNodeService = UpdateNodeService();
-        private readonly ILocationHelper _locationHelper = LocationHelper();
+        private readonly ILocator _locator = LocationHelper();
 
         private NodesController _controller;
 
         [SetUp]
         public void SetUp()
         {
-            _controller = new NodesController(_repository, _createNodeService, _updateNodeService, _locationHelper)
+            _controller = new NodesController(_repository, _createNodeService, _updateNodeService, _locator)
             {
                 Configuration = new HttpConfiguration(),
                 Request = new HttpRequestMessage()
@@ -228,9 +228,9 @@ namespace TodoList.Api.Tests.Controllers
             Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
-        private static ILocationHelper LocationHelper()
+        private static ILocator LocationHelper()
         {
-            var locationHelper = Substitute.For<ILocationHelper>();
+            var locationHelper = Substitute.For<ILocator>();
             locationHelper.GetNodeLocation(new Guid())
                 .ReturnsForAnyArgs(new Uri("my/awesome/shwifty/path", UriKind.Relative));
             return locationHelper;

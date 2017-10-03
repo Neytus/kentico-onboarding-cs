@@ -16,18 +16,18 @@ namespace TodoList.Api.Controllers
         private readonly INodesRepository _repository;
         private readonly ICreateNodeService _createNodeService;
         private readonly IUpdateNodeService _updateNodeService;
-        private readonly ILocationHelper _locationHelper;
+        private readonly ILocator _locator;
 
         public NodesController(
             INodesRepository repository,
             ICreateNodeService createNodeService,
             IUpdateNodeService updateNodeService,
-            ILocationHelper locationHelper)
+            ILocator locator)
         {
             _repository = repository;
             _createNodeService = createNodeService;
             _updateNodeService = updateNodeService;
-            _locationHelper = locationHelper;
+            _locator = locator;
         }
 
         public async Task<IHttpActionResult> GetAsync()
@@ -61,7 +61,7 @@ namespace TodoList.Api.Controllers
 
             var newNode = await _createNodeService.CreateNodeAsync(node);
 
-            return Created(_locationHelper.GetNodeLocation(newNode.Id), newNode);
+            return Created(_locator.GetNodeLocation(newNode.Id), newNode);
         }
 
         public async Task<IHttpActionResult> PutAsync([FromBody] NodeModel node)
@@ -79,7 +79,7 @@ namespace TodoList.Api.Controllers
             }
 
             var newNode = await _createNodeService.CreateNodeAsync(node);
-            var location = _locationHelper.GetNodeLocation(newNode.Id);
+            var location = _locator.GetNodeLocation(newNode.Id);
             return Created(location, newNode);
         }
 

@@ -5,11 +5,11 @@ using TodoList.Contracts.Api;
 
 namespace TodoList.Api.Static_Wrappers
 {
-    internal class LocationHelper : ILocationHelper
+    internal class Locator : ILocator
     {
         private readonly UrlHelper _urlHelper;
 
-        public LocationHelper(HttpRequestMessage requestMessage)
+        public Locator(HttpRequestMessage requestMessage)
         {
             _urlHelper = new UrlHelper(requestMessage);
         }

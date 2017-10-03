@@ -22,10 +22,13 @@ namespace TodoList.Services.Tests
         private IGenerateIdService _generateIdService;
         private ICurrentTimeService _currentTimeService;
 
+        private readonly NodeModel _testModel = new NodeModel { Text = "poopy" };
+
         [SetUp]
         public void SetUp()
         {
             _repository = Substitute.For<INodesRepository>();
+            _repository.AddAsync(_testModel).Returns(_testModel);
             _generateIdService = Substitute.For<IGenerateIdService>();
             _currentTimeService = Substitute.For<ICurrentTimeService>();
 
@@ -38,8 +41,6 @@ namespace TodoList.Services.Tests
         [Test]
         public async Task CreateNodeAsync_WithCorrectInputModel_ReturnsCorrectNodeModel()
         {
-            var testModel = new NodeModel {Text = "poopy"};
-
             var expectedNode = new NodeModel
             {
                 Id = TestId,
@@ -48,9 +49,7 @@ namespace TodoList.Services.Tests
                 LastUpdate = TestTime
             };
 
-            _repository.AddAsync(testModel).Returns(testModel);
-
-            var actualNode = await _createNodeService.CreateNodeAsync(testModel);
+        var actualNode = await _createNodeService.CreateNodeAsync(_testModel);
 
             Assert.That(actualNode, Is.EqualTo(expectedNode).UsingNodeModelEqualityComparer());
         }
@@ -58,8 +57,6 @@ namespace TodoList.Services.Tests
         [Test]
         public async Task CreateNodeAsync_WithCorrectInputModelAndId_ReturnsNodeModelWithCorrectId()
         {
-            var testModel = new NodeModel {Text = "poopy"};
-
             var expectedNode = new NodeModel
             {
                 Id = AnotherId,
@@ -68,9 +65,7 @@ namespace TodoList.Services.Tests
                 LastUpdate = TestTime
             };
 
-            _repository.AddAsync(testModel).Returns(testModel);
-
-            var actualNode = await _createNodeService.CreateNodeAsync(testModel, AnotherId);
+            var actualNode = await _createNodeService.CreateNodeAsync(_testModel, AnotherId);
 
             Assert.That(actualNode, Is.EqualTo(expectedNode).UsingNodeModelEqualityComparer());
         }

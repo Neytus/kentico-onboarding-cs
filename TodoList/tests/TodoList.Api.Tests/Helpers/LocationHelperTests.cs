@@ -16,14 +16,14 @@ namespace TodoList.Api.Tests.Helpers
         private static readonly Guid TestedId = new Guid("aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72");
 
         private HttpRequestMessage _httpRequestMessage;
-        private ILocationHelper _locationHelper;
+        private ILocator _locator;
 
         [SetUp]
         public void SetUp()
         {
             _httpRequestMessage = Substitute.For<HttpRequestMessage>();
 
-            _locationHelper = new LocationHelper(_httpRequestMessage);
+            _locator = new Locator(_httpRequestMessage);
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace TodoList.Api.Tests.Helpers
             ConfigureRequestMessage(TestedId);
             var expectedUrl = "/my/awesome/shwifty/nodes/" + TestedId;
 
-            var actualUrl = _locationHelper.GetNodeLocation(TestedId);
+            var actualUrl = _locator.GetNodeLocation(TestedId);
 
             Assert.That(expectedUrl, Is.EqualTo(actualUrl));
         }
