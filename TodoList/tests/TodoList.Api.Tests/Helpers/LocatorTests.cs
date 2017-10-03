@@ -11,7 +11,7 @@ using TodoList.Contracts.Api;
 namespace TodoList.Api.Tests.Helpers
 {
     [TestFixture]
-    public class LocationHelperTests
+    public class LocatorTests
     {
         private static readonly Guid TestedId = new Guid("aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72");
 

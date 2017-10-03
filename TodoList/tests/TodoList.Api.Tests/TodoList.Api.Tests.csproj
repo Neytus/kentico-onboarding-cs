@@ -76,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\NodesControllerTests.cs" />
-    <Compile Include="Helpers\LocationHelperTests.cs" />
+    <Compile Include="Helpers\LocatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\EqualConstraintExtensions.cs" />
   </ItemGroup>
