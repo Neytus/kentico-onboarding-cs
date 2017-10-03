@@ -48,7 +48,7 @@ namespace TodoList.Services.Tests
                 LastUpdate = TestTime
             };
 
-            _repository.AddAsync(testModel).Returns(Task.CompletedTask);
+            _repository.AddAsync(testModel).Returns(testModel);
 
             var actualNode = await _createNodeService.CreateNodeAsync(testModel);
 
@@ -68,7 +68,7 @@ namespace TodoList.Services.Tests
                 LastUpdate = TestTime
             };
 
-            _repository.AddAsync(testModel).Returns(Task.CompletedTask);
+            _repository.AddAsync(testModel).Returns(testModel);
 
             var actualNode = await _createNodeService.CreateNodeAsync(testModel, AnotherId);
 

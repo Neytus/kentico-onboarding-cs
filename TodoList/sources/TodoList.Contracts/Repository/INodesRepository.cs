@@ -11,9 +11,9 @@ namespace TodoList.Contracts.Repository
 
         Task<NodeModel> GetByIdAsync(Guid id);
 
-        Task AddAsync(NodeModel model);
+        Task<NodeModel> AddAsync(NodeModel model);
 
-        Task UpdateAsync(NodeModel model);
+        Task<NodeModel> UpdateAsync(NodeModel model);
 
         Task DeleteAsync(Guid id);
     }

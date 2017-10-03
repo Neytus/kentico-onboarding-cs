@@ -28,11 +28,14 @@ namespace TodoList.Repository
         public async Task<NodeModel> GetByIdAsync(Guid id)
             => await _dbCollection.Find(node => node.Id == id).FirstOrDefaultAsync();
 
-        public async Task AddAsync(NodeModel model)
-            => await _dbCollection.InsertOneAsync(model);
+        public async Task<NodeModel> AddAsync(NodeModel model)
+        {
+            await _dbCollection.InsertOneAsync(model);
+            return model;
+        }
 
-        public async Task UpdateAsync(NodeModel model)
-            => await _dbCollection.ReplaceOneAsync(node => node.Id == model.Id, model);
+        public async Task<NodeModel> UpdateAsync(NodeModel model) 
+            => await _dbCollection.FindOneAndReplaceAsync(node => node.Id == model.Id, model);
 
         public async Task DeleteAsync(Guid id)
             => await _dbCollection.DeleteOneAsync(node => node.Id == id);
