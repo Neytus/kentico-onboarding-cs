@@ -22,7 +22,7 @@ namespace TodoList.Services.Nodes
         public async Task<NodeModel> CreateNodeAsync(NodeModel node)
             => await CreateNodeAsync(node, _generateIdService.GenerateId());
 
-        public async Task<NodeModel> CreateNodeAsync(NodeModel node, Guid id)
+        private async Task<NodeModel> CreateNodeAsync(NodeModel node, Guid id)
         {
             if (node == null)
             {

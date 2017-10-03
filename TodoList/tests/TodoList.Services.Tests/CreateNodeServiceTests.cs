@@ -15,7 +15,6 @@ namespace TodoList.Services.Tests
     {
         private static readonly DateTime TestTime = new DateTime(2017, 9, 8, 14, 20, 38);
         private static readonly Guid TestId = new Guid("61EDC3BF-0E94-456E-88C9-9034576C81B1");
-        private static readonly Guid AnotherId = new Guid("76eef3e9-018d-45f4-9bcd-8f1149e50ea7");
 
         private ICreateNodeService _createNodeService;
         private INodesRepository _repository;
@@ -55,22 +54,6 @@ namespace TodoList.Services.Tests
         }
 
         [Test]
-        public async Task CreateNodeAsync_WithCorrectInputModelAndId_ReturnsNodeModelWithCorrectId()
-        {
-            var expectedNode = new NodeModel
-            {
-                Id = AnotherId,
-                Text = "poopy",
-                Creation = TestTime,
-                LastUpdate = TestTime
-            };
-
-            var actualNode = await _createNodeService.CreateNodeAsync(_testModel, AnotherId);
-
-            Assert.That(actualNode, Is.EqualTo(expectedNode).UsingNodeModelEqualityComparer());
-        }
-
-        [Test]
         public async Task CreateNodeAsync_WithNullData_ThrowsException()
         {
             try
@@ -80,7 +63,7 @@ namespace TodoList.Services.Tests
             }
             catch (InvalidOperationException exception)
             {
-                var expectedMessage = "Text to add has to be provided.";
+                const string expectedMessage = "Text to add has to be provided.";
 
                 Assert.That(expectedMessage, Is.EqualTo(exception.Message));
             }

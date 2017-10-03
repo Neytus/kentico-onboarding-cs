@@ -73,7 +73,7 @@ namespace TodoList.Services.Tests
             }
             catch (InvalidOperationException exception)
             {
-                var expectedMessage = "Values to update have to be provided.";
+                const string expectedMessage = "Values to update have to be provided.";
 
                 Assert.That(expectedMessage, Is.EqualTo(exception.Message));
             }

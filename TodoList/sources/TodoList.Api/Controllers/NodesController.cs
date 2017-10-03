@@ -113,8 +113,7 @@ namespace TodoList.Api.Controllers
                 ModelState.AddModelError(nameof(node.Id), "Node model requires a specified id parameter.");
             }
 
-            ValidateNodeText(node.Text);
-            ValidateNodeTimeAttributes(node);
+            ValidateNodeModelAttributes(node);
         }
 
         private void ValidatePostNodeModel(NodeModel node)
@@ -129,16 +128,7 @@ namespace TodoList.Api.Controllers
                 ModelState.AddModelError(nameof(node.Id), "Node model can't have id parameter specified here.");
             }
 
-            ValidateNodeText(node.Text);
-            ValidateNodeTimeAttributes(node);
-        }
-
-        private void ValidateNodeText(string text)
-        {
-            if (IsNullOrWhiteSpace(text))
-            {
-                ModelState.AddModelError(text, "Text can't be null or whitespace.");
-            }
+            ValidateNodeModelAttributes(node);
         }
 
         private void ValidateIdAttribute(Guid id)
@@ -153,8 +143,13 @@ namespace TodoList.Api.Controllers
             }
         }
 
-        private void ValidateNodeTimeAttributes(NodeModel node)
+        private void ValidateNodeModelAttributes(NodeModel node)
         {
+            if (IsNullOrWhiteSpace(node.Text))
+            {
+                ModelState.AddModelError(nameof(node), "Text can't be null or whitespace.");
+            }
+
             if (node.Creation != default(DateTime))
             {
                 ModelState.AddModelError(nameof(node.Creation),
