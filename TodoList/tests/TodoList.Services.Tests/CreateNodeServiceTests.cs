@@ -21,25 +21,24 @@ namespace TodoList.Services.Tests
         private IGenerateIdService _generateIdService;
         private ICurrentTimeService _currentTimeService;
 
-        private readonly NodeModel _testModel = new NodeModel { Text = "poopy" };
-
         [SetUp]
         public void SetUp()
         {
             _repository = Substitute.For<INodesRepository>();
-            _repository.AddAsync(_testModel).Returns(_testModel);
             _generateIdService = Substitute.For<IGenerateIdService>();
             _currentTimeService = Substitute.For<ICurrentTimeService>();
-
-            _currentTimeService.GetCurrentTime().Returns(TestTime);
-            _generateIdService.GenerateId().Returns(TestId);
 
             _createNodeService = new CreateNodeService(_repository, _generateIdService, _currentTimeService);
         }
 
         [Test]
-        public async Task CreateNodeAsync_WithCorrectInputModel_ReturnsCorrectNodeModel()
+        public async Task CreateNodeAsync_WithValidInputModel_ReturnsCorrectNodeModel()
         {
+            var testModel = new NodeModel {Text = "poopy"};
+            _repository.AddAsync(testModel).Returns(testModel);
+            _currentTimeService.GetCurrentTime().Returns(TestTime);
+            _generateIdService.GenerateId().Returns(TestId);
+
             var expectedNode = new NodeModel
             {
                 Id = TestId,
@@ -48,7 +47,7 @@ namespace TodoList.Services.Tests
                 LastUpdate = TestTime
             };
 
-        var actualNode = await _createNodeService.CreateNodeAsync(_testModel);
+            var actualNode = await _createNodeService.CreateNodeAsync(testModel);
 
             Assert.That(actualNode, Is.EqualTo(expectedNode).UsingNodeModelEqualityComparer());
         }

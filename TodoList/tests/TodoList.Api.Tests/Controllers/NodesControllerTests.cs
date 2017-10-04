@@ -47,16 +47,21 @@ namespace TodoList.Api.Tests.Controllers
             Text = "Time to get shwifty"
         };
 
-        private readonly INodesRepository _repository = Substitute.For<INodesRepository>();
-        private readonly ICreateNodeService _createNodeService = Substitute.For<ICreateNodeService>();
-        private readonly IUpdateNodeService _updateNodeService = Substitute.For<IUpdateNodeService>();
-        private readonly ILocator _locator = Substitute.For<ILocator>();
+        private INodesRepository _repository;
+        private ICreateNodeService _createNodeService;
+        private IUpdateNodeService _updateNodeService;
+        private ILocator _locator;
 
         private NodesController _controller;
 
         [SetUp]
         public void SetUp()
         {
+            _repository = Substitute.For<INodesRepository>();
+            _createNodeService = Substitute.For<ICreateNodeService>();
+            _updateNodeService = Substitute.For<IUpdateNodeService>();
+            _locator = Substitute.For<ILocator>();
+
             _controller = new NodesController(_repository, _createNodeService, _updateNodeService, _locator)
             {
                 Configuration = new HttpConfiguration(),
@@ -126,7 +131,7 @@ namespace TodoList.Api.Tests.Controllers
         {
             var modelToPost = new NodeModel {Text = "GEARS"};
             _createNodeService.CreateNodeAsync(modelToPost).Returns(SecondModel);
-        
+
             var expectedResult = SecondModel;
             var expectedUri = new Uri("my/awesome/shwifty/path", UriKind.Relative);
             _locator.GetNodeLocation(new Guid()).ReturnsForAnyArgs(expectedUri);
@@ -199,7 +204,7 @@ namespace TodoList.Api.Tests.Controllers
             Assert.That(actualMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
             Assert.That(actualResult, Is.Null);
         }
-        
+
         [Test]
         public async Task Delete_WithIdFromDb_DeletesCorrectNode()
         {

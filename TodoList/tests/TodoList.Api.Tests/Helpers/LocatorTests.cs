@@ -27,14 +27,14 @@ namespace TodoList.Api.Tests.Helpers
         }
 
         [Test]
-        public void GetNodeLocation_WithCorrectId_ReturnsCorrectUrl()
+        public void GetNodeLocation_WithValidId_ReturnsCorrectUrl()
         {
             ConfigureRequestMessage(TestedId);
-            var expectedUrl = "/my/awesome/shwifty/nodes/" + TestedId;
+            var expectedUrl = new Uri("/my/awesome/shwifty/nodes/" + TestedId, UriKind.Relative);
 
             var actualUrl = _locator.GetNodeLocation(TestedId);
 
-            Assert.That(expectedUrl, Is.EqualTo(actualUrl));
+            Assert.That(actualUrl, Is.EqualTo(expectedUrl));
         }
 
         private void ConfigureRequestMessage(Guid id)

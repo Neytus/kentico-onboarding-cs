@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NUnit.Framework;
 using TodoList.Api.Tests.Extensions;
@@ -16,16 +15,7 @@ namespace TodoList.Services.Tests
     internal class UpdateNodeServiceTests
     {
         private static readonly DateTime TestTime = new DateTime(2017, 9, 8, 14, 20, 38);
-        private static readonly Guid TestId = new Guid("61EDC3BF-0E94-456E-88C9-9034576C81B1");
         private static readonly DateTime UpdatedTime = new DateTime(2017, 9, 10, 16, 28, 48);
-
-        private readonly NodeModel _baseNode = new NodeModel
-        {
-            Id = TestId,
-            Text = "poopy",
-            Creation = TestTime,
-            LastUpdate = TestTime
-        };
 
         private INodesRepository _repository;
         private ICurrentTimeService _currentTimeService;
@@ -37,31 +27,39 @@ namespace TodoList.Services.Tests
             _repository = Substitute.For<INodesRepository>();
             _currentTimeService = Substitute.For<ICurrentTimeService>();
 
-            _currentTimeService.GetCurrentTime().Returns(TestTime);
-
-            _repository.GetByIdAsync(TestId).Returns(_baseNode);
-
             _updateNodeService = new UpdateNodeService(_repository, _currentTimeService);
         }
 
         [Test]
         public async Task UpdateNodeInDb_WithCorrectData_UpdatesNodeInDbCorrectly()
         {
+            var nodeToPut = new NodeModel
+            {
+                Id = new Guid("61EDC3BF-0E94-456E-88C9-9034576C81B1"),
+                Text = "poopy butt"
+            };
+            var storedNode = new NodeModel
+            {
+                Id = nodeToPut.Id,
+                Text = "poopy",
+                Creation = TestTime,
+                LastUpdate = TestTime
+            };
             var expectedNode = new NodeModel
             {
-                Id = TestId,
-                Text = "poopy butt",
+                Id = nodeToPut.Id,
+                Text = nodeToPut.Text,
                 Creation = TestTime,
                 LastUpdate = UpdatedTime
             };
-
+            _repository.GetByIdAsync(nodeToPut.Id).Returns(storedNode);
             _currentTimeService.GetCurrentTime().Returns(UpdatedTime);
-            _repository.UpdateAsync(expectedNode).Returns(expectedNode);
 
-            var actualNode = await _updateNodeService.UpdateNodeAsync(expectedNode);
+            var actualNode = await _updateNodeService.UpdateNodeAsync(nodeToPut);
 
             Assert.That(actualNode, Is.EqualTo(expectedNode).UsingNodeModelEqualityComparer());
         }
+
 
         [Test]
         public async Task UpdateNodeInDb_WithNullData_ThrowsException()
@@ -86,19 +84,29 @@ namespace TodoList.Services.Tests
         [Test]
         public async Task IsInDbAsync_ReturnsTrueForNodeInDb()
         {
-            var isNodeInDb = await _updateNodeService.IsInDbAsync(TestId);
+            var existingId = new Guid("61EDC3BF-0E94-456E-88C9-9034576C81B1");
+            var storedNode = new NodeModel
+            {
+                Id = existingId,
+                Text = "poopy",
+                Creation = TestTime,
+                LastUpdate = TestTime
+            };
+            _repository.GetByIdAsync(existingId).Returns(storedNode);
 
-            Assert.That(isNodeInDb, Is.EqualTo(true));
+            var isNodeInDb = await _updateNodeService.IsInDbAsync(existingId);
+
+            Assert.That(isNodeInDb, Is.True);
         }
 
         [Test]
         public async Task IsInDbAsync_ReturnsFalseForNodeNotInDb()
         {
-            var anotherGuid = new Guid("317200b4-2845-43ce-93d4-aa35511e4c68");
+            var nonexistentId = new Guid("317200b4-2845-43ce-93d4-aa35511e4c68");
 
-            var isNodeInDb = await _updateNodeService.IsInDbAsync(anotherGuid);
+            var isNodeInDb = await _updateNodeService.IsInDbAsync(nonexistentId);
 
-            Assert.That(isNodeInDb, Is.EqualTo(false));
+            Assert.That(isNodeInDb, Is.False);
         }
     }
 }
