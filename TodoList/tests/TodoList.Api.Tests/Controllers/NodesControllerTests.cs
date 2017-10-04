@@ -47,10 +47,10 @@ namespace TodoList.Api.Tests.Controllers
             Text = "Time to get shwifty"
         };
 
-        private readonly INodesRepository _repository = NodesRepository();
-        private readonly ICreateNodeService _createNodeService = CreateNodeService();
-        private readonly IUpdateNodeService _updateNodeService = UpdateNodeService();
-        private readonly ILocator _locator = LocationHelper();
+        private readonly INodesRepository _repository = Substitute.For<INodesRepository>();
+        private readonly ICreateNodeService _createNodeService = Substitute.For<ICreateNodeService>();
+        private readonly IUpdateNodeService _updateNodeService = Substitute.For<IUpdateNodeService>();
+        private readonly ILocator _locator = Substitute.For<ILocator>();
 
         private NodesController _controller;
 
@@ -65,197 +65,9 @@ namespace TodoList.Api.Tests.Controllers
         }
 
         [Test]
-        public async Task Get_WithoutSpecifiedId_ReturnsAllNodes()
+        public async Task GetAllNodes_ReturnsAllNodes()
         {
-            var expectedResult = new[]
-            {
-                FirstModel, SecondModel, ThirdModel, FourthModel
-            };
-
-            var createdResponse = await _controller.GetAsync();
-            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-            responseMessage.TryGetContentValue(out NodeModel[] actualResult);
-
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(expectedResult, Is.EqualTo(actualResult).AsCollection.UsingNodeModelEqualityComparer());
-        }
-
-        [Test]
-        public async Task Get_WithCorrectId_ReturnsCorrectNode()
-        {
-            var expectedResult = FirstModel;
-
-            var createdResponse = await _controller.GetAsync(FirstId);
-            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-            responseMessage.TryGetContentValue(out NodeModel actualResult);
-
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(expectedResult, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
-        }
-
-        [Test]
-        public async Task Get_WithNotFoundId_ReturnsDefaultNode()
-        {
-            var expectedResult = FirstModel;
-
-            var createdResponse = await _controller.GetAsync(NotFoundId);
-            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-            responseMessage.TryGetContentValue(out NodeModel actualResult);
-
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(expectedResult, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
-        }
-
-        [Test]
-        public async Task Get_WithDefaultId_ReturnsBadRequest()
-        {
-            var createdResponse = await _controller.GetAsync(Guid.Empty);
-            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-        }
-
-        [Test]
-        public async Task Post_WithCorrectTextData_InsertsNewNodeCorrectly()
-        {
-            var expectedResult = SecondModel;
-
-            var createdResponse = await _controller.PostAsync(new NodeModel {Text = "GEARS"});
-            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-            responseMessage.TryGetContentValue(out NodeModel actualResult);
-
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.Created));
-            Assert.That(responseMessage.Headers.Location.ToString(), Is.EqualTo("my/awesome/shwifty/path"));
-            Assert.That(expectedResult, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
-        }
-
-        [Test]
-        public async Task Post_WithIncorrectTextData_ReturnsBadRequest()
-        {
-            var createdResponse = await _controller.PostAsync(new NodeModel {Text = "   "});
-            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-            responseMessage.TryGetContentValue(out NodeModel actualResult);
-
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-            Assert.That(null, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
-        }
-
-        [Test]
-        public async Task Post_WithSpecifiedId_ReturnsBadRequest()
-        {
-            var createdResponse = await _controller.PostAsync(new NodeModel {Id = NotFoundId, Text = "GEARS"});
-            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-            responseMessage.TryGetContentValue(out NodeModel actualResult);
-
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-            Assert.That(null, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
-        }
-
-        [Test]
-        public async Task Post_WithNullModel_ReturnsBadRequest()
-        {
-            var createdResponse = await _controller.PostAsync(null);
-            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-            responseMessage.TryGetContentValue(out NodeModel actualResult);
-
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-            Assert.That(actualResult, Is.Null);
-        }
-
-        [Test]
-        public async Task Put_WithCorrectNodeModel_UpdatesACorrectNode()
-        {
-            var expectedResult = ThirdModel;
-
-            var createdResponse = await _controller.PutAsync(expectedResult);
-            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-            responseMessage.TryGetContentValue(out NodeModel actualResult);
-
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
-            Assert.That(expectedResult, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
-        }
-
-        [Test]
-        public async Task Put_WithIncorrectTextData_ReturnsBadRequest()
-        {
-            var createdResponse = await _controller.PutAsync(new NodeModel {Id = ThirdId, Text = "    "});
-            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-            responseMessage.TryGetContentValue(out NodeModel actualResult);
-
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-            Assert.That(null, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
-        }
-
-        [Test]
-        public async Task Put_WithoutSpecifiedId_ReturnsBadRequest()
-        {
-            var putNode = new NodeModel {Text = "Nothing like you"};
-
-            var createdResponse = await _controller.PutAsync(putNode);
-            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-        }
-
-        [Test]
-        public async Task Put_WithNullModel_ReturnsBadRequest()
-        {
-            var createdResponse = await _controller.PutAsync(null);
-            var responseMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
-            responseMessage.TryGetContentValue(out NodeModel actualResult);
-
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-            Assert.That(null, Is.EqualTo(actualResult).UsingNodeModelEqualityComparer());
-        }
-
-        [Test]
-        public async Task Delete_WithIdFromDb_DeletesCorrectNode()
-        {
-            var actualResponse = await _controller.DeleteAsync(FirstId).Result
-                .ExecuteAsync(CancellationToken.None);
-
-            Assert.IsNull(actualResponse.Content);
-            Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
-        }
-
-        [Test]
-        public async Task Delete_WithIdNotFromDb_ReturnsNotFoundStatus()
-        {
-            var actualResponse = await _controller.DeleteAsync(SecondId).Result
-                .ExecuteAsync(CancellationToken.None);
-
-            Assert.IsNull(actualResponse.Content);
-            Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
-        }
-
-        private static ILocator LocationHelper()
-        {
-            var locationHelper = Substitute.For<ILocator>();
-            locationHelper.GetNodeLocation(new Guid())
-                .ReturnsForAnyArgs(new Uri("my/awesome/shwifty/path", UriKind.Relative));
-            return locationHelper;
-        }
-
-        private static IUpdateNodeService UpdateNodeService()
-        {
-            var updateNodeService = Substitute.For<IUpdateNodeService>();
-            updateNodeService.UpdateNodeAsync(new NodeModel()).ReturnsForAnyArgs(ThirdModel);
-            updateNodeService.IsInDbAsync(ThirdId).Returns(true);
-            return updateNodeService;
-        }
-
-        private static ICreateNodeService CreateNodeService()
-        {
-            var createNodeService = Substitute.For<ICreateNodeService>();
-            createNodeService.CreateNodeAsync(new NodeModel()).ReturnsForAnyArgs(SecondModel);
-            return createNodeService;
-        }
-
-        private static INodesRepository NodesRepository()
-        {
-            var repository = Substitute.For<INodesRepository>();
-
-            repository.GetAllAsync().Returns(new[]
+            _repository.GetAllAsync().Returns(new[]
             {
                 FirstModel,
                 SecondModel,
@@ -263,15 +75,184 @@ namespace TodoList.Api.Tests.Controllers
                 FourthModel
             });
 
-            repository.GetByIdAsync(FirstId)
-                .Returns(FirstModel);
-            repository.GetByIdAsync(NotFoundId)
-                .Returns(FirstModel);
-            repository.GetByIdAsync(ThirdId)
-                .Returns(ThirdModel);
+            var expectedResult = new[]
+            {
+                FirstModel, SecondModel, ThirdModel, FourthModel
+            };
 
-            repository.DeleteAsync(new Guid()).ReturnsForAnyArgs(Task.CompletedTask);
-            return repository;
+            var createdResponse = await _controller.GetAsync();
+            var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            actualMessage.TryGetContentValue(out NodeModel[] actualResult);
+
+            Assert.That(actualMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.That(actualResult, Is.EqualTo(expectedResult).AsCollection.UsingNodeModelEqualityComparer());
         }
+
+        [Test]
+        public async Task Get_WithExistingId_ReturnsCorrectNode()
+        {
+            _repository.GetByIdAsync(FirstId).Returns(FirstModel);
+
+            var expectedResult = FirstModel;
+
+            var createdResponse = await _controller.GetAsync(FirstId);
+            var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            actualMessage.TryGetContentValue(out NodeModel actualResult);
+
+            Assert.That(actualMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.That(actualResult, Is.EqualTo(expectedResult).UsingNodeModelEqualityComparer());
+        }
+
+        [Test]
+        public async Task Get_WithNonexistentId_ReturnsNotFound()
+        {
+            var createdResponse = await _controller.GetAsync(NotFoundId);
+            var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+
+            Assert.That(actualMessage.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public async Task Get_WithDefaultId_ReturnsBadRequest()
+        {
+            var createdResponse = await _controller.GetAsync(Guid.Empty);
+            var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+
+            Assert.That(actualMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        }
+
+        [Test]
+        public async Task Post_WithValidNodeModel_InsertsNewNodeCorrectly()
+        {
+            var modelToPost = new NodeModel {Text = "GEARS"};
+            _createNodeService.CreateNodeAsync(modelToPost).Returns(SecondModel);
+        
+            var expectedResult = SecondModel;
+            var expectedUri = new Uri("my/awesome/shwifty/path", UriKind.Relative);
+            _locator.GetNodeLocation(new Guid()).ReturnsForAnyArgs(expectedUri);
+
+            var createdResponse = await _controller.PostAsync(modelToPost);
+            var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            actualMessage.TryGetContentValue(out NodeModel actualResult);
+            var actualUri = actualMessage.Headers.Location;
+
+            Assert.That(actualMessage.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+            Assert.That(actualUri, Is.EqualTo(expectedUri));
+            Assert.That(actualResult, Is.EqualTo(expectedResult).UsingNodeModelEqualityComparer());
+        }
+
+        [Test, TestCaseSource(nameof(InvalidNodeModelsToPost))]
+        public async Task Post_WithInvalidData_ReturnsBadRequest(NodeModel node)
+        {
+            var createdResponse = await _controller.PostAsync(node);
+            var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            actualMessage.TryGetContentValue(out NodeModel actualResult);
+
+            Assert.That(actualMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            Assert.That(actualResult, Is.Null);
+        }
+
+        [Test]
+        public async Task Put_WithValidNodeInDb_UpdatesACorrectNode()
+        {
+            _updateNodeService.IsInDbAsync(ThirdId).Returns(true);
+            _updateNodeService.UpdateNodeAsync(ThirdModel).Returns(ThirdModel);
+
+            var expectedResult = ThirdModel;
+
+            var createdResponse = await _controller.PutAsync(ThirdModel);
+            var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            actualMessage.TryGetContentValue(out NodeModel actualResult);
+
+            Assert.That(actualMessage.StatusCode, Is.EqualTo(HttpStatusCode.Accepted));
+            Assert.That(actualResult, Is.EqualTo(expectedResult).UsingNodeModelEqualityComparer());
+        }
+
+        [Test]
+        public async Task Put_WithValidNodeNotInDb_CreatesANewNode()
+        {
+            var modelToPut = FourthModel;
+            _updateNodeService.IsInDbAsync(modelToPut.Id).Returns(false);
+            _createNodeService.CreateNodeAsync(modelToPut).Returns(modelToPut);
+
+            var expectedResult = modelToPut;
+            var expectedUri = new Uri("my/awesome/highway/to/hell", UriKind.Relative);
+            _locator.GetNodeLocation(new Guid()).ReturnsForAnyArgs(expectedUri);
+
+            var createdResponse = await _controller.PutAsync(modelToPut);
+            var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            actualMessage.TryGetContentValue(out NodeModel actualResult);
+            var actualUri = actualMessage.Headers.Location;
+
+            Assert.That(actualMessage.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+            Assert.That(actualUri, Is.EqualTo(expectedUri));
+            Assert.That(actualResult, Is.EqualTo(expectedResult).UsingNodeModelEqualityComparer());
+        }
+
+        [Test, TestCaseSource(nameof(InvalidNodeModelsToPut))]
+        public async Task Put_WithInvalidData_ReturnsBadRequest(NodeModel node)
+        {
+            var createdResponse = await _controller.PutAsync(node);
+            var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            actualMessage.TryGetContentValue(out NodeModel actualResult);
+
+            Assert.That(actualMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            Assert.That(actualResult, Is.Null);
+        }
+        
+        [Test]
+        public async Task Delete_WithIdFromDb_DeletesCorrectNode()
+        {
+            _updateNodeService.IsInDbAsync(FirstId).Returns(true);
+
+            var actualResponse = await _controller.DeleteAsync(FirstId).Result
+                .ExecuteAsync(CancellationToken.None);
+
+            Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
+            Assert.That(actualResponse.Content, Is.Null);
+        }
+
+        [Test]
+        public async Task Delete_WithIdNotFromDb_ReturnsNotFoundStatus()
+        {
+            _updateNodeService.IsInDbAsync(SecondId).Returns(false);
+
+            var actualResponse = await _controller.DeleteAsync(SecondId).Result
+                .ExecuteAsync(CancellationToken.None);
+
+            Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+            Assert.That(actualResponse.Content, Is.Null);
+        }
+
+        [Test]
+        public async Task Delete_WithInvalidId_ReturnsBadRequest()
+        {
+            var invalidId = Guid.Empty;
+
+            var actualResponse = await _controller.DeleteAsync(invalidId).Result.ExecuteAsync(CancellationToken.None);
+
+            Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        }
+
+        private static readonly object[] InvalidNodeModelsToPost =
+        {
+            null,
+            new NodeModel {Text = "   "},
+            new NodeModel {Text = string.Empty},
+            new NodeModel {Id = NotFoundId, Text = "GEARS"},
+            new NodeModel {Text = "warm", Creation = new DateTime(2000, 10, 8, 12, 14, 1)},
+            new NodeModel {Text = "hot", LastUpdate = new DateTime(2002, 11, 9, 20, 50, 11)},
+        };
+
+        private static readonly object[] InvalidNodeModelsToPut =
+        {
+            null,
+            new NodeModel {Id = Guid.Empty},
+            new NodeModel {Text = "Nothing like you"},
+            new NodeModel {Id = FirstId, Text = "   "},
+            new NodeModel {Id = FirstId, Text = string.Empty},
+            new NodeModel {Id = FirstId, Text = "cold", Creation = new DateTime(2000, 10, 8, 12, 14, 1)},
+            new NodeModel {Id = FirstId, Text = "cool", LastUpdate = new DateTime(2002, 11, 9, 20, 50, 11)},
+        };
     }
 }

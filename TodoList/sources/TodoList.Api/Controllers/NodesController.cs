@@ -91,7 +91,7 @@ namespace TodoList.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (await _repository.GetByIdAsync(id) == null)
+            if (!await _updateNodeService.IsInDbAsync(id))
             {
                 return NotFound();
             }
