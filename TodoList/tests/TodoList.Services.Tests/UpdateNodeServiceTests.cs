@@ -7,7 +7,6 @@ using TodoList.Contracts.Models;
 using TodoList.Contracts.Repository;
 using TodoList.Contracts.Services;
 using TodoList.Services.Nodes;
-using Assert = NUnit.Framework.Assert;
 
 namespace TodoList.Services.Tests
 {
@@ -62,23 +61,18 @@ namespace TodoList.Services.Tests
 
 
         [Test]
-        public async Task UpdateNodeInDb_WithNullData_ThrowsException()
+        public void UpdateNodeInDb_WithNullData_ThrowsException()
         {
-            try
-            {
-                await _updateNodeService.UpdateNodeAsync(null);
-                Assert.Fail("No exception has been thrown on null data.");
-            }
-            catch (InvalidOperationException exception)
-            {
-                const string expectedMessage = "Values to update have to be provided.";
+            var expectedMessage = "Values to update have to be provided.";
 
-                Assert.That(expectedMessage, Is.EqualTo(exception.Message));
-            }
-            catch (Exception exception)
-            {
-                Assert.Fail("A different type of exception has been thrown: " + exception.GetType());
-            }
+            async Task<NodeModel> UpdateNullNodeAsync() => await _updateNodeService.UpdateNodeAsync(null);
+
+            Assert.That(
+                UpdateNullNodeAsync,
+                Throws.Exception
+                    .TypeOf<InvalidOperationException>()
+                    .With.Property("Message")
+                    .EqualTo(expectedMessage));
         }
 
         [Test]

@@ -38,7 +38,6 @@ namespace TodoList.Services.Tests
             _repository.AddAsync(testModel).Returns(testModel);
             _currentTimeService.GetCurrentTime().Returns(TestTime);
             _generateIdService.GenerateId().Returns(TestId);
-
             var expectedNode = new NodeModel
             {
                 Id = TestId,
@@ -53,23 +52,18 @@ namespace TodoList.Services.Tests
         }
 
         [Test]
-        public async Task CreateNodeAsync_WithNullData_ThrowsException()
+        public void CreateNodeAsync_WithNullData_ThrowsException()
         {
-            try
-            {
-                await _createNodeService.CreateNodeAsync(null);
-                Assert.Fail("No exception has been thrown on null data.");
-            }
-            catch (InvalidOperationException exception)
-            {
-                const string expectedMessage = "Text to add has to be provided.";
+            var expectedMessage = "Text to add has to be provided.";
 
-                Assert.That(expectedMessage, Is.EqualTo(exception.Message));
-            }
-            catch (Exception exception)
-            {
-                Assert.Fail("A different type of exception has been thrown: " + exception.GetType());
-            }
+            async Task<NodeModel> CreateNullNodeAsync() => await _createNodeService.CreateNodeAsync(null);
+
+            Assert.That(
+                CreateNullNodeAsync,
+                Throws.Exception
+                    .TypeOf<InvalidOperationException>()
+                    .With.Property("Message")
+                    .EqualTo(expectedMessage));
         }
     }
 }

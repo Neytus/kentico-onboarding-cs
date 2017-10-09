@@ -20,14 +20,13 @@ namespace TodoList.Services.Nodes
         }
 
         public async Task<NodeModel> CreateNodeAsync(NodeModel node)
-            => await CreateNodeAsync(node, _generateIdService.GenerateId());
-
-        private async Task<NodeModel> CreateNodeAsync(NodeModel node, Guid id)
         {
             if (node == null)
             {
                 throw new InvalidOperationException("Text to add has to be provided.");
             }
+
+            var id = _generateIdService.GenerateId();
 
             var currentTime = _timeService.GetCurrentTime();
 
