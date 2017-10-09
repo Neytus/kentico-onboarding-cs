@@ -10,9 +10,9 @@ namespace TodoList.Services.Dependency
     {
         public IUnityContainer RegisterType(IUnityContainer container)
         {
-            container.RegisterType<IGenerateIdService, GenerateIdService>(new HierarchicalLifetimeManager());
+            container.RegisterType<IGenerateIdService, GenerateIdService>(new ContainerControlledLifetimeManager());
             container.RegisterType<ICreateNodeService, CreateNodeService>(new HierarchicalLifetimeManager());
-            container.RegisterType<ICurrentTimeService, CurrentTimeService>(new HierarchicalLifetimeManager());
+            container.RegisterType<ICurrentTimeService, CurrentTimeService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IUpdateNodeService, UpdateNodeService>(new HierarchicalLifetimeManager());
 
             return container;
