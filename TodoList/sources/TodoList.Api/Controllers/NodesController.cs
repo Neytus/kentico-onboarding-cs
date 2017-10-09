@@ -64,21 +64,27 @@ namespace TodoList.Api.Controllers
             return Created(_locator.GetNodeLocation(newNode.Id), newNode);
         }
 
-        public async Task<IHttpActionResult> PutAsync([FromBody] NodeModel node)
+        public async Task<IHttpActionResult> PutAsync(Guid id, [FromBody] NodeModel node)
         {
-            ValidatePutNodeModel(node);
+            ValidatePutNodeModel(id, node);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (await _updateNodeService.IsInDbAsync(node.Id))
+            var modelToPut = new NodeModel
             {
-                var updatedNode = await _updateNodeService.UpdateNodeAsync(node);
+                Id = id,
+                Text = node.Text
+            };
+
+            if (await _updateNodeService.IsInDbAsync(id))
+            {
+                var updatedNode = await _updateNodeService.UpdateNodeAsync(modelToPut);
                 return Content(HttpStatusCode.Accepted, updatedNode);
             }
 
-            var newNode = await _createNodeService.CreateNodeAsync(node);
+            var newNode = await _createNodeService.CreateNodeAsync(modelToPut);
             var location = _locator.GetNodeLocation(newNode.Id);
             return Created(location, newNode);
         }
@@ -101,7 +107,7 @@ namespace TodoList.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        private void ValidatePutNodeModel(NodeModel node)
+        private void ValidatePutNodeModel(Guid id, NodeModel node)
         {
             if (node == null)
             {
@@ -110,7 +116,11 @@ namespace TodoList.Api.Controllers
             }
             if (node.Id == Guid.Empty)
             {
-                ModelState.AddModelError(nameof(node.Id), "Node model requires a specified id parameter.");
+                ModelState.AddModelError(nameof(node.Id), "Node model must have id parameter specified here.");
+            }
+            if (id != node.Id)
+            {
+                ModelState.AddModelError(nameof(node.Id), "The same id as in the model has to be provided in the route as well.");
             }
 
             ValidateNodeModel(node);

@@ -59,7 +59,6 @@ namespace TodoList.Services.Tests
             Assert.That(actualNode, Is.EqualTo(expectedNode).UsingNodeModelEqualityComparer());
         }
 
-
         [Test]
         public void UpdateNodeInDb_WithNullData_ThrowsException()
         {

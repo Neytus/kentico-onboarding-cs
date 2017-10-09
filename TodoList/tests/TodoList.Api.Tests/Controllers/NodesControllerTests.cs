@@ -79,7 +79,6 @@ namespace TodoList.Api.Tests.Controllers
                 ThirdModel,
                 FourthModel
             });
-
             var expectedResult = new[]
             {
                 FirstModel, SecondModel, ThirdModel, FourthModel
@@ -97,7 +96,6 @@ namespace TodoList.Api.Tests.Controllers
         public async Task Get_WithExistingId_ReturnsCorrectNode()
         {
             _repository.GetByIdAsync(FirstId).Returns(FirstModel);
-
             var expectedResult = FirstModel;
 
             var createdResponse = await _controller.GetAsync(FirstId);
@@ -131,7 +129,6 @@ namespace TodoList.Api.Tests.Controllers
         {
             var modelToPost = new NodeModel {Text = "GEARS"};
             _createNodeService.CreateNodeAsync(modelToPost).Returns(SecondModel);
-
             var expectedResult = SecondModel;
             var expectedUri = new Uri("my/awesome/shwifty/path", UriKind.Relative);
             _locator.GetNodeLocation(new Guid()).ReturnsForAnyArgs(expectedUri);
@@ -161,11 +158,10 @@ namespace TodoList.Api.Tests.Controllers
         public async Task Put_WithValidNodeInDb_UpdatesACorrectNode()
         {
             _updateNodeService.IsInDbAsync(ThirdId).Returns(true);
-            _updateNodeService.UpdateNodeAsync(ThirdModel).Returns(ThirdModel);
-
+            _updateNodeService.UpdateNodeAsync(ThirdModel).ReturnsForAnyArgs(ThirdModel);
             var expectedResult = ThirdModel;
 
-            var createdResponse = await _controller.PutAsync(ThirdModel);
+            var createdResponse = await _controller.PutAsync(ThirdId, ThirdModel);
             var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             actualMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -178,13 +174,12 @@ namespace TodoList.Api.Tests.Controllers
         {
             var modelToPut = FourthModel;
             _updateNodeService.IsInDbAsync(modelToPut.Id).Returns(false);
-            _createNodeService.CreateNodeAsync(modelToPut).Returns(modelToPut);
-
+            _createNodeService.CreateNodeAsync(new NodeModel()).ReturnsForAnyArgs(modelToPut);
             var expectedResult = modelToPut;
             var expectedUri = new Uri("my/awesome/highway/to/hell", UriKind.Relative);
             _locator.GetNodeLocation(new Guid()).ReturnsForAnyArgs(expectedUri);
 
-            var createdResponse = await _controller.PutAsync(modelToPut);
+            var createdResponse = await _controller.PutAsync(SecondId, modelToPut);
             var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             actualMessage.TryGetContentValue(out NodeModel actualResult);
             var actualUri = actualMessage.Headers.Location;
@@ -194,10 +189,23 @@ namespace TodoList.Api.Tests.Controllers
             Assert.That(actualResult, Is.EqualTo(expectedResult).UsingNodeModelEqualityComparer());
         }
 
+        [Test]
+        public async Task Put_WithNullData_ReturnsBadRequest()
+        {
+            var id = new Guid("e59e5e76-b04e-45b7-ad9c-fda61200c33d");
+
+            var createdResponse = await _controller.PutAsync(id, null);
+            var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
+            actualMessage.TryGetContentValue(out NodeModel actualResult);
+
+            Assert.That(actualMessage.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            Assert.That(actualResult, Is.Null);
+        }
+
         [Test, TestCaseSource(nameof(InvalidNodeModelsToPut))]
         public async Task Put_WithInvalidData_ReturnsBadRequest(NodeModel node)
         {
-            var createdResponse = await _controller.PutAsync(node);
+            var createdResponse = await _controller.PutAsync(node.Id, node);
             var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             actualMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -251,7 +259,6 @@ namespace TodoList.Api.Tests.Controllers
 
         private static readonly object[] InvalidNodeModelsToPut =
         {
-            null,
             new NodeModel {Id = Guid.Empty},
             new NodeModel {Text = "Nothing like you"},
             new NodeModel {Id = FirstId, Text = "   "},
