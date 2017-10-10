@@ -157,11 +157,22 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Put_WithValidNodeInDb_UpdatesACorrectNode()
         {
-            _updateNodeService.IsInDbAsync(ThirdId).Returns(true);
-            _updateNodeService.UpdateNodeAsync(ThirdModel).ReturnsForAnyArgs(ThirdModel);
-            var expectedResult = ThirdModel;
+            const string text = "show me what you got";
+            var id = new Guid("e3f20149-ed98-4541-b8e9-6ff3393fdd96");
+            var modelToPut = new NodeModel
+            {
+                Text = text
+            };
+            var nodeWithId = new NodeModel
+            {
+                Id = id,
+                Text = text
+            };
+            _updateNodeService.IsInDbAsync(id).Returns(true);
+            _updateNodeService.UpdateNodeAsync(new NodeModel()).ReturnsForAnyArgs(nodeWithId);
+            var expectedResult = nodeWithId;
 
-            var createdResponse = await _controller.PutAsync(ThirdId, ThirdModel);
+            var createdResponse = await _controller.PutAsync(id, modelToPut);
             var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             actualMessage.TryGetContentValue(out NodeModel actualResult);
 
@@ -172,14 +183,24 @@ namespace TodoList.Api.Tests.Controllers
         [Test]
         public async Task Put_WithValidNodeNotInDb_CreatesANewNode()
         {
-            var modelToPut = FourthModel;
-            _updateNodeService.IsInDbAsync(modelToPut.Id).Returns(false);
-            _createNodeService.CreateNodeAsync(new NodeModel()).ReturnsForAnyArgs(modelToPut);
-            var expectedResult = modelToPut;
+            const string text = "some text";
+            var id = new Guid("edb80356-3bd4-4b45-b649-964f3fbb6274");
+            var modelToPut = new NodeModel
+            {
+                Text = text
+            };
+            var nodeWithId = new NodeModel
+            {
+                Id = id,
+                Text = text
+            };
+            _updateNodeService.IsInDbAsync(id).Returns(false);
+            _createNodeService.CreateNodeAsync(new NodeModel()).ReturnsForAnyArgs(nodeWithId);
+            var expectedResult = nodeWithId;
             var expectedUri = new Uri("my/awesome/highway/to/hell", UriKind.Relative);
             _locator.GetNodeLocation(new Guid()).ReturnsForAnyArgs(expectedUri);
 
-            var createdResponse = await _controller.PutAsync(SecondId, modelToPut);
+            var createdResponse = await _controller.PutAsync(id, modelToPut);
             var actualMessage = await createdResponse.ExecuteAsync(CancellationToken.None);
             actualMessage.TryGetContentValue(out NodeModel actualResult);
             var actualUri = actualMessage.Headers.Location;
@@ -260,7 +281,6 @@ namespace TodoList.Api.Tests.Controllers
         private static readonly object[] InvalidNodeModelsToPut =
         {
             new NodeModel {Id = Guid.Empty},
-            new NodeModel {Text = "Nothing like you"},
             new NodeModel {Id = FirstId, Text = "   "},
             new NodeModel {Id = FirstId, Text = string.Empty},
             new NodeModel {Id = FirstId, Text = "cold", Creation = new DateTime(2000, 10, 8, 12, 14, 1)},

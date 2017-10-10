@@ -66,7 +66,7 @@ namespace TodoList.Api.Controllers
 
         public async Task<IHttpActionResult> PutAsync(Guid id, [FromBody] NodeModel node)
         {
-            ValidatePutNodeModel(id, node);
+            ValidatePutNodeModel(node);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -107,7 +107,7 @@ namespace TodoList.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        private void ValidatePutNodeModel(Guid id, NodeModel node)
+        private void ValidatePutNodeModel(NodeModel node)
         {
             if (node == null)
             {
