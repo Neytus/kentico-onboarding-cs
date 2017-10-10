@@ -114,13 +114,9 @@ namespace TodoList.Api.Controllers
                 ModelState.AddModelError(nameof(node), "Node model is not correctly defined.");
                 return;
             }
-            if (node.Id == Guid.Empty)
+            if (node.Id != Guid.Empty)
             {
-                ModelState.AddModelError(nameof(node.Id), "Node model must have id parameter specified here.");
-            }
-            if (id != node.Id)
-            {
-                ModelState.AddModelError(nameof(node.Id), "The same id as in the model has to be provided in the route as well.");
+                ModelState.AddModelError(nameof(node.Id), "Node model can't have id parameter specified here.");
             }
 
             ValidateNodeModel(node);
