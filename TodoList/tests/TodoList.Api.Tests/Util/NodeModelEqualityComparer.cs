@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework.Constraints;
 using TodoList.Contracts.Models;
 
-namespace TodoList.Api.Tests.Extensions
+namespace TodoList.Api.Tests.Util
 {
     internal static class NodeModelEqualityComparerWrapper
     {
@@ -17,13 +17,18 @@ namespace TodoList.Api.Tests.Extensions
             {
                 if ((x == null) || (y == null) || x.GetType() != y.GetType()) return false;
 
-                return (x.Id == y.Id) && (x.Text == y.Text);
+                return (x.Id == y.Id)
+                       && (x.Text == y.Text)
+                       && x.Creation.Equals(y.Creation)
+                       && x.LastUpdate.Equals(y.LastUpdate);
             }
 
             public int GetHashCode(NodeModel obj) => obj.GetHashCode();
         }
 
-        internal static EqualConstraint UsingNodeModelEqualityComparer(this EqualConstraint constraint)
-            => constraint.Using(Comparer);
+        internal static bool NodeModelEquals(this NodeModel x, NodeModel y) => Comparer.Equals(x, y);
+
+        public static EqualConstraint UsingNodeModelEqualityComparer(this EqualConstraint constraint) => constraint
+            .Using(Comparer);
     }
 }

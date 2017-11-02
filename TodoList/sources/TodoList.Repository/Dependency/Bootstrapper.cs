@@ -4,9 +4,9 @@ using TodoList.Contracts.Repository;
 
 namespace TodoList.Repository.Dependency
 {
-    public class RegisterTypes : IBootstrapper
+    public class Bootstrapper : IBootstrapper
     {
         public IUnityContainer RegisterType(IUnityContainer container) 
-            => container.RegisterType<INodesRepository, NodesRepository>(new HierarchicalLifetimeManager());
+            => container.RegisterType<INodesRepository, NodesRepository>(new ContainerControlledLifetimeManager());
     }
 }

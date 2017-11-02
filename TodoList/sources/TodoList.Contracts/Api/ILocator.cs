@@ -2,7 +2,7 @@
 
 namespace TodoList.Contracts.Api
 {
-    public interface ILocationHelper
+    public interface ILocator
     {
         Uri GetNodeLocation(Guid id);
     }

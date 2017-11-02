@@ -5,36 +5,36 @@ using System.Web.Http.Hosting;
 using System.Web.Http.Routing;
 using NSubstitute;
 using NUnit.Framework;
-using TodoList.Api.Helpers;
+using TodoList.Api.Static_Wrappers;
 using TodoList.Contracts.Api;
 
 namespace TodoList.Api.Tests.Helpers
 {
     [TestFixture]
-    public class LocationHelperTests
+    public class LocatorTests
     {
         private static readonly Guid TestedId = new Guid("aa0011ff-e6d4-4e46-92db-1a7a0aeb9a72");
 
         private HttpRequestMessage _httpRequestMessage;
-        private ILocationHelper _locationHelper;
+        private ILocator _locator;
 
         [SetUp]
         public void SetUp()
         {
             _httpRequestMessage = Substitute.For<HttpRequestMessage>();
 
-            _locationHelper = new LocationHelper(_httpRequestMessage);
+            _locator = new Locator(_httpRequestMessage);
         }
 
         [Test]
-        public void ReturnsCorrectUrl()
+        public void GetNodeLocation_WithValidId_ReturnsCorrectUrl()
         {
             ConfigureRequestMessage(TestedId);
-            var expectedUrl = "/my/awesome/shwifty/nodes/" + TestedId;
+            var expectedUrl = new Uri("/my/awesome/shwifty/nodes/" + TestedId, UriKind.Relative);
 
-            var actualUrl = _locationHelper.GetNodeLocation(TestedId);
+            var actualUrl = _locator.GetNodeLocation(TestedId);
 
-            Assert.That(expectedUrl, Is.EqualTo(actualUrl));
+            Assert.That(actualUrl, Is.EqualTo(expectedUrl));
         }
 
         private void ConfigureRequestMessage(Guid id)
