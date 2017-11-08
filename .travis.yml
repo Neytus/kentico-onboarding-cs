@@ -1,0 +1,11 @@
+language: csharp
+solution: TodoList.sln
+
+install:
+  - sudo apt-get install nunit-console
+  - nuget restore ./TodoList/TodoList.sln
+
+script:
+  - msbuild ./TodoList/TodoList.sln
+  - nunit-console ./TodoList/tests/TodoList.Api.Tests/bin/Debug/TodoList.Api.Tests.dll
+  - nunit-console ./TodoList/tests/TodoList.Services.Tests/bin/Debug/TodoList.Services.Tests.dll
